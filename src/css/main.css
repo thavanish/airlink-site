@@ -149,12 +149,12 @@ body::-webkit-scrollbar {
 }
 
 .theme-icon::before {
-    content: '☀';
+    content: '☀️';
     font-size: 18px;
 }
 
 [data-theme="light"] .theme-icon::before {
-    content: '☾';
+    content: '🌙';
 }
 
 .btn-primary, .btn-secondary {
