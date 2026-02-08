@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AirLink Panel - Game Server Management</title>
+    <meta name="description" content="Open-source game server management platform with powerful addon support">
+    <link rel="stylesheet" href="src/css/main.css">
+    <link rel="stylesheet" href="src/css/responsive.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-brand">
+                <img src="plane.png" alt="AirLink" class="logo">
+                <span class="brand-name">AirLink</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#about">About</a></li>
+                <li><a href="#features">Features</a></li>
+                <li><a href="#install">Install</a></li>
+                <li><a href="#addons">Addons</a></li>
+                <li><a href="#docs">Docs</a></li>
+                <li><a href="#contribute">Contribute</a></li>
+            </ul>
+            <div class="nav-actions">
+                <a href="https://github.com/AirlinkLabs/panel" class="btn-secondary">GitHub</a>
+                <a href="#install" class="btn-primary">Get Started</a>
+            </div>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Manage game servers without the headache</h1>
+                <p>AirLink is an open-source panel that makes deploying and managing game servers straightforward. Built with TypeScript and designed to be extended through addons.</p>
+                <div class="hero-actions">
+                    <a href="#install" class="btn-primary large">Install Now</a>
+                    <a href="https://discord.gg/D8YbT9rDqz" class="btn-secondary large">Join Discord</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="about" class="section">
+        <div class="container">
+            <div class="section-header">
+                <h2>What is AirLink?</h2>
+            </div>
+            <div class="content-grid">
+                <div class="content-block">
+                    <p>AirLink started as a solution to a common problem: existing game server panels were either too complex, too limited, or both. We wanted something that worked well out of the box but could grow with your needs.</p>
+                    <p>The panel is built on modern tools like TypeScript and Prisma. It handles the basics like user management, server monitoring, and resource allocation. What makes it different is the addon system, which lets you add features without modifying core code.</p>
+                </div>
+                <div class="content-block">
+                    <p>Right now it's in active development with a small community using it for various game servers. The architecture is stable enough for production use, though we're still working on polish and additional features.</p>
+                    <p>It's MIT licensed, so you can use it however you need to. Fork it, modify it, deploy it commercially. The community has already started building addons for things like Minecraft mod management and billing integration.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="features" class="section alt">
+        <div class="container">
+            <div class="section-header">
+                <h2>Core Features</h2>
+            </div>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h3>Server Management</h3>
+                    <p>Deploy and manage multiple game servers from a single interface. Start, stop, restart, and monitor resources in real-time.</p>
+                </div>
+                <div class="feature-card">
+                    <h3>User System</h3>
+                    <p>Handle permissions properly. Admin controls, user roles, and server-level access management work how you'd expect.</p>
+                </div>
+                <div class="feature-card">
+                    <h3>Addon Architecture</h3>
+                    <p>Extend functionality through addons. They can add routes, database tables, UI components, and integrate external services.</p>
+                </div>
+                <div class="feature-card">
+                    <h3>Database Migrations</h3>
+                    <p>Addons handle their own database setup. Migrations run automatically when an addon is enabled.</p>
+                </div>
+                <div class="feature-card">
+                    <h3>Modern Stack</h3>
+                    <p>TypeScript for type safety, Prisma for database queries, Express for routing. Standard tools, straightforward codebase.</p>
+                </div>
+                <div class="feature-card">
+                    <h3>REST API</h3>
+                    <p>Everything the panel does is accessible through the API. Build your own interfaces or automate deployments.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="install" class="section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Installation</h2>
+                <p>Two ways to get started. The installer handles most of the setup automatically.</p>
+            </div>
+            
+            <div class="install-methods">
+                <div class="install-method">
+                    <h3>Quick Install</h3>
+                    <p>Run the installer as root. It sets up the panel, configures systemd, and handles dependencies.</p>
+                    <div class="code-block">
+                        <code>bash &lt;(curl -s https://raw.githubusercontent.com/airlinklabs/panel/refs/heads/main/installer.sh)</code>
+                    </div>
+                    <p class="install-note">After installation, control the panel with systemd:</p>
+                    <div class="code-block">
+                        <code>systemctl start airlink-panel</code>
+                        <code>systemctl stop airlink-panel</code>
+                    </div>
+                </div>
+
+                <div class="install-method">
+                    <h3>Manual Install</h3>
+                    <div class="install-steps">
+                        <div class="step">
+                            <span class="step-number">1</span>
+                            <div class="step-content">
+                                <h4>Clone Repository</h4>
+                                <div class="code-block">
+                                    <code>cd /var/www/</code>
+                                    <code>git clone https://github.com/AirlinkLabs/panel.git</code>
+                                    <code>cd panel</code>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="step">
+                            <span class="step-number">2</span>
+                            <div class="step-content">
+                                <h4>Set Permissions</h4>
+                                <div class="code-block">
+                                    <code>sudo chown -R www-data:www-data /var/www/panel</code>
+                                    <code>sudo chmod -R 755 /var/www/panel</code>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="step">
+                            <span class="step-number">3</span>
+                            <div class="step-content">
+                                <h4>Install Dependencies</h4>
+                                <div class="code-block">
+                                    <code>npm install -g typescript</code>
+                                    <code>npm install --omit=dev</code>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="step">
+                            <span class="step-number">4</span>
+                            <div class="step-content">
+                                <h4>Database Setup</h4>
+                                <div class="code-block">
+                                    <code>npm run migrate:dev</code>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="step">
+                            <span class="step-number">5</span>
+                            <div class="step-content">
+                                <h4>Build and Run</h4>
+                                <div class="code-block">
+                                    <code>npm run build-ts</code>
+                                    <code>npm run start</code>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="requirements">
+                <h3>Requirements</h3>
+                <ul>
+                    <li>Node.js v16 or higher</li>
+                    <li>npm v8 or higher</li>
+                    <li>PostgreSQL or MySQL</li>
+                    <li>Git</li>
+                </ul>
+            </div>
+
+            <div class="pm2-info">
+                <h3>Production Deployment</h3>
+                <p>For production, use pm2 to keep the panel running:</p>
+                <div class="code-block">
+                    <code>npm install pm2 -g</code>
+                    <code>pm2 start dist/app.js --name "panel"</code>
+                    <code>pm2 save</code>
+                    <code>pm2 startup</code>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="addons" class="section alt">
+        <div class="container">
+            <div class="section-header">
+                <h2>Addon System</h2>
+                <p>Addons let you extend the panel without touching core code. They can add new pages, database tables, API endpoints, and UI components.</p>
+            </div>
+
+            <div class="addon-info">
+                <div class="addon-structure">
+                    <h3>How Addons Work</h3>
+                    <p>Each addon lives in its own directory under <code>panel/storage/addons/</code>. When enabled, the addon gets access to the router, database, and various utilities.</p>
+                    <p>Addons can register sidebar items, add server menu entries, create their own database tables, and hook into the panel's lifecycle. The system handles loading, initialization, and cleanup automatically.</p>
+                </div>
+
+                <div class="addon-example">
+                    <h3>Basic Structure</h3>
+                    <div class="code-block">
+                        <code>my-addon/</code>
+                        <code>├── package.json</code>
+                        <code>├── index.ts</code>
+                        <code>├── views/</code>
+                        <code>│   └── main.ejs</code>
+                        <code>└── lib/</code>
+                        <code>    └── helpers.ts</code>
+                    </div>
+                </div>
+            </div>
+
+            <div class="addon-capabilities">
+                <h3>What Addons Can Do</h3>
+                <div class="capability-grid">
+                    <div class="capability">
+                        <h4>Add Routes</h4>
+                        <p>Define new endpoints and pages. Handle GET/POST requests and serve custom views.</p>
+                    </div>
+                    <div class="capability">
+                        <h4>Database Access</h4>
+                        <p>Run migrations to create tables. Use Prisma for queries or run raw SQL when needed.</p>
+                    </div>
+                    <div class="capability">
+                        <h4>Modify UI</h4>
+                        <p>Add items to the sidebar, server menu, or create new sections. Use existing components or build new ones.</p>
+                    </div>
+                    <div class="capability">
+                        <h4>External Integration</h4>
+                        <p>Connect to external APIs, payment processors, mod repositories, or any other service.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="addon-resources">
+                <h3>Getting Started with Addons</h3>
+                <div class="resource-links">
+                    <a href="docs/quickstart.html" class="resource-link">
+                        <h4>Quick Start Guide</h4>
+                        <p>Create your first addon in under 10 minutes</p>
+                    </a>
+                    <a href="docs/addon-docs.html" class="resource-link">
+                        <h4>Complete Documentation</h4>
+                        <p>Full API reference and detailed examples</p>
+                    </a>
+                    <a href="docs/migrations.html" class="resource-link">
+                        <h4>Database Migrations</h4>
+                        <p>Learn how to handle addon database needs</p>
+                    </a>
+                    <a href="https://github.com/g-flame-oss/airlink-addons" class="resource-link">
+                        <h4>Template Repository</h4>
+                        <p>Start with a working addon template</p>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="docs" class="section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Documentation</h2>
+            </div>
+            <div class="docs-grid">
+                <a href="docs/quickstart.html" class="doc-card">
+                    <h3>Quick Start</h3>
+                    <p>Get your first addon running</p>
+                </a>
+                <a href="docs/addon-docs.html" class="doc-card">
+                    <h3>Addon Development</h3>
+                    <p>Complete guide to building addons</p>
+                </a>
+                <a href="docs/migrations.html" class="doc-card">
+                    <h3>Database Migrations</h3>
+                    <p>Handling addon database needs</p>
+                </a>
+                <a href="https://github.com/AirlinkLabs/panel" class="doc-card">
+                    <h3>API Reference</h3>
+                    <p>Full API documentation</p>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section id="contribute" class="section alt">
+        <div class="container">
+            <div class="section-header">
+                <h2>Contributing</h2>
+            </div>
+            <div class="content-grid">
+                <div class="contribute-section">
+                    <h3>Code Contributions</h3>
+                    <p>Fork the repository and open a pull request. We review PRs regularly and merge improvements that make sense.</p>
+                    <div class="code-block">
+                        <code>git checkout -b feature/your-feature</code>
+                        <code>git commit -m 'Add your feature'</code>
+                        <code>git push origin feature/your-feature</code>
+                    </div>
+                    <p>Follow TypeScript conventions, write tests for new features, and update docs if you're changing behavior.</p>
+                </div>
+
+                <div class="contribute-section">
+                    <h3>Guidelines</h3>
+                    <ul class="guidelines">
+                        <li>Keep code readable and maintainable</li>
+                        <li>Write unit tests for new features</li>
+                        <li>Follow existing patterns in the codebase</li>
+                        <li>Update documentation for user-facing changes</li>
+                        <li>Test on both PostgreSQL and MySQL</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="other-ways">
+                <h3>Other Ways to Help</h3>
+                <div class="help-grid">
+                    <div class="help-item">
+                        <h4>Documentation</h4>
+                        <p>Fix typos, clarify explanations, or add examples to the docs.</p>
+                    </div>
+                    <div class="help-item">
+                        <h4>Bug Reports</h4>
+                        <p>Found something broken? Open an issue with details on how to reproduce it.</p>
+                    </div>
+                    <div class="help-item">
+                        <h4>Build Addons</h4>
+                        <p>Create addons that others can use. Share them in the community.</p>
+                    </div>
+                    <div class="help-item">
+                        <h4>Community Support</h4>
+                        <p>Help others on Discord or GitHub discussions.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <img src="plane.png" alt="AirLink" class="footer-logo">
+                    <p>Open-source game server management</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Resources</h4>
+                    <ul>
+                        <li><a href="docs/quickstart.html">Quick Start</a></li>
+                        <li><a href="docs/addon-docs.html">Addon Docs</a></li>
+                        <li><a href="https://github.com/AirlinkLabs/panel">GitHub</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Community</h4>
+                    <ul>
+                        <li><a href="https://discord.gg/D8YbT9rDqz">Discord</a></li>
+                        <li><a href="https://github.com/AirlinkLabs/panel/discussions">Discussions</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Legal</h4>
+                    <ul>
+                        <li><a href="https://github.com/AirlinkLabs/panel/blob/main/LICENSE">MIT License</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>Made by Thavanish</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="src/js/main.js"></script>
+</body>
+</html>

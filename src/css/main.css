@@ -1,0 +1,567 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --grey-900: #111111;
+    --grey-800: #1a1a1a;
+    --grey-700: #2a2a2a;
+    --grey-600: #3a3a3a;
+    --grey-500: #5a5a5a;
+    --grey-400: #7a7a7a;
+    --grey-300: #9a9a9a;
+    --grey-200: #cccccc;
+    --grey-100: #e5e5e5;
+    --white: #ffffff;
+    --accent: #4a9eff;
+    --accent-dark: #3a7ed8;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+    background: var(--grey-900);
+    color: var(--grey-200);
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.navbar {
+    background: var(--grey-800);
+    padding: 15px 0;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1000;
+    border-bottom: 1px solid var(--grey-700);
+}
+
+.navbar .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.nav-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.logo {
+    height: 32px;
+    width: auto;
+}
+
+.brand-name {
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--white);
+}
+
+.nav-links {
+    display: flex;
+    list-style: none;
+    gap: 30px;
+}
+
+.nav-links a {
+    color: var(--grey-200);
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.nav-links a:hover {
+    color: var(--white);
+}
+
+.nav-actions {
+    display: flex;
+    gap: 15px;
+}
+
+.btn-primary, .btn-secondary {
+    padding: 8px 16px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.2s;
+    display: inline-block;
+}
+
+.btn-primary {
+    background: var(--accent);
+    color: var(--white);
+}
+
+.btn-primary:hover {
+    background: var(--accent-dark);
+}
+
+.btn-secondary {
+    background: var(--grey-700);
+    color: var(--grey-200);
+}
+
+.btn-secondary:hover {
+    background: var(--grey-600);
+    color: var(--white);
+}
+
+.btn-primary.large, .btn-secondary.large {
+    padding: 12px 24px;
+    font-size: 16px;
+}
+
+.hero {
+    padding: 120px 0 80px;
+    text-align: center;
+}
+
+.hero-content h1 {
+    font-size: 48px;
+    color: var(--white);
+    margin-bottom: 20px;
+    font-weight: 700;
+}
+
+.hero-content p {
+    font-size: 20px;
+    color: var(--grey-300);
+    max-width: 700px;
+    margin: 0 auto 40px;
+}
+
+.hero-actions {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+}
+
+.section {
+    padding: 80px 0;
+}
+
+.section.alt {
+    background: var(--grey-800);
+}
+
+.section-header {
+    text-align: center;
+    margin-bottom: 60px;
+}
+
+.section-header h2 {
+    font-size: 36px;
+    color: var(--white);
+    margin-bottom: 15px;
+}
+
+.section-header p {
+    font-size: 18px;
+    color: var(--grey-300);
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.content-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+    gap: 40px;
+}
+
+.content-block p {
+    margin-bottom: 20px;
+    color: var(--grey-300);
+    font-size: 16px;
+}
+
+.feature-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+}
+
+.feature-card {
+    background: var(--grey-700);
+    padding: 30px;
+    border-radius: 8px;
+    border: 1px solid var(--grey-600);
+}
+
+.feature-card h3 {
+    color: var(--white);
+    margin-bottom: 12px;
+    font-size: 20px;
+}
+
+.feature-card p {
+    color: var(--grey-300);
+    font-size: 15px;
+}
+
+.install-methods {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+    gap: 40px;
+    margin-bottom: 60px;
+}
+
+.install-method h3 {
+    color: var(--white);
+    margin-bottom: 20px;
+    font-size: 24px;
+}
+
+.install-method p {
+    color: var(--grey-300);
+    margin-bottom: 15px;
+}
+
+.install-note {
+    margin-top: 20px;
+    font-size: 14px;
+}
+
+.code-block {
+    background: var(--grey-800);
+    padding: 20px;
+    border-radius: 6px;
+    margin: 15px 0;
+    border: 1px solid var(--grey-700);
+    overflow-x: auto;
+}
+
+.code-block code {
+    display: block;
+    color: var(--grey-200);
+    font-family: 'Courier New', monospace;
+    font-size: 14px;
+    line-height: 1.8;
+}
+
+.install-steps {
+    margin-top: 20px;
+}
+
+.step {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.step-number {
+    background: var(--grey-700);
+    color: var(--white);
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    flex-shrink: 0;
+}
+
+.step-content {
+    flex: 1;
+}
+
+.step-content h4 {
+    color: var(--white);
+    margin-bottom: 10px;
+}
+
+.requirements {
+    background: var(--grey-800);
+    padding: 30px;
+    border-radius: 8px;
+    margin-bottom: 40px;
+}
+
+.requirements h3 {
+    color: var(--white);
+    margin-bottom: 15px;
+}
+
+.requirements ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+.requirements li {
+    padding: 8px 0;
+    color: var(--grey-300);
+}
+
+.requirements li:before {
+    content: "✓ ";
+    color: var(--accent);
+    font-weight: bold;
+    margin-right: 8px;
+}
+
+.pm2-info {
+    background: var(--grey-800);
+    padding: 30px;
+    border-radius: 8px;
+}
+
+.pm2-info h3 {
+    color: var(--white);
+    margin-bottom: 15px;
+}
+
+.pm2-info p {
+    color: var(--grey-300);
+    margin-bottom: 15px;
+}
+
+.addon-info {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+    gap: 40px;
+    margin-bottom: 60px;
+}
+
+.addon-structure h3, .addon-example h3 {
+    color: var(--white);
+    margin-bottom: 15px;
+}
+
+.addon-structure p, .addon-example p {
+    color: var(--grey-300);
+    margin-bottom: 15px;
+}
+
+code {
+    background: var(--grey-800);
+    padding: 2px 6px;
+    border-radius: 3px;
+    color: var(--grey-200);
+    font-family: 'Courier New', monospace;
+    font-size: 14px;
+}
+
+.addon-capabilities {
+    margin-bottom: 60px;
+}
+
+.addon-capabilities h3 {
+    color: var(--white);
+    margin-bottom: 30px;
+    font-size: 28px;
+}
+
+.capability-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
+}
+
+.capability h4 {
+    color: var(--white);
+    margin-bottom: 10px;
+    font-size: 18px;
+}
+
+.capability p {
+    color: var(--grey-300);
+    font-size: 15px;
+}
+
+.addon-resources h3 {
+    color: var(--white);
+    margin-bottom: 30px;
+    font-size: 28px;
+}
+
+.resource-links {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.resource-link {
+    background: var(--grey-700);
+    padding: 25px;
+    border-radius: 8px;
+    text-decoration: none;
+    border: 1px solid var(--grey-600);
+    transition: all 0.2s;
+}
+
+.resource-link:hover {
+    border-color: var(--accent);
+    transform: translateY(-2px);
+}
+
+.resource-link h4 {
+    color: var(--white);
+    margin-bottom: 8px;
+    font-size: 18px;
+}
+
+.resource-link p {
+    color: var(--grey-300);
+    font-size: 14px;
+}
+
+.docs-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 25px;
+}
+
+.doc-card {
+    background: var(--grey-800);
+    padding: 30px;
+    border-radius: 8px;
+    text-decoration: none;
+    border: 1px solid var(--grey-700);
+    transition: all 0.2s;
+}
+
+.doc-card:hover {
+    border-color: var(--accent);
+    transform: translateY(-2px);
+}
+
+.doc-card h3 {
+    color: var(--white);
+    margin-bottom: 10px;
+    font-size: 20px;
+}
+
+.doc-card p {
+    color: var(--grey-300);
+    font-size: 14px;
+}
+
+.contribute-section h3 {
+    color: var(--white);
+    margin-bottom: 20px;
+    font-size: 24px;
+}
+
+.contribute-section p {
+    color: var(--grey-300);
+    margin-bottom: 20px;
+}
+
+.guidelines {
+    list-style: none;
+    padding-left: 0;
+}
+
+.guidelines li {
+    padding: 10px 0;
+    color: var(--grey-300);
+    border-bottom: 1px solid var(--grey-700);
+}
+
+.guidelines li:before {
+    content: "→ ";
+    color: var(--accent);
+    margin-right: 8px;
+}
+
+.other-ways {
+    margin-top: 60px;
+}
+
+.other-ways h3 {
+    color: var(--white);
+    margin-bottom: 30px;
+    font-size: 28px;
+}
+
+.help-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 25px;
+}
+
+.help-item {
+    background: var(--grey-700);
+    padding: 25px;
+    border-radius: 8px;
+    border: 1px solid var(--grey-600);
+}
+
+.help-item h4 {
+    color: var(--white);
+    margin-bottom: 10px;
+    font-size: 18px;
+}
+
+.help-item p {
+    color: var(--grey-300);
+    font-size: 14px;
+}
+
+.footer {
+    background: var(--grey-800);
+    padding: 60px 0 30px;
+    border-top: 1px solid var(--grey-700);
+}
+
+.footer-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 40px;
+    margin-bottom: 40px;
+}
+
+.footer-section h4 {
+    color: var(--white);
+    margin-bottom: 15px;
+    font-size: 16px;
+}
+
+.footer-section ul {
+    list-style: none;
+    padding: 0;
+}
+
+.footer-section li {
+    margin-bottom: 10px;
+}
+
+.footer-section a {
+    color: var(--grey-300);
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.footer-section a:hover {
+    color: var(--white);
+}
+
+.footer-section p {
+    color: var(--grey-400);
+    font-size: 14px;
+}
+
+.footer-logo {
+    height: 28px;
+    width: auto;
+    margin-bottom: 10px;
+}
+
+.footer-bottom {
+    text-align: center;
+    padding-top: 30px;
+    border-top: 1px solid var(--grey-700);
+}
+
+.footer-bottom p {
+    color: var(--grey-400);
+    font-size: 14px;
+}

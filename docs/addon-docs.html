@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Addon Development - AirLink Panel</title>
+    <link rel="stylesheet" href="../src/css/main.css">
+    <link rel="stylesheet" href="../src/css/responsive.css">
+    <style>
+        .doc-content {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 100px 20px 60px;
+        }
+        .doc-content h1 {
+            color: var(--white);
+            font-size: 42px;
+            margin-bottom: 20px;
+        }
+        .doc-content h2 {
+            color: var(--white);
+            font-size: 32px;
+            margin-top: 50px;
+            margin-bottom: 20px;
+        }
+        .doc-content h3 {
+            color: var(--white);
+            font-size: 24px;
+            margin-top: 30px;
+            margin-bottom: 15px;
+        }
+        .doc-content p {
+            color: var(--grey-300);
+            margin-bottom: 20px;
+            line-height: 1.8;
+        }
+        .doc-content ul, .doc-content ol {
+            color: var(--grey-300);
+            margin-bottom: 20px;
+            padding-left: 30px;
+        }
+        .doc-content li {
+            margin-bottom: 10px;
+        }
+        .doc-nav {
+            background: var(--grey-800);
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 40px;
+        }
+        .doc-nav a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+        .doc-nav a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-brand">
+                <img src="../plane.png" alt="AirLink" class="logo">
+                <span class="brand-name">AirLink</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="../index.html#about">About</a></li>
+                <li><a href="../index.html#install">Install</a></li>
+                <li><a href="../index.html#addons">Addons</a></li>
+                <li><a href="../index.html#docs">Docs</a></li>
+            </ul>
+            <div class="nav-actions">
+                <a href="https://github.com/AirlinkLabs/panel" class="btn-secondary">GitHub</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="doc-content">
+        <div class="doc-nav">
+            <a href="../index.html">← Back to Home</a>
+        </div>
+
+        <h1>AirLink Panel Addon System</h1>
+        <p>This is the complete guide to developing addons for AirLink Panel. Addons let you extend the panel's functionality without modifying core code.</p>
+
+        <h2>Introduction</h2>
+        <p>Addons are loaded dynamically when the panel starts. They can add new features, modify existing ones, and integrate with external services. Each addon runs in its own context with access to the router, database, and various utilities.</p>
+
+        <h2>Addon Structure</h2>
+        <p>A typical addon has this directory layout:</p>
+        <div class="code-block">
+            <code>my-addon/</code>
+            <code>├── package.json       # Metadata and configuration</code>
+            <code>├── index.ts           # Main entry point</code>
+            <code>├── views/             # EJS templates</code>
+            <code>│   └── main.ejs</code>
+            <code>├── public/            # Static assets (optional)</code>
+            <code>│   ├── css/</code>
+            <code>│   ├── js/</code>
+            <code>│   └── img/</code>
+            <code>└── lib/               # Additional modules (optional)</code>
+            <code>    └── helpers.ts</code>
+        </div>
+
+        <h2>Package.json Configuration</h2>
+        <p>The <code>package.json</code> file defines your addon's metadata:</p>
+        <div class="code-block">
+            <code>{</code>
+            <code>  "name": "My Addon",</code>
+            <code>  "version": "1.0.0",</code>
+            <code>  "description": "What this addon does",</code>
+            <code>  "author": "Your Name",</code>
+            <code>  "main": "index.ts",</code>
+            <code>  "router": "/my-addon",</code>
+            <code>  "enabled": true,</code>
+            <code>  "migrations": [</code>
+            <code>    {</code>
+            <code>      "name": "create_my_table",</code>
+            <code>      "sql": "CREATE TABLE IF NOT EXISTS MyTable ..."</code>
+            <code>    }</code>
+            <code>  ]</code>
+            <code>}</code>
+        </div>
+
+        <h3>Required Fields</h3>
+        <ul>
+            <li><code>name</code> - Display name of your addon</li>
+            <li><code>version</code> - Version in semver format</li>
+        </ul>
+
+        <h3>Optional Fields</h3>
+        <ul>
+            <li><code>description</code> - Brief description</li>
+            <li><code>author</code> - Your name or organization</li>
+            <li><code>main</code> - Entry point file (default: index.ts)</li>
+            <li><code>router</code> - Base URL path (default: /)</li>
+            <li><code>enabled</code> - Enable by default (default: true)</li>
+            <li><code>migrations</code> - Database migrations array</li>
+        </ul>
+
+        <h2>Addon Entry Point</h2>
+        <p>Your entry point file exports a function that receives a router and API object:</p>
+        <div class="code-block">
+            <code>import { Router } from 'express';</code>
+            <code>import path from 'path';</code>
+            <code></code>
+            <code>export default function(router: Router, api: any) {</code>
+            <code>  const { logger, prisma } = api;</code>
+            <code></code>
+            <code>  logger.info('Addon initialized');</code>
+            <code></code>
+            <code>  router.get('/', async (req, res) => {</code>
+            <code>    res.render(path.join(api.viewsPath, 'view.ejs'), {</code>
+            <code>      user: req.session?.user,</code>
+            <code>      req,</code>
+            <code>      settings: await prisma.settings.findUnique({ where: { id: 1 } }),</code>
+            <code>      components: {</code>
+            <code>        header: api.getComponentPath('views/components/header'),</code>
+            <code>        template: api.getComponentPath('views/components/template'),</code>
+            <code>        footer: api.getComponentPath('views/components/footer')</code>
+            <code>      }</code>
+            <code>    });</code>
+            <code>  });</code>
+            <code>}</code>
+        </div>
+
+        <h2>The Addon API</h2>
+        <p>The API object provides access to panel features:</p>
+
+        <h3>Core Utilities</h3>
+        <ul>
+            <li><code>registerRoute(path, router)</code> - Register additional routes</li>
+            <li><code>logger</code> - Logging methods (info, warn, error, debug)</li>
+            <li><code>prisma</code> - Prisma ORM client for database access</li>
+        </ul>
+
+        <h3>Path Utilities</h3>
+        <ul>
+            <li><code>addonPath</code> - Path to the addon directory</li>
+            <li><code>viewsPath</code> - Path to the addon's views directory</li>
+            <li><code>getComponentPath(path)</code> - Get path to a panel component</li>
+        </ul>
+
+        <h3>View Utilities</h3>
+        <ul>
+            <li><code>renderView(viewName, data)</code> - Render a view with data</li>
+        </ul>
+
+        <h3>User and Server Utilities</h3>
+        <ul>
+            <li><code>utils.isUserAdmin(userId)</code> - Check if user is admin</li>
+            <li><code>utils.checkServerAccess(userId, serverId)</code> - Verify server access</li>
+            <li><code>utils.getServerById(serverId)</code> - Get server by ID</li>
+            <li><code>utils.getServerByUUID(uuid)</code> - Get server by UUID</li>
+            <li><code>utils.getServerPorts(server)</code> - Get server ports</li>
+            <li><code>utils.getPrimaryPort(server)</code> - Get primary port</li>
+        </ul>
+
+        <h3>UI Components</h3>
+        <p>Add items to the panel UI:</p>
+        <ul>
+            <li><code>ui.addSidebarItem(item)</code> - Add sidebar navigation item</li>
+            <li><code>ui.addServerMenuItem(item)</code> - Add server menu item</li>
+            <li><code>ui.addServerSection(section)</code> - Add server section</li>
+            <li><code>ui.addServerSectionItem(sectionId, item)</code> - Add item to section</li>
+        </ul>
+
+        <h2>Creating Views</h2>
+        <p>Views use EJS templates. Create a <code>views</code> directory in your addon folder:</p>
+        <div class="code-block">
+            <code>&lt;%- include(components.header, { title: 'My Addon', user: user }) %&gt;</code>
+            <code></code>
+            <code>&lt;div class="container mx-auto px-4 py-8"&gt;</code>
+            <code>  &lt;h1 class="text-2xl font-bold mb-4"&gt;My Addon&lt;/h1&gt;</code>
+            <code>  &lt;p class="text-gray-400"&gt;Content here&lt;/p&gt;</code>
+            <code>&lt;/div&gt;</code>
+            <code></code>
+            <code>&lt;%- include(components.footer) %&gt;</code>
+        </div>
+
+        <h2>Database Access</h2>
+        <p>Use Prisma for database queries. For tables created by migrations, use raw SQL:</p>
+        <div class="code-block">
+            <code>async function getEntries() {</code>
+            <code>  try {</code>
+            <code>    const entries = await prisma.$queryRaw`</code>
+            <code>      SELECT * FROM MyTable ORDER BY created_at DESC</code>
+            <code>    `;</code>
+            <code>    return entries;</code>
+            <code>  } catch (error) {</code>
+            <code>    logger.error('Error fetching entries:', error);</code>
+            <code>    return [];</code>
+            <code>  }</code>
+            <code>}</code>
+        </div>
+
+        <h2>UI Components</h2>
+        <p>Register UI components to extend the panel interface:</p>
+
+        <h3>Sidebar Items</h3>
+        <div class="code-block">
+            <code>api.ui.addSidebarItem({</code>
+            <code>  id: 'my-addon-main',</code>
+            <code>  name: 'My Addon',</code>
+            <code>  icon: '&lt;svg ...&gt;&lt;/svg&gt;',</code>
+            <code>  link: '/my-addon',</code>
+            <code>  section: 'main',</code>
+            <code>  order: 50</code>
+            <code>});</code>
+        </div>
+
+        <h3>Server Menu Items</h3>
+        <div class="code-block">
+            <code>api.ui.addServerMenuItem({</code>
+            <code>  id: 'my-addon-server',</code>
+            <code>  name: 'My Feature',</code>
+            <code>  icon: '&lt;svg ...&gt;&lt;/svg&gt;',</code>
+            <code>  link: '/servers/{uuid}/my-feature',</code>
+            <code>  feature: 'custom',</code>
+            <code>  order: 50</code>
+            <code>});</code>
+        </div>
+
+        <h2>Best Practices</h2>
+        <ul>
+            <li>Namespace your database tables with your addon name</li>
+            <li>Handle errors gracefully with try-catch blocks</li>
+            <li>Clean up resources when addon is disabled</li>
+            <li>Follow the panel's design patterns and UI styles</li>
+            <li>Document your addon's features and usage</li>
+            <li>Test in different environments and configurations</li>
+            <li>Keep functionality focused and simple</li>
+        </ul>
+
+        <h2>Learn More</h2>
+        <p>Additional resources:</p>
+        <ul>
+            <li><a href="quickstart.html" style="color: var(--accent);">Quick Start Guide</a></li>
+            <li><a href="migrations.html" style="color: var(--accent);">Database Migrations</a></li>
+            <li><a href="https://github.com/g-flame-oss/airlink-addons" style="color: var(--accent);">Addon Template</a></li>
+        </ul>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-bottom">
+                <p>Made by Thavanish</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../src/js/main.js"></script>
+</body>
+</html>
