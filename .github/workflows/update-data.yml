@@ -16,7 +16,7 @@ jobs:
           node-version: '20'
 
       - name: Fetch Data
-        run: node update_contributors.js
+        run: node src/js/update_contributors.js
 
       - name: Commit and Push
         run: |
