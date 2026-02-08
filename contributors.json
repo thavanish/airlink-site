@@ -1,27 +1,27 @@
 [
   {
-    "name": "John Doe",
-    "github": "johndoe",
+    "name": "Privt00",
+    "github": "privt00",
     "role": "Lead Developer",
     "about": "Building the core panel architecture and addon system.",
-    "tagline": "Making server management simple",
-    "profile": ""
-  },
-  {
-    "name": "Jane Smith",
-    "github": "janesmith",
-    "role": "UI/UX Designer",
-    "about": "Designing intuitive interfaces for better user experience.",
-    "tagline": "Design is how it works",
-    "profile": ""
-  },
-  {
-    "name": "Alex Johnson",
-    "github": "",
-    "role": "Backend Developer",
-    "about": "Working on database optimization and API development.",
     "tagline": "",
-    "profile": ""
+    "profile": "https://avatars.githubusercontent.com/u/141457761"
+  },
+  {
+    "name": "Achul123",
+    "github": "achul123",
+    "role": "Senior developer",
+    "about": "Setting up the codebase and laid the framework",
+    "tagline": "",
+    "profile": "https://avatars.githubusercontent.com/u/73477238"
+  },
+  {
+    "name": "Thavanish",
+    "github": "thavanish",
+    "role": "Website maintainer/Contributor",
+    "about": "Made this website and installer for airlink and is a frequent contributor",
+    "tagline": "",
+    "profile": "https://avatars.githubusercontent.com/u/256001212"
   }
 ]
 
