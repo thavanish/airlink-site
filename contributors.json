@@ -1,27 +1,20 @@
-[
-  {
+{
+  "privt00": {
     "name": "Privt00",
-    "github": "privt00",
     "role": "Lead Developer",
     "about": "Building the core panel architecture and addon system.",
-    "tagline": "",
-    "profile": "https://avatars.githubusercontent.com/u/141457761"
+    "tagline": ""
   },
-  {
+  "achul123": {
     "name": "Achul123",
-    "github": "achul123",
-    "role": "Senior developer",
-    "about": "Setting up the codebase and laid the framework",
-    "tagline": "",
-    "profile": "https://avatars.githubusercontent.com/u/73477238"
+    "role": "Senior Developer",
+    "about": "Setting up the codebase and laid the framework.",
+    "tagline": ""
   },
-  {
+  "thavanish": {
     "name": "Thavanish",
-    "github": "thavanish",
-    "role": "Website maintainer/Contributor",
-    "about": "Made this website and installer for airlink and is a frequent contributor",
-    "tagline": "",
-    "profile": "https://avatars.githubusercontent.com/u/256001212"
+    "role": "Website Maintainer / Contributor",
+    "about": "Made this website and installer for Airlink and is a frequent contributor.",
+    "tagline": ""
   }
-]
-
+}
