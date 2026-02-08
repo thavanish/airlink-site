@@ -1,4 +1,20 @@
 document.addEventListener('DOMContentLoaded', function() {
+    const themeToggle = document.getElementById('themeToggle');
+    const html = document.documentElement;
+    
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+    html.setAttribute('data-theme', savedTheme);
+    
+    if (themeToggle) {
+        themeToggle.addEventListener('click', function() {
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            
+            html.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+        });
+    }
+    
     const links = document.querySelectorAll('a[href^="#"]');
     
     links.forEach(link => {
@@ -14,7 +30,8 @@ document.addEventListener('DOMContentLoaded', function() {
             if (target) {
                 e.preventDefault();
                 
-                const navHeight = document.querySelector('.navbar').offsetHeight;
+                const navbar = document.querySelector('.navbar');
+                const navHeight = navbar ? navbar.offsetHeight : 0;
                 const targetPosition = target.offsetTop - navHeight;
                 
                 window.scrollTo({
@@ -32,5 +49,20 @@ document.addEventListener('DOMContentLoaded', function() {
         } else {
             navbar.style.boxShadow = 'none';
         }
+    });
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.animationPlayState = 'running';
+            }
+        });
+    }, {
+        threshold: 0.1
+    });
+
+    document.querySelectorAll('.fade-in, .fade-in-up').forEach(el => {
+        el.style.animationPlayState = 'paused';
+        observer.observe(el);
     });
 });
