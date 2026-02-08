@@ -1,0 +1,27 @@
+[
+  {
+    "name": "John Doe",
+    "github": "johndoe",
+    "role": "Lead Developer",
+    "about": "Building the core panel architecture and addon system.",
+    "tagline": "Making server management simple",
+    "profile": ""
+  },
+  {
+    "name": "Jane Smith",
+    "github": "janesmith",
+    "role": "UI/UX Designer",
+    "about": "Designing intuitive interfaces for better user experience.",
+    "tagline": "Design is how it works",
+    "profile": ""
+  },
+  {
+    "name": "Alex Johnson",
+    "github": "",
+    "role": "Backend Developer",
+    "about": "Working on database optimization and API development.",
+    "tagline": "",
+    "profile": ""
+  }
+]
+
