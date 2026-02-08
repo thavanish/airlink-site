@@ -1,62 +1,68 @@
 document.addEventListener('DOMContentLoaded', async function() {
     const contributorsGrid = document.getElementById('contributors-grid');
     
+    // Define your repositories here
+    const repos = [
+        'owner/repo1',
+        'owner/repo2'
+    ];
+
     try {
-        const response = await fetch('contributors.json');
+        // 1. Fetch from GitHub API for all repos
+        const fetchPromises = repos.map(repo => 
+            fetch(`https://api.github.com/repos/${repo}/contributors`)
+                .then(res => res.ok ? res.json() : [])
+        );
+
+        const results = await Promise.all(fetchPromises);
         
-        if (!response.ok) {
-            throw new Error('Failed to load contributors');
-        }
-        
-        const contributors = await response.json();
-        
+        // 2. Flatten and Deduplicate (by GitHub ID)
+        const rawContributors = results.flat();
+        const uniqueContributors = Array.from(
+            new Map(rawContributors.map(c => [c.id, c])).values()
+        );
+
         contributorsGrid.innerHTML = '';
-        
-        contributors.forEach((contributor, index) => {
+
+        if (uniqueContributors.length === 0) {
+            contributorsGrid.innerHTML = '<div class="loading">No contributors found.</div>';
+            return;
+        }
+
+        uniqueContributors.forEach((contributor, index) => {
             const card = document.createElement('div');
             card.className = `contributor-card fade-in-up delay-${Math.min(index % 6 + 1, 6)}`;
             
-            const name = contributor.name || 'Anonymous';
-            const github = contributor.github || '';
-            const role = contributor.role || 'Contributor';
-            const about = contributor.about || '';
-            const tagline = contributor.tagline || '';
-            const profile = contributor.profile || '';
+            // GitHub API properties
+            const name = contributor.login; // Username
+            const githubUrl = contributor.html_url;
+            const avatarUrl = contributor.avatar_url;
+            const contributions = contributor.contributions;
             
-            const initials = name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
-            
-            let avatarHTML = '';
-            if (profile) {
-                avatarHTML = `<div class="contributor-avatar"><img src="${profile}" alt="${name}" onerror="this.parentElement.innerHTML='${initials}'"></div>`;
-            } else {
-                avatarHTML = `<div class="contributor-avatar">${initials}</div>`;
-            }
-            
-            const taglineHTML = tagline ? `<div class="contributor-tagline">"${tagline}"</div>` : '';
-            const aboutHTML = about ? `<p class="contributor-about">${about}</p>` : '';
-            const githubHTML = github ? `<a href="https://github.com/${github}" class="contributor-github" target="_blank" rel="noopener noreferrer">@${github}</a>` : '';
+            // GitHub doesn't provide "taglines" or "roles" via this endpoint, 
+            // so we use the contribution count as a subtitle.
+            const role = contributions > 1 ? `${contributions} Contributions` : 'Contributor';
             
             card.innerHTML = `
-                ${avatarHTML}
+                <div class="contributor-avatar">
+                    <img src="${avatarUrl}" alt="${name}" loading="lazy">
+                </div>
                 <h3 class="contributor-name">${name}</h3>
                 <div class="contributor-role">${role}</div>
-                ${taglineHTML}
-                ${aboutHTML}
-                ${githubHTML}
+                <a href="${githubUrl}" class="contributor-github" target="_blank" rel="noopener noreferrer">@${name}</a>
             `;
             
             contributorsGrid.appendChild(card);
         });
-        
+
+        // 3. Animation Observer
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.style.animationPlayState = 'running';
                 }
             });
-        }, {
-            threshold: 0.1
-        });
+        }, { threshold: 0.1 });
 
         document.querySelectorAll('.contributor-card').forEach(el => {
             el.style.animationPlayState = 'paused';
@@ -65,7 +71,6 @@ document.addEventListener('DOMContentLoaded', async function() {
         
     } catch (error) {
         console.error('Error loading contributors:', error);
-        contributorsGrid.innerHTML = '<div class="loading">Unable to load contributors. Please make sure contributors.json exists.</div>';
+        contributorsGrid.innerHTML = '<div class="loading">Unable to load contributors from GitHub.</div>';
     }
 });
-
