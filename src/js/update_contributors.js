@@ -1,6 +1,6 @@
 const fs = require('fs');
 
-const repos = ['owner/repo1', 'owner/repo2'];
+const repos = ['airlinklabs/panel', 'airlinklabs/daemon'];
 const outputFile = './contributors.json';
 
 async function updateContributors() {
