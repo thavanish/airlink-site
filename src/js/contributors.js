@@ -3,8 +3,8 @@ document.addEventListener('DOMContentLoaded', async function() {
     
     // Define your repositories here
     const repos = [
-        'owner/repo1',
-        'owner/repo2'
+        'airlinklabs/panel',
+        'airlinklabs/daemon'
     ];
 
     try {
