@@ -19,15 +19,15 @@
 
 [data-theme="light"] {
     --bg-primary: #ffffff;
-    --bg-secondary: #f8f9fa;
-    --bg-tertiary: #e9ecef;
-    --text-primary: #1a1a1a;
-    --text-secondary: #495057;
-    --text-tertiary: #6c757d;
-    --accent: #dee2e6;
-    --border: #dee2e6;
-    --code-bg: #f1f3f5;
-    --shadow: rgba(0, 0, 0, 0.1);
+    --bg-secondary: #f5f5f5;
+    --bg-tertiary: #e8e8e8;
+    --text-primary: #0a0a0a;
+    --text-secondary: #3a3a3a;
+    --text-tertiary: #666666;
+    --accent: #d0d0d0;
+    --border: #d0d0d0;
+    --code-bg: #f0f0f0;
+    --shadow: rgba(0, 0, 0, 0.15);
 }
 
 html {
@@ -198,6 +198,7 @@ body::-webkit-scrollbar {
 .btn-primary {
     background: var(--text-primary);
     color: var(--bg-primary);
+    border: 2px solid var(--text-primary);
 }
 
 .btn-primary:hover {
@@ -205,10 +206,32 @@ body::-webkit-scrollbar {
     box-shadow: 0 4px 12px var(--shadow);
 }
 
+[data-theme="light"] .btn-primary {
+    background: #000000;
+    color: #ffffff;
+    border: 2px solid #000000;
+}
+
+[data-theme="light"] .btn-primary:hover {
+    background: #1a1a1a;
+    border-color: #1a1a1a;
+}
+
 .btn-secondary {
     background: var(--accent);
     color: var(--text-primary);
     border: 1px solid var(--border);
+}
+
+[data-theme="light"] .btn-secondary {
+    background: #ffffff;
+    color: #000000;
+    border: 2px solid #d0d0d0;
+}
+
+[data-theme="light"] .btn-secondary:hover {
+    background: #f5f5f5;
+    border-color: #b0b0b0;
 }
 
 .btn-secondary:hover {
@@ -238,7 +261,11 @@ body::-webkit-scrollbar {
     width: 100%;
     height: 100%;
     overflow: hidden;
-    opacity: 0.15;
+    opacity: 0.3;
+}
+
+[data-theme="light"] .screenshot-scroll {
+    opacity: 0.25;
 }
 
 .screenshot-track {
@@ -275,8 +302,20 @@ body::-webkit-scrollbar {
     left: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(180deg, var(--bg-primary) 0%, transparent 40%, transparent 80%, var(--bg-primary) 100%);
+    background: linear-gradient(180deg, 
+        var(--bg-primary) 0%, 
+        rgba(0, 0, 0, 0) 35%, 
+        rgba(0, 0, 0, 0) 75%, 
+        var(--bg-primary) 100%);
     pointer-events: none;
+}
+
+[data-theme="light"] .hero-overlay {
+    background: linear-gradient(180deg, 
+        var(--bg-primary) 0%, 
+        rgba(255, 255, 255, 0) 35%, 
+        rgba(255, 255, 255, 0) 75%, 
+        var(--bg-primary) 100%);
 }
 
 .hero-content {
@@ -357,10 +396,20 @@ body::-webkit-scrollbar {
     transition: all 0.3s ease;
 }
 
+[data-theme="light"] .feature-card {
+    background: #ffffff;
+    border: 2px solid #e0e0e0;
+}
+
 .feature-card:hover {
     transform: translateY(-5px);
     box-shadow: 0 10px 30px var(--shadow);
     border-color: var(--text-primary);
+}
+
+[data-theme="light"] .feature-card:hover {
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+    border-color: #a0a0a0;
 }
 
 .feature-card h3 {
@@ -388,6 +437,11 @@ body::-webkit-scrollbar {
     border: 1px solid var(--border);
 }
 
+[data-theme="light"] .install-method {
+    background: #ffffff;
+    border: 2px solid #e0e0e0;
+}
+
 .install-method h3 {
     color: var(--text-primary);
     margin-bottom: 20px;
@@ -412,6 +466,11 @@ body::-webkit-scrollbar {
     border: 1px solid var(--border);
     overflow-x: auto;
     position: relative;
+}
+
+[data-theme="light"] .code-block {
+    background: #f8f8f8;
+    border: 2px solid #e0e0e0;
 }
 
 .code-block:hover .copy-button {
@@ -476,6 +535,12 @@ body::-webkit-scrollbar {
     border: 2px solid var(--border);
 }
 
+[data-theme="light"] .step-number {
+    background: #000000;
+    color: #ffffff;
+    border: 2px solid #000000;
+}
+
 .step-content {
     flex: 1;
 }
@@ -491,6 +556,11 @@ body::-webkit-scrollbar {
     border-radius: 8px;
     margin-bottom: 40px;
     border: 1px solid var(--border);
+}
+
+[data-theme="light"] .requirements {
+    background: #ffffff;
+    border: 2px solid #e0e0e0;
 }
 
 .requirements h3 {
@@ -520,6 +590,11 @@ body::-webkit-scrollbar {
     padding: 30px;
     border-radius: 8px;
     border: 1px solid var(--border);
+}
+
+[data-theme="light"] .pm2-info {
+    background: #ffffff;
+    border: 2px solid #e0e0e0;
 }
 
 .pm2-info h3 {
@@ -582,9 +657,19 @@ code {
     transition: all 0.3s ease;
 }
 
+[data-theme="light"] .capability {
+    background: #ffffff;
+    border: 2px solid #e0e0e0;
+}
+
 .capability:hover {
     transform: translateY(-3px);
     box-shadow: 0 8px 20px var(--shadow);
+}
+
+[data-theme="light"] .capability:hover {
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    border-color: #a0a0a0;
 }
 
 .capability h4 {
@@ -613,10 +698,20 @@ code {
     transition: all 0.3s ease;
 }
 
+[data-theme="light"] .doc-card {
+    background: #ffffff;
+    border: 2px solid #e0e0e0;
+}
+
 .doc-card:hover {
     border-color: var(--text-primary);
     transform: translateY(-2px);
     box-shadow: 0 8px 20px var(--shadow);
+}
+
+[data-theme="light"] .doc-card:hover {
+    border-color: #a0a0a0;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
 }
 
 .doc-card h3 {
@@ -924,14 +1019,25 @@ code {
     border-radius: 6px;
     cursor: pointer;
     font-size: 20px;
+    line-height: 1;
+}
+
+[data-theme="light"] .mobile-menu-toggle {
+    background: #ffffff;
+    border: 2px solid #d0d0d0;
 }
 
 .mobile-menu-toggle:hover {
     background: var(--accent);
 }
 
+[data-theme="light"] .mobile-menu-toggle:hover {
+    background: #f0f0f0;
+    border-color: #b0b0b0;
+}
+
 @media (max-width: 768px) {
-    .nav-links {
+    .navbar .container > .nav-links {
         position: fixed;
         top: 62px;
         left: 0;
@@ -942,10 +1048,27 @@ code {
         border-bottom: 1px solid var(--border);
         gap: 15px;
         display: none;
+        z-index: 999;
+        box-shadow: 0 4px 12px var(--shadow);
+        flex-wrap: nowrap;
     }
 
     .nav-links.active {
         display: flex;
+    }
+
+    .navbar .container {
+        flex-wrap: nowrap;
+    }
+
+    .nav-actions {
+        flex-wrap: nowrap;
+        gap: 10px;
+    }
+
+    .nav-actions .btn-secondary {
+        padding: 6px 10px;
+        font-size: 14px;
     }
 
     .mobile-menu-toggle {
