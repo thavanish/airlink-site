@@ -4,29 +4,30 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Team - AirLink Panel</title>
-    <link rel="stylesheet" href="./src/css/main.css">
-    <link rel="stylesheet" href="./src/css/responsive.css">
+    <link rel="stylesheet" href="../src/css/main.css">
 </head>
 <body>
     <nav class="navbar">
         <div class="container">
             <div class="nav-brand">
-                <img src="plane.png" alt="AirLink" class="logo">
+                <img src="../plane.png" alt="AirLink" class="logo">
                 <span class="brand-name">AirLink</span>
             </div>
             <ul class="nav-links">
-                <li><a href="index.html">Home</a></li>
-                <li><a href="index.html#about">About</a></li>
-                <li><a href="index.html#features">Features</a></li>
-                <li><a href="index.html#install">Install</a></li>
-                <li><a href="index.html#addons">Addons</a></li>
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="../index.html#about">About</a></li>
+                <li><a href="../index.html#features">Features</a></li>
+                <li><a href="../index.html#install">Install</a></li>
+                <li><a href="../index.html#addons">Addons</a></li>
                 <li><a href="about.html">Team</a></li>
+                <li><a href="../index.html#docs">Docs</a></li>
             </ul>
             <div class="nav-actions">
                 <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
-                    <span class="theme-icon"></span>
+                    <div class="theme-toggle-circle"></div>
                 </button>
                 <a href="https://github.com/AirlinkLabs/panel" class="btn-secondary">GitHub</a>
+                <button class="mobile-menu-toggle" aria-label="Toggle menu">☰</button>
             </div>
         </div>
     </nav>
@@ -43,7 +44,6 @@
             <div id="contributors-grid" class="contributors-grid">
                 <div class="loading">Loading contributors...</div>
             </div>
-            <p class="fade-in-up delay-1">And many more...</p>
         </div>
     </section>
 
@@ -51,14 +51,14 @@
         <div class="container">
             <div class="footer-content">
                 <div class="footer-section">
-                    <img src="plane.png" alt="AirLink" class="footer-logo">
+                    <img src="../plane.png" alt="AirLink" class="footer-logo">
                     <p>Open-source game server management</p>
                 </div>
                 <div class="footer-section">
                     <h4>Resources</h4>
                     <ul>
-                        <li><a href="docs/quickstart.html">Quick Start</a></li>
-                        <li><a href="docs/addon-docs.html">Addon Docs</a></li>
+                        <li><a href="quickstart.html">Quick Start</a></li>
+                        <li><a href="addon-docs.html">Addon Docs</a></li>
                         <li><a href="https://github.com/AirlinkLabs/panel">GitHub</a></li>
                     </ul>
                 </div>
@@ -83,7 +83,7 @@
         </div>
     </footer>
 
-    <script src="src/js/main.js"></script>
-    <script src="src/js/contributors.js"></script>
+    <script src="../src/js/main.js"></script>
+    <script src="../src/js/contributors.js"></script>
 </body>
 </html>

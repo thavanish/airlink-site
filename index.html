@@ -6,7 +6,6 @@
     <title>AirLink Panel - Game Server Management</title>
     <meta name="description" content="Open-source game server management platform with powerful addon support">
     <link rel="stylesheet" href="src/css/main.css">
-    <link rel="stylesheet" href="src/css/responsive.css">
 </head>
 <body>
     <nav class="navbar">
@@ -20,14 +19,15 @@
                 <li><a href="#features">Features</a></li>
                 <li><a href="#install">Install</a></li>
                 <li><a href="#addons">Addons</a></li>
-                <li><a href="about.html">Team</a></li>
+                <li><a href="docs/about.html">Team</a></li>
                 <li><a href="#docs">Docs</a></li>
             </ul>
             <div class="nav-actions">
                 <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
-                    <span class="theme-icon"></span>
+                    <div class="theme-toggle-circle"></div>
                 </button>
                 <a href="https://github.com/AirlinkLabs/panel" class="btn-secondary">GitHub</a>
+                <button class="mobile-menu-toggle" aria-label="Toggle menu">☰</button>
             </div>
         </div>
     </nav>
@@ -35,6 +35,12 @@
     <section class="hero">
         <div class="screenshot-scroll">
             <div class="screenshot-track">
+                <img src="public/assets/screenshot-1.jpg" alt="Dashboard" class="screenshot">
+                <img src="public/assets/screenshot-2.jpg" alt="Server Management" class="screenshot">
+                <img src="public/assets/screenshot-3.jpg" alt="Addon System" class="screenshot">
+                <img src="public/assets/screenshot-4.jpg" alt="User Interface" class="screenshot">
+                <img src="public/assets/screenshot-5.jpg" alt="Dashboard" class="screenshot">
+                <img src="public/assets/screenshot-6.jpg" alt="Server Management" class="screenshot">
                 <img src="public/assets/screenshot-1.jpg" alt="Dashboard" class="screenshot">
                 <img src="public/assets/screenshot-2.jpg" alt="Server Management" class="screenshot">
                 <img src="public/assets/screenshot-3.jpg" alt="Addon System" class="screenshot">
@@ -151,7 +157,7 @@
                                 <div class="code-block">
                                     <code>sudo chown -R www-data:www-data /var/www/panel</code>
                                     <code>sudo chmod -R 755 /var/www/panel</code>
-                                    <code>mv example.env .env </code>
+                                    <code>mv example.env .env</code>
                                 </div>
                             </div>
                         </div>
@@ -263,6 +269,8 @@
                     </div>
                 </div>
             </div>
+        </div>
+    </section>
 
     <section id="docs" class="section">
         <div class="container">
@@ -314,7 +322,7 @@
                     <ul>
                         <li><a href="https://discord.gg/D8YbT9rDqz">Discord</a></li>
                         <li><a href="https://github.com/AirlinkLabs/panel/issues">Issue Tracker</a></li>
-                        <li><a href="about.html">Team</a></li>
+                        <li><a href="docs/about.html">Team</a></li>
                     </ul>
                 </div>
                 <div class="footer-section">
