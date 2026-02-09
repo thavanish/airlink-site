@@ -3,13 +3,13 @@ document.addEventListener('DOMContentLoaded', async function() {
     const repos = ['airlinklabs/panel', 'airlinklabs/daemon'];
 
     try {
-        // 1. Fetch both the GitHub API data AND your custom JSON
+        // 1. Fetch both the GitHub API data AND custom JSON
         const githubPromises = repos.map(repo => 
             fetch(`https://api.github.com/repos/${repo}/contributors`).then(res => res.ok ? res.json() : [])
         );
         
         // Fetch your local custom data
-        const customDataPromise = fetch('contributors.json').then(res => res.ok ? res.json() : {}).catch(() => ({}));
+        const customDataPromise = fetch('../contributors.json').then(res => res.ok ? res.json() : {}).catch(() => ({}));
 
         const [repoResults, customInfo] = await Promise.all([
             Promise.all(githubPromises),
@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', async function() {
             const card = document.createElement('div');
             card.className = `contributor-card fade-in-up delay-${Math.min(index % 6 + 1, 6)}`;
             
-            const name = username; 
+            const name = extra.name || username; 
             const githubUrl = contributor.html_url;
             const avatarUrl = contributor.avatar_url;
             
