@@ -3,58 +3,62 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Addon Development — AirLink Docs</title>
     <link rel="icon" href="https://raw.githubusercontent.com/airlinklabs/panel/refs/heads/main/public/uploads/favicons/favicon.ico" type="image/x-icon">
-    <title>Addon Development - AirLink Panel</title>
     <link rel="stylesheet" href="../../public/main.css">
-    
     <style>
-        .doc-content {
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 100px 20px 60px;
-        }
-        .doc-content h1 {
-            color: var(--white);
-            font-size: 42px;
-            margin-bottom: 20px;
-        }
-        .doc-content h2 {
-            color: var(--white);
-            font-size: 32px;
-            margin-top: 50px;
-            margin-bottom: 20px;
-        }
-        .doc-content h3 {
-            color: var(--white);
-            font-size: 24px;
-            margin-top: 30px;
-            margin-bottom: 15px;
-        }
-        .doc-content p {
-            color: var(--grey-300);
-            margin-bottom: 20px;
-            line-height: 1.8;
-        }
-        .doc-content ul, .doc-content ol {
-            color: var(--grey-300);
-            margin-bottom: 20px;
-            padding-left: 30px;
-        }
-        .doc-content li {
-            margin-bottom: 10px;
-        }
-        .doc-nav {
-            background: var(--grey-800);
-            padding: 20px;
-            border-radius: 8px;
-            margin-bottom: 40px;
-        }
-        .doc-nav a {
-            color: var(--accent);
-            text-decoration: none;
-        }
-        .doc-nav a:hover {
-            text-decoration: underline;
+        .docs-layout { display: grid; grid-template-columns: 240px 1fr; gap: 0; min-height: 100vh; padding-top: 64px; }
+        .docs-sidebar { position: sticky; top: 64px; height: calc(100vh - 64px); overflow-y: auto; border-right: 1px solid var(--border); padding: 32px 0; background: var(--bg-secondary); }
+        .docs-sidebar-title { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-tertiary); padding: 0 24px; margin-bottom: 8px; }
+        .docs-nav-link { display: block; padding: 9px 24px; font-size: 14px; color: var(--text-secondary); text-decoration: none; border-left: 2px solid transparent; transition: all 0.18s ease; }
+        .docs-nav-link:hover { color: var(--text-primary); background: var(--bg-tertiary); }
+        .docs-nav-link.active { color: var(--text-primary); border-left-color: var(--text-primary); background: var(--bg-tertiary); font-weight: 500; }
+        .docs-toc { margin-top: 28px; padding-top: 20px; border-top: 1px solid var(--border); }
+        .docs-toc-link { display: block; padding: 5px 24px 5px 32px; font-size: 12px; color: var(--text-tertiary); text-decoration: none; transition: color 0.18s ease; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .docs-toc-link:hover { color: var(--text-primary); }
+        .docs-toc-link.toc-h3 { padding-left: 44px; }
+        .docs-main { padding: 48px 56px 80px; min-width: 0; }
+        .docs-content { max-width: 720px; }
+        .docs-content h1 { font-size: 36px; color: var(--text-primary); margin-bottom: 8px; font-weight: 700; line-height: 1.2; }
+        .docs-content h2 { font-size: 24px; color: var(--text-primary); margin-top: 48px; margin-bottom: 14px; font-weight: 600; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
+        .docs-content h3 { font-size: 18px; color: var(--text-primary); margin-top: 28px; margin-bottom: 10px; font-weight: 600; }
+        .docs-content h4 { font-size: 15px; color: var(--text-primary); margin-top: 20px; margin-bottom: 8px; font-weight: 600; }
+        .docs-content p { color: var(--text-secondary); margin-bottom: 16px; line-height: 1.8; font-size: 15px; }
+        .docs-content ul, .docs-content ol { color: var(--text-secondary); margin-bottom: 16px; padding-left: 24px; }
+        .docs-content li { margin-bottom: 6px; line-height: 1.7; font-size: 15px; }
+        .docs-content a { color: var(--text-primary); text-decoration: underline; text-underline-offset: 3px; }
+        .docs-content a:hover { opacity: 0.75; }
+        .docs-content strong { color: var(--text-primary); font-weight: 600; }
+        .docs-content blockquote { border-left: 3px solid var(--border); padding: 10px 18px; margin: 20px 0; color: var(--text-tertiary); font-size: 14px; background: var(--bg-tertiary); border-radius: 0 6px 6px 0; }
+        [data-theme="light"] .docs-content blockquote { background: #f0f0f3; }
+        .docs-content pre { background: var(--code-bg); border: 1px solid var(--border); border-radius: 8px; padding: 18px 20px; overflow-x: auto; margin: 16px 0; position: relative; }
+        [data-theme="light"] .docs-content pre { background: #ebebef; border-color: #d1d1d6; }
+        .docs-content pre code { background: none; border: none; padding: 0; font-family: 'Courier New', monospace; font-size: 13px; line-height: 1.8; color: var(--text-secondary); }
+        [data-theme="light"] .docs-content pre code { color: #2a2a2a; }
+        .docs-content code { background: var(--code-bg); padding: 2px 6px; border-radius: 4px; font-family: 'Courier New', monospace; font-size: 13px; color: var(--text-secondary); border: 1px solid var(--border); }
+        [data-theme="light"] .docs-content code { background: #e2e2e8; color: #2a2a2a; border-color: #d1d1d6; }
+        .docs-content pre code { border: none; }
+        .docs-content hr { border: none; border-top: 1px solid var(--border); margin: 32px 0; }
+        .docs-content pre .copy-btn { position: absolute; top: 10px; right: 10px; background: var(--accent); border: 1px solid var(--border); color: var(--text-primary); padding: 4px 10px; border-radius: 4px; font-size: 11px; cursor: pointer; opacity: 0; transition: opacity 0.2s ease; }
+        .docs-content pre:hover .copy-btn { opacity: 1; }
+        .docs-content pre .copy-btn.copied { background: #4caf50; color: #fff; border-color: #4caf50; opacity: 1; }
+        .docs-loading { color: var(--text-tertiary); font-size: 15px; padding: 20px 0; }
+        .docs-error { color: #e57373; font-size: 15px; padding: 20px 0; }
+        .docs-breadcrumb { font-size: 13px; color: var(--text-tertiary); margin-bottom: 24px; display: flex; align-items: center; gap: 8px; }
+        .docs-breadcrumb a { color: var(--text-tertiary); text-decoration: none; }
+        .docs-breadcrumb a:hover { color: var(--text-primary); }
+        .docs-breadcrumb span { opacity: 0.4; }
+        .docs-footer-nav { display: flex; justify-content: space-between; gap: 16px; margin-top: 60px; padding-top: 28px; border-top: 1px solid var(--border); }
+        .docs-footer-nav a { display: flex; flex-direction: column; gap: 4px; padding: 16px 20px; border: 1.5px solid var(--border); border-radius: 8px; text-decoration: none; transition: all 0.2s ease; flex: 1; max-width: 240px; }
+        .docs-footer-nav a:hover { border-color: var(--text-tertiary); }
+        .docs-footer-nav a.next { text-align: right; margin-left: auto; }
+        .docs-footer-nav .nav-label { font-size: 11px; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.08em; }
+        .docs-footer-nav .nav-title { font-size: 14px; color: var(--text-primary); font-weight: 500; }
+        @media (max-width: 768px) {
+            .docs-layout { grid-template-columns: 1fr; }
+            .docs-sidebar { position: static; height: auto; border-right: none; border-bottom: 1px solid var(--border); padding: 20px 0; }
+            .docs-toc { display: none; }
+            .docs-main { padding: 28px 20px 60px; }
         }
     </style>
 </head>
@@ -67,236 +71,160 @@
             </div>
             <ul class="nav-links">
                 <li><a href="../../index.html">Home</a></li>
-                <li><a href="../../index.html#about">About</a></li>
+                <li><a href="../../index.html#features">Features</a></li>
                 <li><a href="../../index.html#install">Install</a></li>
                 <li><a href="../../index.html#addons">Addons</a></li>
                 <li><a href="../../index.html#team">Team</a></li>
-                <li><a href="../../index.html#docs">Docs</a></li>
             </ul>
             <div class="nav-actions">
                 <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
                     <div class="theme-toggle-circle"></div>
                 </button>
                 <a href="https://github.com/AirlinkLabs/panel" class="btn-secondary">GitHub</a>
-                <button class="mobile-menu-toggle" aria-label="Toggle menu">☰</button>
+                <button class="mobile-menu-toggle" aria-label="Toggle menu" aria-expanded="false"></button>
             </div>
         </div>
     </nav>
 
-    <div class="doc-content">
-        <div class="doc-nav">
-            <a href="../../index.html">← Back to Home</a>
-        </div>
-
-        <h1>AirLink Panel Addon System</h1>
-        <p>This is the complete guide to developing addons for AirLink Panel. Addons let you extend the panel's functionality without modifying core code.</p>
-
-        <h2>Introduction</h2>
-        <p>Addons are loaded dynamically when the panel starts. They can add new features, modify existing ones, and integrate with external services. Each addon runs in its own context with access to the router, database, and various utilities.</p>
-
-        <h2>Addon Structure</h2>
-        <p>A typical addon has this directory layout:</p>
-        <div class="code-block">
-            <code>my-addon/</code>
-            <code>├── package.json       # Metadata and configuration</code>
-            <code>├── index.ts           # Main entry point</code>
-            <code>├── views/             # EJS templates</code>
-            <code>│   └── main.ejs</code>
-            <code>├── public/            # Static assets (optional)</code>
-            <code>│   ├── css/</code>
-            <code>│   ├── js/</code>
-            <code>│   └── img/</code>
-            <code>└── lib/               # Additional modules (optional)</code>
-            <code>    └── helpers.ts</code>
-        </div>
-
-        <h2>Package.json Configuration</h2>
-        <p>The <code>package.json</code> file defines your addon's metadata:</p>
-        <div class="code-block">
-            <code>{</code>
-            <code>  "name": "My Addon",</code>
-            <code>  "version": "1.0.0",</code>
-            <code>  "description": "What this addon does",</code>
-            <code>  "author": "Your Name",</code>
-            <code>  "main": "index.ts",</code>
-            <code>  "router": "/my-addon",</code>
-            <code>  "enabled": true,</code>
-            <code>  "migrations": [</code>
-            <code>    {</code>
-            <code>      "name": "create_my_table",</code>
-            <code>      "sql": "CREATE TABLE IF NOT EXISTS MyTable ..."</code>
-            <code>    }</code>
-            <code>  ]</code>
-            <code>}</code>
-        </div>
-
-        <h3>Required Fields</h3>
-        <ul>
-            <li><code>name</code> - Display name of your addon</li>
-            <li><code>version</code> - Version in semver format</li>
-        </ul>
-
-        <h3>Optional Fields</h3>
-        <ul>
-            <li><code>description</code> - Brief description</li>
-            <li><code>author</code> - Your name or organization</li>
-            <li><code>main</code> - Entry point file (default: index.ts)</li>
-            <li><code>router</code> - Base URL path (default: /)</li>
-            <li><code>enabled</code> - Enable by default (default: true)</li>
-            <li><code>migrations</code> - Database migrations array</li>
-        </ul>
-
-        <h2>Addon Entry Point</h2>
-        <p>Your entry point file exports a function that receives a router and API object:</p>
-        <div class="code-block">
-            <code>import { Router } from 'express';</code>
-            <code>import path from 'path';</code>
-            <code></code>
-            <code>export default function(router: Router, api: any) {</code>
-            <code>  const { logger, prisma } = api;</code>
-            <code></code>
-            <code>  logger.info('Addon initialized');</code>
-            <code></code>
-            <code>  router.get('/', async (req, res) => {</code>
-            <code>    res.render(path.join(api.viewsPath, 'view.ejs'), {</code>
-            <code>      user: req.session?.user,</code>
-            <code>      req,</code>
-            <code>      settings: await prisma.settings.findUnique({ where: { id: 1 } }),</code>
-            <code>      components: {</code>
-            <code>        header: api.getComponentPath('views/components/header'),</code>
-            <code>        template: api.getComponentPath('views/components/template'),</code>
-            <code>        footer: api.getComponentPath('views/components/footer')</code>
-            <code>      }</code>
-            <code>    });</code>
-            <code>  });</code>
-            <code>}</code>
-        </div>
-
-        <h2>The Addon API</h2>
-        <p>The API object provides access to panel features:</p>
-
-        <h3>Core Utilities</h3>
-        <ul>
-            <li><code>registerRoute(path, router)</code> - Register additional routes</li>
-            <li><code>logger</code> - Logging methods (info, warn, error, debug)</li>
-            <li><code>prisma</code> - Prisma ORM client for database access</li>
-        </ul>
-
-        <h3>Path Utilities</h3>
-        <ul>
-            <li><code>addonPath</code> - Path to the addon directory</li>
-            <li><code>viewsPath</code> - Path to the addon's views directory</li>
-            <li><code>getComponentPath(path)</code> - Get path to a panel component</li>
-        </ul>
-
-        <h3>View Utilities</h3>
-        <ul>
-            <li><code>renderView(viewName, data)</code> - Render a view with data</li>
-        </ul>
-
-        <h3>User and Server Utilities</h3>
-        <ul>
-            <li><code>utils.isUserAdmin(userId)</code> - Check if user is admin</li>
-            <li><code>utils.checkServerAccess(userId, serverId)</code> - Verify server access</li>
-            <li><code>utils.getServerById(serverId)</code> - Get server by ID</li>
-            <li><code>utils.getServerByUUID(uuid)</code> - Get server by UUID</li>
-            <li><code>utils.getServerPorts(server)</code> - Get server ports</li>
-            <li><code>utils.getPrimaryPort(server)</code> - Get primary port</li>
-        </ul>
-
-        <h3>UI Components</h3>
-        <p>Add items to the panel UI:</p>
-        <ul>
-            <li><code>ui.addSidebarItem(item)</code> - Add sidebar navigation item</li>
-            <li><code>ui.addServerMenuItem(item)</code> - Add server menu item</li>
-            <li><code>ui.addServerSection(section)</code> - Add server section</li>
-            <li><code>ui.addServerSectionItem(sectionId, item)</code> - Add item to section</li>
-        </ul>
-
-        <h2>Creating Views</h2>
-        <p>Views use EJS templates. Create a <code>views</code> directory in your addon folder:</p>
-        <div class="code-block">
-            <code>&lt;%- include(components.header, { title: 'My Addon', user: user }) %&gt;</code>
-            <code></code>
-            <code>&lt;div class="container mx-auto px-4 py-8"&gt;</code>
-            <code>  &lt;h1 class="text-2xl font-bold mb-4"&gt;My Addon&lt;/h1&gt;</code>
-            <code>  &lt;p class="text-gray-400"&gt;Content here&lt;/p&gt;</code>
-            <code>&lt;/div&gt;</code>
-            <code></code>
-            <code>&lt;%- include(components.footer) %&gt;</code>
-        </div>
-
-        <h2>Database Access</h2>
-        <p>Use Prisma for database queries. For tables created by migrations, use raw SQL:</p>
-        <div class="code-block">
-            <code>async function getEntries() {</code>
-            <code>  try {</code>
-            <code>    const entries = await prisma.$queryRaw`</code>
-            <code>      SELECT * FROM MyTable ORDER BY created_at DESC</code>
-            <code>    `;</code>
-            <code>    return entries;</code>
-            <code>  } catch (error) {</code>
-            <code>    logger.error('Error fetching entries:', error);</code>
-            <code>    return [];</code>
-            <code>  }</code>
-            <code>}</code>
-        </div>
-
-        <h2>UI Components</h2>
-        <p>Register UI components to extend the panel interface:</p>
-
-        <h3>Sidebar Items</h3>
-        <div class="code-block">
-            <code>api.ui.addSidebarItem({</code>
-            <code>  id: 'my-addon-main',</code>
-            <code>  name: 'My Addon',</code>
-            <code>  icon: '&lt;svg ...&gt;&lt;/svg&gt;',</code>
-            <code>  link: '/my-addon',</code>
-            <code>  section: 'main',</code>
-            <code>  order: 50</code>
-            <code>});</code>
-        </div>
-
-        <h3>Server Menu Items</h3>
-        <div class="code-block">
-            <code>api.ui.addServerMenuItem({</code>
-            <code>  id: 'my-addon-server',</code>
-            <code>  name: 'My Feature',</code>
-            <code>  icon: '&lt;svg ...&gt;&lt;/svg&gt;',</code>
-            <code>  link: '/servers/{uuid}/my-feature',</code>
-            <code>  feature: 'custom',</code>
-            <code>  order: 50</code>
-            <code>});</code>
-        </div>
-
-        <h2>Best Practices</h2>
-        <ul>
-            <li>Namespace your database tables with your addon name</li>
-            <li>Handle errors gracefully with try-catch blocks</li>
-            <li>Clean up resources when addon is disabled</li>
-            <li>Follow the panel's design patterns and UI styles</li>
-            <li>Document your addon's features and usage</li>
-            <li>Test in different environments and configurations</li>
-            <li>Keep functionality focused and simple</li>
-        </ul>
-
-        <h2>Learn More</h2>
-        <p>Additional resources:</p>
-        <ul>
-            <li><a href="../quickstart/index.html" style="color: var(--accent);">Quick Start Guide</a></li>
-            <li><a href="../migrations/index.html" style="color: var(--accent);">Database Migrations</a></li>
-            <li><a href="https://github.com/g-flame-oss/airlink-addons" style="color: var(--accent);">Addon Template</a></li>
-        </ul>
+    <div class="docs-layout">
+        <aside class="docs-sidebar">
+            <div class="docs-sidebar-title">Documentation</div>
+            <nav id="docs-nav"></nav>
+            <div class="docs-toc" id="docs-toc" style="display:none">
+                <div class="docs-sidebar-title" style="margin-top:0">On this page</div>
+                <nav id="toc-links"></nav>
+            </div>
+        </aside>
+        <main class="docs-main">
+            <div class="docs-breadcrumb">
+                <a href="../../index.html">Home</a>
+                <span>/</span>
+                <a href="../">Docs</a>
+                <span>/</span>
+                <span id="breadcrumb-title">Addon Development</span>
+            </div>
+            <div class="docs-content" id="docs-content">
+                <p class="docs-loading">Loading...</p>
+            </div>
+            <nav class="docs-footer-nav" id="docs-footer-nav"></nav>
+        </main>
     </div>
 
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-bottom">
-                <p>Made by Thavanish</p>
-            </div>
-        </div>
-    </footer>
+    <script>
+    (function() {
+        const SLUG = 'addons';
+        const ROOT = '../../';
 
-    <script src="../../public/js/main.js"></script>
+        const html = document.documentElement;
+        html.setAttribute('data-theme', localStorage.getItem('theme') || 'dark');
+        document.getElementById('themeToggle').addEventListener('click', function() {
+            const next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+            html.setAttribute('data-theme', next);
+            localStorage.setItem('theme', next);
+        });
+
+        const toggle = document.querySelector('.mobile-menu-toggle');
+        const navLinks = document.querySelector('.nav-links');
+        if (toggle) {
+            toggle.innerHTML = '';
+            for (let i = 0; i < 3; i++) { const b = document.createElement('span'); b.className = 'bar'; toggle.appendChild(b); }
+            toggle.addEventListener('click', function(e) { e.stopPropagation(); const o = navLinks.classList.toggle('active'); toggle.classList.toggle('active', o); });
+            document.addEventListener('click', function(e) { if (!toggle.contains(e.target) && !navLinks.contains(e.target)) { navLinks.classList.remove('active'); toggle.classList.remove('active'); } });
+        }
+
+        function parseMarkdown(md) {
+            let html = md;
+            const blocks = [];
+            html = html.replace(/```[\w]*\n([\s\S]*?)```/g, function(_, code) {
+                const esc = code.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+                blocks.push(`<pre><code>${esc}</code><button class="copy-btn">Copy</button></pre>`);
+                return `%%CB_${blocks.length - 1}%%`;
+            });
+            html = html.replace(/`([^`]+)`/g, '<code>$1</code>');
+            html = html.replace(/^#### (.+)$/gm, '<h4>$1</h4>');
+            html = html.replace(/^### (.+)$/gm, '<h3>$1</h3>');
+            html = html.replace(/^## (.+)$/gm, '<h2>$1</h2>');
+            html = html.replace(/^# (.+)$/gm, '<h1>$1</h1>');
+            html = html.replace(/^> (.+)$/gm, '<blockquote>$1</blockquote>');
+            html = html.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+            html = html.replace(/\*(.+?)\*/g, '<em>$1</em>');
+            html = html.replace(/^---$/gm, '<hr>');
+            html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+            html = html.replace(/((?:^- .+\n?)+)/gm, b => `<ul>${b.trim().split('\n').map(l=>`<li>${l.replace(/^- /, '')}</li>`).join('')}</ul>`);
+            html = html.replace(/((?:^\d+\. .+\n?)+)/gm, b => `<ol>${b.trim().split('\n').map(l=>`<li>${l.replace(/^\d+\. /, '')}</li>`).join('')}</ol>`);
+            html = html.replace(/^(?!<[a-z%])(.+)$/gm, l => l.startsWith('%%CB') ? l : `<p>${l}</p>`);
+            html = html.replace(/%%CB_(\d+)%%/g, (_, i) => blocks[i]);
+            return html;
+        }
+
+        function buildTOC(el) {
+            const hs = [...el.querySelectorAll('h2,h3')];
+            if (hs.length < 2) return;
+            const toc = document.getElementById('toc-links');
+            hs.forEach((h, i) => {
+                h.id = 'h-' + i;
+                const a = document.createElement('a');
+                a.href = '#h-' + i;
+                a.className = 'docs-toc-link' + (h.tagName === 'H3' ? ' toc-h3' : '');
+                a.textContent = h.textContent;
+                a.addEventListener('click', e => {
+                    e.preventDefault();
+                    const top = h.getBoundingClientRect().top + window.scrollY - 80;
+                    window.scrollTo({ top, behavior: 'smooth' });
+                });
+                toc.appendChild(a);
+            });
+            document.getElementById('docs-toc').style.display = 'block';
+        }
+
+        async function init() {
+            const contentEl = document.getElementById('docs-content');
+            const navEl = document.getElementById('docs-nav');
+            let manifest = [];
+            try { manifest = await fetch(ROOT + 'docs/manifest.json').then(r => r.json()); } catch {}
+
+            navEl.innerHTML = '';
+            manifest.forEach(doc => {
+                const a = document.createElement('a');
+                a.href = ROOT + 'docs/' + doc.slug + '/';
+                a.className = 'docs-nav-link' + (doc.slug === SLUG ? ' active' : '');
+                a.textContent = doc.title;
+                navEl.appendChild(a);
+            });
+
+            const current = manifest.find(d => d.slug === SLUG);
+            if (current) document.title = current.title + ' — AirLink Docs';
+
+            try {
+                const md = await fetch('docs.md').then(r => { if (!r.ok) throw 0; return r.text(); });
+                contentEl.innerHTML = parseMarkdown(md);
+                buildTOC(contentEl);
+                contentEl.querySelectorAll('pre .copy-btn').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        navigator.clipboard.writeText(btn.previousElementSibling.textContent).then(() => {
+                            btn.textContent = 'Copied!'; btn.classList.add('copied');
+                            setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+                        });
+                    });
+                });
+            } catch {
+                contentEl.innerHTML = '<p class="docs-error">Could not load docs.md for this page.</p>';
+            }
+
+            const idx = manifest.findIndex(d => d.slug === SLUG);
+            const nav = document.getElementById('docs-footer-nav');
+            if (idx > 0) {
+                const p = manifest[idx - 1];
+                nav.innerHTML += `<a href="${ROOT}docs/${p.slug}/"><span class="nav-label">← Previous</span><span class="nav-title">${p.title}</span></a>`;
+            }
+            if (idx < manifest.length - 1) {
+                const n = manifest[idx + 1];
+                nav.innerHTML += `<a href="${ROOT}docs/${n.slug}/" class="next"><span class="nav-label">Next →</span><span class="nav-title">${n.title}</span></a>`;
+            }
+        }
+
+        init();
+    })();
+    </script>
 </body>
 </html>
