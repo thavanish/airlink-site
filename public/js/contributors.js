@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', async function() {
         );
         
         // Fetch your local custom data
-        const customDataPromise = fetch('../contributors.json').then(res => res.ok ? res.json() : {}).catch(() => ({}));
+        const customDataPromise = fetch('/public/contributors.json').then(res => res.ok ? res.json() : {}).catch(() => ({}));
 
         const [repoResults, customInfo] = await Promise.all([
             Promise.all(githubPromises),
