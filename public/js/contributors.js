@@ -5,29 +5,56 @@ document.addEventListener('DOMContentLoaded', async function() {
     try {
         // 1. Fetch both the GitHub API data AND custom JSON
         const githubPromises = repos.map(repo => 
-            fetch(`https://api.github.com/repos/${repo}/contributors`).then(res => res.ok ? res.json() : [])
+            fetch(`https://api.github.com/repos/${repo}/contributors`)
+                .then(res => {
+                    if (!res.ok) {
+                        console.warn(`Failed to fetch contributors for ${repo}: ${res.status}`);
+                        return [];
+                    }
+                    return res.json();
+                })
+                .catch(err => {
+                    console.warn(`Network error fetching ${repo}:`, err);
+                    return [];
+                })
         );
         
-        // Fetch your local custom data
-        const customDataPromise = fetch('/public/contributors.json').then(res => res.ok ? res.json() : {}).catch(() => ({}));
+        // FIX: corrected path from '../contributors.json' to './public/contributors.json'
+        const customDataPromise = fetch('./public/contributors.json')
+            .then(res => {
+                if (!res.ok) {
+                    console.warn('Failed to load contributors.json:', res.status);
+                    return {};
+                }
+                return res.json();
+            })
+            .catch(err => {
+                console.warn('Error loading contributors.json:', err);
+                return {};
+            });
 
         const [repoResults, customInfo] = await Promise.all([
             Promise.all(githubPromises),
             customDataPromise
         ]);
 
-        // 2. Flatten and Deduplicate GitHub users
+        // 2. Flatten and deduplicate GitHub users
         const rawContributors = repoResults.flat();
         const uniqueContributors = Array.from(
             new Map(rawContributors.map(c => [c.id, c])).values()
         );
+
+        if (uniqueContributors.length === 0) {
+            contributorsGrid.innerHTML = '<div class="loading">No contributors found.</div>';
+            return;
+        }
 
         contributorsGrid.innerHTML = '';
 
         uniqueContributors.forEach((contributor, index) => {
             const username = contributor.login;
             
-            // 3. Merge: Use GitHub data by default, but override if customInfo exists
+            // 3. Merge: use GitHub data by default, override if customInfo exists
             const extra = customInfo[username] || {};
             
             const card = document.createElement('div');
@@ -46,7 +73,7 @@ document.addEventListener('DOMContentLoaded', async function() {
 
             card.innerHTML = `
                 <div class="contributor-avatar">
-                    <img src="${avatarUrl}" alt="${name}" onerror="this.parentElement.innerHTML='${initials}'" loading="lazy">
+                    <img src="${avatarUrl}" alt="${name}" onerror="this.parentElement.innerText='${initials}'" loading="lazy">
                 </div>
                 <h3 class="contributor-name">${name}</h3>
                 <div class="contributor-role">${role}</div>
@@ -58,7 +85,7 @@ document.addEventListener('DOMContentLoaded', async function() {
             contributorsGrid.appendChild(card);
         });
 
-        // 4. Trigger Animations
+        // 4. Trigger animations
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) entry.target.style.animationPlayState = 'running';
