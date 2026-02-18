@@ -84,8 +84,9 @@ document.addEventListener('DOMContentLoaded', function() {
         button.setAttribute('aria-label', 'Copy code to clipboard');
         
         button.addEventListener('click', function() {
-            const code = block.querySelector('code');
-            const text = code.textContent;
+            // FIX: collect all <code> lines and join them, instead of only grabbing the first
+            const lines = [...block.querySelectorAll('code')].map(c => c.textContent);
+            const text = lines.join('\n');
             
             navigator.clipboard.writeText(text).then(() => {
                 button.textContent = 'Copied!';
