@@ -5,64 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Addon Development — AirLink Docs</title>
     <link rel="icon" href="https://raw.githubusercontent.com/airlinklabs/panel/refs/heads/main/public/uploads/favicons/favicon.ico" type="image/x-icon">
-    <link rel="stylesheet" href="../../public/main.css">
-    <style>
-        .docs-layout { display: grid; grid-template-columns: 240px 1fr; gap: 0; min-height: 100vh; padding-top: 64px; }
-        .docs-sidebar { position: sticky; top: 64px; height: calc(100vh - 64px); overflow-y: auto; border-right: 1px solid var(--border); padding: 32px 0; background: var(--bg-secondary); }
-        .docs-sidebar-title { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-tertiary); padding: 0 24px; margin-bottom: 8px; }
-        .docs-nav-link { display: block; padding: 9px 24px; font-size: 14px; color: var(--text-secondary); text-decoration: none; border-left: 2px solid transparent; transition: all 0.18s ease; }
-        .docs-nav-link:hover { color: var(--text-primary); background: var(--bg-tertiary); }
-        .docs-nav-link.active { color: var(--text-primary); border-left-color: var(--text-primary); background: var(--bg-tertiary); font-weight: 500; }
-        .docs-toc { margin-top: 28px; padding-top: 20px; border-top: 1px solid var(--border); }
-        .docs-toc-link { display: block; padding: 5px 24px 5px 32px; font-size: 12px; color: var(--text-tertiary); text-decoration: none; transition: color 0.18s ease; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .docs-toc-link:hover { color: var(--text-primary); }
-        .docs-toc-link.toc-h3 { padding-left: 44px; }
-        .docs-main { padding: 48px 56px 80px; min-width: 0; }
-        .docs-content { max-width: 720px; }
-        .docs-content h1 { font-size: 36px; color: var(--text-primary); margin-bottom: 8px; font-weight: 700; line-height: 1.2; }
-        .docs-content h2 { font-size: 24px; color: var(--text-primary); margin-top: 48px; margin-bottom: 14px; font-weight: 600; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
-        .docs-content h3 { font-size: 18px; color: var(--text-primary); margin-top: 28px; margin-bottom: 10px; font-weight: 600; }
-        .docs-content h4 { font-size: 15px; color: var(--text-primary); margin-top: 20px; margin-bottom: 8px; font-weight: 600; }
-        .docs-content p { color: var(--text-secondary); margin-bottom: 16px; line-height: 1.8; font-size: 15px; }
-        .docs-content ul, .docs-content ol { color: var(--text-secondary); margin-bottom: 16px; padding-left: 24px; }
-        .docs-content li { margin-bottom: 6px; line-height: 1.7; font-size: 15px; }
-        .docs-content a { color: var(--text-primary); text-decoration: underline; text-underline-offset: 3px; }
-        .docs-content a:hover { opacity: 0.75; }
-        .docs-content strong { color: var(--text-primary); font-weight: 600; }
-        .docs-content blockquote { border-left: 3px solid var(--border); padding: 10px 18px; margin: 20px 0; color: var(--text-tertiary); font-size: 14px; background: var(--bg-tertiary); border-radius: 0 6px 6px 0; }
-        [data-theme="light"] .docs-content blockquote { background: #f0f0f3; }
-        .docs-content pre { background: var(--code-bg); border: 1px solid var(--border); border-radius: 8px; padding: 18px 20px; overflow-x: auto; margin: 16px 0; position: relative; }
-        [data-theme="light"] .docs-content pre { background: #ebebef; border-color: #d1d1d6; }
-        .docs-content pre code { background: none; border: none; padding: 0; font-family: 'Courier New', monospace; font-size: 13px; line-height: 1.8; color: var(--text-secondary); }
-        [data-theme="light"] .docs-content pre code { color: #2a2a2a; }
-        .docs-content code { background: var(--code-bg); padding: 2px 6px; border-radius: 4px; font-family: 'Courier New', monospace; font-size: 13px; color: var(--text-secondary); border: 1px solid var(--border); }
-        [data-theme="light"] .docs-content code { background: #e2e2e8; color: #2a2a2a; border-color: #d1d1d6; }
-        .docs-content pre code { border: none; }
-        .docs-content hr { border: none; border-top: 1px solid var(--border); margin: 32px 0; }
-        .docs-content pre .copy-btn { position: absolute; top: 10px; right: 10px; background: var(--accent); border: 1px solid var(--border); color: var(--text-primary); padding: 4px 10px; border-radius: 4px; font-size: 11px; cursor: pointer; opacity: 0; transition: opacity 0.2s ease; }
-        .docs-content pre:hover .copy-btn { opacity: 1; }
-        .docs-content pre .copy-btn.copied { background: #4caf50; color: #fff; border-color: #4caf50; opacity: 1; }
-        .docs-loading { color: var(--text-tertiary); font-size: 15px; padding: 20px 0; }
-        .docs-error { color: #e57373; font-size: 15px; padding: 20px 0; }
-        .docs-breadcrumb { font-size: 13px; color: var(--text-tertiary); margin-bottom: 24px; display: flex; align-items: center; gap: 8px; }
-        .docs-breadcrumb a { color: var(--text-tertiary); text-decoration: none; }
-        .docs-breadcrumb a:hover { color: var(--text-primary); }
-        .docs-breadcrumb span { opacity: 0.4; }
-        .docs-footer-nav { display: flex; justify-content: space-between; gap: 16px; margin-top: 60px; padding-top: 28px; border-top: 1px solid var(--border); }
-        .docs-footer-nav a { display: flex; flex-direction: column; gap: 4px; padding: 16px 20px; border: 1.5px solid var(--border); border-radius: 8px; text-decoration: none; transition: all 0.2s ease; flex: 1; max-width: 240px; }
-        .docs-footer-nav a:hover { border-color: var(--text-tertiary); }
-        .docs-footer-nav a.next { text-align: right; margin-left: auto; }
-        .docs-footer-nav .nav-label { font-size: 11px; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.08em; }
-        .docs-footer-nav .nav-title { font-size: 14px; color: var(--text-primary); font-weight: 500; }
-        @media (max-width: 768px) {
-            .docs-layout { grid-template-columns: 1fr; }
-            .docs-sidebar { position: static; height: auto; border-right: none; border-bottom: 1px solid var(--border); padding: 20px 0; }
-            .docs-toc { display: none; }
-            .docs-main { padding: 28px 20px 60px; }
-        }
-    </style>
+    <link rel="stylesheet" href="../../public/css/base.css">
+    <link rel="stylesheet" href="../../public/css/components.css">
+    <link rel="stylesheet" href="../../public/css/animations.css">
+    <link rel="stylesheet" href="../../public/css/docs.css">
 </head>
 <body>
+
     <nav class="navbar">
         <div class="container">
             <div class="nav-brand">
@@ -110,121 +59,10 @@
         </main>
     </div>
 
-    <script>
-    (function() {
-        const SLUG = 'addons';
-        const ROOT = '../../';
+    <script src="../../public/js/theme.js"></script>
+    <script src="../../public/js/nav.js"></script>
+    <script src="../../public/js/docs.js"></script>
+    <script>initDocPage('addons', '../../');</script>
 
-        const html = document.documentElement;
-        html.setAttribute('data-theme', localStorage.getItem('theme') || 'dark');
-        document.getElementById('themeToggle').addEventListener('click', function() {
-            const next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-            html.setAttribute('data-theme', next);
-            localStorage.setItem('theme', next);
-        });
-
-        const toggle = document.querySelector('.mobile-menu-toggle');
-        const navLinks = document.querySelector('.nav-links');
-        if (toggle) {
-            toggle.innerHTML = '';
-            for (let i = 0; i < 3; i++) { const b = document.createElement('span'); b.className = 'bar'; toggle.appendChild(b); }
-            toggle.addEventListener('click', function(e) { e.stopPropagation(); const o = navLinks.classList.toggle('active'); toggle.classList.toggle('active', o); });
-            document.addEventListener('click', function(e) { if (!toggle.contains(e.target) && !navLinks.contains(e.target)) { navLinks.classList.remove('active'); toggle.classList.remove('active'); } });
-        }
-
-        function parseMarkdown(md) {
-            let html = md;
-            const blocks = [];
-            html = html.replace(/```[\w]*\n([\s\S]*?)```/g, function(_, code) {
-                const esc = code.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-                blocks.push(`<pre><code>${esc}</code><button class="copy-btn">Copy</button></pre>`);
-                return `%%CB_${blocks.length - 1}%%`;
-            });
-            html = html.replace(/`([^`]+)`/g, '<code>$1</code>');
-            html = html.replace(/^#### (.+)$/gm, '<h4>$1</h4>');
-            html = html.replace(/^### (.+)$/gm, '<h3>$1</h3>');
-            html = html.replace(/^## (.+)$/gm, '<h2>$1</h2>');
-            html = html.replace(/^# (.+)$/gm, '<h1>$1</h1>');
-            html = html.replace(/^> (.+)$/gm, '<blockquote>$1</blockquote>');
-            html = html.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
-            html = html.replace(/\*(.+?)\*/g, '<em>$1</em>');
-            html = html.replace(/^---$/gm, '<hr>');
-            html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
-            html = html.replace(/((?:^- .+\n?)+)/gm, b => `<ul>${b.trim().split('\n').map(l=>`<li>${l.replace(/^- /, '')}</li>`).join('')}</ul>`);
-            html = html.replace(/((?:^\d+\. .+\n?)+)/gm, b => `<ol>${b.trim().split('\n').map(l=>`<li>${l.replace(/^\d+\. /, '')}</li>`).join('')}</ol>`);
-            html = html.replace(/^(?!<[a-z%])(.+)$/gm, l => l.startsWith('%%CB') ? l : `<p>${l}</p>`);
-            html = html.replace(/%%CB_(\d+)%%/g, (_, i) => blocks[i]);
-            return html;
-        }
-
-        function buildTOC(el) {
-            const hs = [...el.querySelectorAll('h2,h3')];
-            if (hs.length < 2) return;
-            const toc = document.getElementById('toc-links');
-            hs.forEach((h, i) => {
-                h.id = 'h-' + i;
-                const a = document.createElement('a');
-                a.href = '#h-' + i;
-                a.className = 'docs-toc-link' + (h.tagName === 'H3' ? ' toc-h3' : '');
-                a.textContent = h.textContent;
-                a.addEventListener('click', e => {
-                    e.preventDefault();
-                    const top = h.getBoundingClientRect().top + window.scrollY - 80;
-                    window.scrollTo({ top, behavior: 'smooth' });
-                });
-                toc.appendChild(a);
-            });
-            document.getElementById('docs-toc').style.display = 'block';
-        }
-
-        async function init() {
-            const contentEl = document.getElementById('docs-content');
-            const navEl = document.getElementById('docs-nav');
-            let manifest = [];
-            try { manifest = await fetch(ROOT + 'docs/manifest.json').then(r => r.json()); } catch {}
-
-            navEl.innerHTML = '';
-            manifest.forEach(doc => {
-                const a = document.createElement('a');
-                a.href = ROOT + 'docs/' + doc.slug + '/';
-                a.className = 'docs-nav-link' + (doc.slug === SLUG ? ' active' : '');
-                a.textContent = doc.title;
-                navEl.appendChild(a);
-            });
-
-            const current = manifest.find(d => d.slug === SLUG);
-            if (current) document.title = current.title + ' — AirLink Docs';
-
-            try {
-                const md = await fetch('docs.md').then(r => { if (!r.ok) throw 0; return r.text(); });
-                contentEl.innerHTML = parseMarkdown(md);
-                buildTOC(contentEl);
-                contentEl.querySelectorAll('pre .copy-btn').forEach(btn => {
-                    btn.addEventListener('click', () => {
-                        navigator.clipboard.writeText(btn.previousElementSibling.textContent).then(() => {
-                            btn.textContent = 'Copied!'; btn.classList.add('copied');
-                            setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
-                        });
-                    });
-                });
-            } catch {
-                contentEl.innerHTML = '<p class="docs-error">Could not load docs.md for this page.</p>';
-            }
-
-            const idx = manifest.findIndex(d => d.slug === SLUG);
-            const nav = document.getElementById('docs-footer-nav');
-            if (idx > 0) {
-                const p = manifest[idx - 1];
-                nav.innerHTML += `<a href="${ROOT}docs/${p.slug}/"><span class="nav-label">← Previous</span><span class="nav-title">${p.title}</span></a>`;
-            }
-            if (idx < manifest.length - 1) {
-                const n = manifest[idx + 1];
-                nav.innerHTML += `<a href="${ROOT}docs/${n.slug}/" class="next"><span class="nav-label">Next →</span><span class="nav-title">${n.title}</span></a>`;
-            }
-        }
-
-        init();
-    })();
-    </script>
 </body>
 </html>

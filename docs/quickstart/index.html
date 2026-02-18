@@ -3,11 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Addon Quick Start - AirLink Panel</title>
+    <title>Quick Start — AirLink Docs</title>
     <link rel="icon" href="https://raw.githubusercontent.com/airlinklabs/panel/refs/heads/main/public/uploads/favicons/favicon.ico" type="image/x-icon">
-    <link rel="stylesheet" href="../../public/main.css">
+    <link rel="stylesheet" href="../../public/css/base.css">
+    <link rel="stylesheet" href="../../public/css/components.css">
+    <link rel="stylesheet" href="../../public/css/animations.css">
+    <link rel="stylesheet" href="../../public/css/docs.css">
 </head>
 <body>
+
     <nav class="navbar">
         <div class="container">
             <div class="nav-brand">
@@ -16,181 +20,49 @@
             </div>
             <ul class="nav-links">
                 <li><a href="../../index.html">Home</a></li>
-                <li><a href="../../index.html#about">About</a></li>
                 <li><a href="../../index.html#features">Features</a></li>
                 <li><a href="../../index.html#install">Install</a></li>
                 <li><a href="../../index.html#addons">Addons</a></li>
                 <li><a href="../../index.html#team">Team</a></li>
-                <li><a href="../../index.html#docs">Docs</a></li>
             </ul>
             <div class="nav-actions">
                 <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
                     <div class="theme-toggle-circle"></div>
                 </button>
                 <a href="https://github.com/AirlinkLabs/panel" class="btn-secondary">GitHub</a>
-                <button class="mobile-menu-toggle" aria-label="Toggle menu">☰</button>
+                <button class="mobile-menu-toggle" aria-label="Toggle menu" aria-expanded="false"></button>
             </div>
         </div>
     </nav>
 
-    <div class="doc-content">
-        <div class="doc-nav">
-            <a href="../../index.html">← Back to Home</a>
-        </div>
-
-        <h1>Addon Quick Start Guide</h1>
-        <p>This guide walks through creating your first addon for AirLink Panel. You'll have a working addon in about 10 minutes.</p>
-
-        <h2>Prerequisites</h2>
-        <ul>
-            <li>AirLink Panel installed and running</li>
-            <li>Basic JavaScript or TypeScript knowledge</li>
-            <li>Familiarity with Express.js helps but isn't required</li>
-        </ul>
-
-        <h2>Step 1: Create the Addon Directory</h2>
-        <p>Start by creating a new folder for your addon in the panel's addon directory:</p>
-        <div class="code-block">
-            <code>mkdir -p panel/storage/addons/my-first-addon/views</code>
-        </div>
-
-        <h2>Step 2: Create package.json</h2>
-        <p>This file tells the panel about your addon. Create <code>package.json</code> in your addon directory:</p>
-        <div class="code-block">
-            <code>{</code>
-            <code>  "name": "My First Addon",</code>
-            <code>  "version": "1.0.0",</code>
-            <code>  "description": "My first AirLink Panel addon",</code>
-            <code>  "author": "Your Name",</code>
-            <code>  "main": "index.ts",</code>
-            <code>  "router": "/my-first-addon"</code>
-            <code>}</code>
-        </div>
-
-        <h2>Step 3: Create the Entry Point</h2>
-        <p>Create <code>index.ts</code> in your addon directory. This is where your addon logic lives:</p>
-        <div class="code-block">
-            <code>import { Router } from 'express';</code>
-            <code>import path from 'path';</code>
-            <code></code>
-            <code>export default function(router: Router, api: any) {</code>
-            <code>  const { logger, prisma } = api;</code>
-            <code></code>
-            <code>  logger.info('My First Addon initialized');</code>
-            <code></code>
-            <code>  router.get('/', async (req: any, res: any) => {</code>
-            <code>    try {</code>
-            <code>      const userCount = await prisma.users.count();</code>
-            <code>      const settings = await prisma.settings.findUnique({ where: { id: 1 } });</code>
-            <code></code>
-            <code>      res.render(path.join(api.viewsPath, 'index.ejs'), {</code>
-            <code>        user: req.session?.user,</code>
-            <code>        req,</code>
-            <code>        userCount,</code>
-            <code>        settings,</code>
-            <code>        components: {</code>
-            <code>          header: api.getComponentPath('views/components/header'),</code>
-            <code>          template: api.getComponentPath('views/components/template'),</code>
-            <code>          footer: api.getComponentPath('views/components/footer')</code>
-            <code>        }</code>
-            <code>      });</code>
-            <code>    } catch (error) {</code>
-            <code>      logger.error('Error in my first addon:', error);</code>
-            <code>      res.status(500).send('An error occurred');</code>
-            <code>    }</code>
-            <code>  });</code>
-            <code></code>
-            <code>  router.get('/api/hello', (req, res) => {</code>
-            <code>    res.json({</code>
-            <code>      success: true,</code>
-            <code>      message: 'Hello from My First Addon!',</code>
-            <code>      timestamp: new Date().toISOString()</code>
-            <code>    });</code>
-            <code>  });</code>
-            <code>}</code>
-        </div>
-
-        <h2>Step 4: Create a View</h2>
-        <p>Create <code>views/index.ejs</code> in your addon directory:</p>
-        <div class="code-block">
-            <code>&lt;%- include(components.header, { title: 'My First Addon', user: user }) %&gt;</code>
-            <code></code>
-            <code>&lt;main class="h-screen m-auto"&gt;</code>
-            <code>  &lt;div class="flex h-screen"&gt;</code>
-            <code>    &lt;div class="w-60 h-full"&gt;</code>
-            <code>      &lt;%- include(components.template) %&gt;</code>
-            <code>    &lt;/div&gt;</code>
-            <code>    &lt;div class="flex-1 p-6 overflow-y-auto pt-16"&gt;</code>
-            <code>      &lt;div class="sm:flex sm:items-center px-8 pt-4"&gt;</code>
-            <code>        &lt;div class="sm:flex-auto"&gt;</code>
-            <code>          &lt;h1 class="text-base font-medium leading-6 text-white"&gt;My First Addon&lt;/h1&gt;</code>
-            <code>          &lt;p class="mt-1 tracking-tight text-sm text-neutral-500"&gt;Welcome to my first AirLink Panel addon!&lt;/p&gt;</code>
-            <code>        &lt;/div&gt;</code>
-            <code>      &lt;/div&gt;</code>
-            <code>      &lt;div class="px-8 mt-5"&gt;</code>
-            <code>        &lt;div class="rounded-xl bg-neutral-900 p-6"&gt;</code>
-            <code>          &lt;h2 class="text-lg font-medium text-white mb-4"&gt;User Count&lt;/h2&gt;</code>
-            <code>          &lt;p class="text-3xl font-bold text-white"&gt;&lt;%= userCount %&gt;&lt;/p&gt;</code>
-            <code>          &lt;p class="text-sm text-neutral-400 mt-1"&gt;Total registered users&lt;/p&gt;</code>
-            <code>        &lt;/div&gt;</code>
-            <code>      &lt;/div&gt;</code>
-            <code>    &lt;/div&gt;</code>
-            <code>  &lt;/div&gt;</code>
-            <code>&lt;/main&gt;</code>
-            <code></code>
-            <code>&lt;%- include(components.footer) %&gt;</code>
-        </div>
-
-        <h2>Step 5: Enable Your Addon</h2>
-        <ol>
-            <li>Restart the AirLink Panel server</li>
-            <li>Navigate to <code>/admin/addons</code> in the panel</li>
-            <li>Find your addon in the list</li>
-            <li>Make sure it's enabled</li>
-            <li>Visit your addon at <code>/my-first-addon</code></li>
-        </ol>
-
-        <h2>What's Next?</h2>
-        <p>Now that you have a basic addon working, you can:</p>
-        <ul>
-            <li>Add database migrations to create custom tables</li>
-            <li>Register UI components in the sidebar or server menu</li>
-            <li>Build more complex features using the Addon API</li>
-            <li>Style your addon using Tailwind CSS (already included)</li>
-        </ul>
-
-        <h2>Learn More</h2>
-        <p>Check out these resources for detailed information:</p>
-        <ul>
-            <li><a href="../addons/index.html" style="color: var(--accent);">Complete Addon Documentation</a></li>
-            <li><a href="../migrations/index.html" style="color: var(--accent);">Database Migrations Guide</a></li>
-            <li><a href="https://github.com/g-flame-oss/airlink-addons" style="color: var(--accent);">Addon Template Repository</a></li>
-        </ul>
-
-        <h2>Troubleshooting</h2>
-        <p>If your addon doesn't appear in the admin panel:</p>
-        <ul>
-            <li>Check the server logs for errors</li>
-            <li>Verify <code>package.json</code> is valid JSON</li>
-            <li>Make sure your entry point file exists and exports a function</li>
-            <li>Restart the panel server</li>
-        </ul>
-        <p>If you see errors when accessing your addon:</p>
-        <ul>
-            <li>Check the server logs for detailed error messages</li>
-            <li>Verify routes are defined correctly</li>
-            <li>Make sure view files exist at the correct paths</li>
-        </ul>
+    <div class="docs-layout">
+        <aside class="docs-sidebar">
+            <div class="docs-sidebar-title">Documentation</div>
+            <nav id="docs-nav"></nav>
+            <div class="docs-toc" id="docs-toc" style="display:none">
+                <div class="docs-sidebar-title" style="margin-top:0">On this page</div>
+                <nav id="toc-links"></nav>
+            </div>
+        </aside>
+        <main class="docs-main">
+            <div class="docs-breadcrumb">
+                <a href="../../index.html">Home</a>
+                <span>/</span>
+                <a href="../">Docs</a>
+                <span>/</span>
+                <span id="breadcrumb-title">Quick Start</span>
+            </div>
+            <div class="docs-content" id="docs-content">
+                <p class="docs-loading">Loading...</p>
+            </div>
+            <nav class="docs-footer-nav" id="docs-footer-nav"></nav>
+        </main>
     </div>
 
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-bottom">
-                <p>Made by Thavanish</p>
-            </div>
-        </div>
-    </footer>
+    <script src="../../public/js/theme.js"></script>
+    <script src="../../public/js/nav.js"></script>
+    <script src="../../public/js/docs.js"></script>
+    <script>initDocPage('quickstart', '../../');</script>
 
-    <script src="../../public/js/main.js"></script>
 </body>
 </html>

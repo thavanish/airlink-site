@@ -1,14 +1,12 @@
 # Addon Development
 
-This is the complete guide to developing addons for AirLink Panel. Addons let you extend the panel's functionality without modifying core code.
+Complete guide to developing addons for AirLink Panel. Addons extend the panel's functionality without modifying core code.
 
 ## Introduction
 
-Addons are loaded dynamically when the panel starts. They can add new features, modify existing ones, and integrate with external services. Each addon runs in its own context with access to the router, database, and various utilities.
+Addons are loaded dynamically when the panel starts. They can add new features, modify existing ones, and integrate with external services. Each addon runs with access to the router, database, and various utilities.
 
 ## Addon Structure
-
-A typical addon has this directory layout:
 
 ```
 my-addon/
@@ -18,15 +16,12 @@ my-addon/
 │   └── main.ejs
 ├── public/            # Static assets (optional)
 │   ├── css/
-│   ├── js/
-│   └── img/
+│   └── js/
 └── lib/               # Additional modules (optional)
     └── helpers.ts
 ```
 
 ## package.json Configuration
-
-The `package.json` file defines your addon's metadata:
 
 ```json
 {
@@ -46,23 +41,17 @@ The `package.json` file defines your addon's metadata:
 }
 ```
 
-### Required Fields
+### Fields
 
-- `name` — Display name of your addon
+- `name` — Display name shown in the admin panel
 - `version` — Version in semver format
-
-### Optional Fields
-
-- `description` — Brief description
-- `author` — Your name or organization
 - `main` — Entry point file (default: index.ts)
-- `router` — Base URL path (default: /)
-- `enabled` — Enable by default (default: true)
-- `migrations` — Database migrations array
+- `router` — Base URL path for all addon routes
+- `migrations` — Database migrations array (see Migrations docs)
 
-## Addon Entry Point
+## Entry Point
 
-Your entry point exports a function that receives a router and API object:
+Your entry point exports a default function receiving a router and API object:
 
 ```typescript
 import { Router } from 'express';
@@ -79,48 +68,68 @@ export default function(router: Router, api: any) {
       req,
       settings: await prisma.settings.findUnique({ where: { id: 1 } }),
       components: {
-        header: api.getComponentPath('views/components/header'),
+        header:   api.getComponentPath('views/components/header'),
         template: api.getComponentPath('views/components/template'),
-        footer: api.getComponentPath('views/components/footer')
+        footer:   api.getComponentPath('views/components/footer')
       }
     });
   });
 }
 ```
 
-## The Addon API
+## Addon API
 
-### Core Utilities
+### Core
 
-- `registerRoute(path, router)` — Register additional routes
-- `logger` — Logging methods: info, warn, error, debug
-- `prisma` — Prisma ORM client for database access
-
-### Path Utilities
-
+- `logger` — info, warn, error, debug
+- `prisma` — Prisma ORM client
 - `addonPath` — Path to the addon directory
-- `viewsPath` — Path to the addon's views directory
-- `getComponentPath(path)` — Get path to a panel component
+- `viewsPath` — Path to the addon's views folder
+- `getComponentPath(path)` — Path to a panel component
 
-### User and Server Utilities
+### User Utilities
 
-- `utils.isUserAdmin(userId)` — Check if user is admin
-- `utils.checkServerAccess(userId, serverId)` — Verify server access
-- `utils.getServerById(serverId)` — Get server by ID
+- `utils.isUserAdmin(userId)` — Check admin status
+- `utils.checkServerAccess(userId, serverId)` — Verify access
+- `utils.getServerById(serverId)` — Get server object
 - `utils.getServerByUUID(uuid)` — Get server by UUID
-- `utils.getServerPorts(server)` — Get server ports
 - `utils.getPrimaryPort(server)` — Get primary port
 
-### UI Components
+### UI Registration
 
-- `ui.addSidebarItem(item)` — Add sidebar navigation item
+- `ui.addSidebarItem(item)` — Add sidebar nav item
 - `ui.addServerMenuItem(item)` — Add server menu item
 - `ui.addServerSection(section)` — Add server section
-- `ui.addServerSectionItem(sectionId, item)` — Add item to section
 
-## Creating Views
+## Sidebar Items
 
-Views use EJS templates. Create a `views` directory in your addon folder:
+```typescript
+api.ui.addSidebarItem({
+  id:      'my-addon-main',
+  name:    'My Addon',
+  icon:    '<svg ...></svg>',
+  link:    '/my-addon',
+  section: 'main',
+  order:   50
+});
+```
+
+## Server Menu Items
+
+```typescript
+api.ui.addServerMenuItem({
+  id:      'my-addon-server',
+  name:    'My Feature',
+  icon:    '<svg ...></svg>',
+  link:    '/servers/{uuid}/my-feature',
+  feature: 'custom',
+  order:   50
+});
+```
+
+## Views
+
+Views use EJS and include the panel's shared header/footer/template components:
 
 ```html
 <%- include(components.header, { title: 'My Addon', user: user }) %>
@@ -133,37 +142,10 @@ Views use EJS templates. Create a `views` directory in your addon folder:
 <%- include(components.footer) %>
 ```
 
-## Sidebar Items
-
-```typescript
-api.ui.addSidebarItem({
-  id: 'my-addon-main',
-  name: 'My Addon',
-  icon: '<svg ...></svg>',
-  link: '/my-addon',
-  section: 'main',
-  order: 50
-});
-```
-
-## Server Menu Items
-
-```typescript
-api.ui.addServerMenuItem({
-  id: 'my-addon-server',
-  name: 'My Feature',
-  icon: '<svg ...></svg>',
-  link: '/servers/{uuid}/my-feature',
-  feature: 'custom',
-  order: 50
-});
-```
-
 ## Best Practices
 
-- Namespace your database tables with your addon name
-- Handle errors gracefully with try-catch blocks
-- Clean up resources when the addon is disabled
-- Follow the panel's design patterns and UI styles
-- Test in different environments and configurations
-- Keep functionality focused and simple
+- Prefix all database tables with your addon slug
+- Always wrap async route handlers in try-catch
+- Use the provided logger rather than console.log
+- Keep functionality focused — one addon, one concern
+- Test with both fresh installs and existing databases

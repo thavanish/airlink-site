@@ -6,13 +6,17 @@
     <title>AirLink Panel</title>
     <meta name="description" content="Open-source game server management platform with powerful addon support">
     <link rel="icon" href="https://raw.githubusercontent.com/airlinklabs/panel/refs/heads/main/public/uploads/favicons/favicon.ico" type="image/x-icon">
-    <link rel="stylesheet" href="public/main.css">
+    <link rel="stylesheet" href="public/css/base.css">
+    <link rel="stylesheet" href="public/css/components.css">
+    <link rel="stylesheet" href="public/css/sections.css">
+    <link rel="stylesheet" href="public/css/animations.css">
 </head>
 <body>
+
     <nav class="navbar">
         <div class="container">
             <div class="nav-brand">
-                <img src="./public/assets/plane.png" alt="AirLink" class="logo">
+                <img src="public/assets/plane.png" alt="AirLink" class="logo">
                 <span class="brand-name">AirLink</span>
             </div>
             <ul class="nav-links">
@@ -37,17 +41,18 @@
     <section class="hero">
         <div class="screenshot-scroll">
             <div class="screenshot-track">
-                <img src="public/assets/screenshot-1.jpg" alt="Dashboard" class="screenshot">
+                <img src="public/assets/screenshot-1.jpg" alt="Dashboard"         class="screenshot">
                 <img src="public/assets/screenshot-2.jpg" alt="Server Management" class="screenshot">
-                <img src="public/assets/screenshot-3.jpg" alt="Addon System" class="screenshot">
-                <img src="public/assets/screenshot-4.jpg" alt="User Interface" class="screenshot">
-                <img src="public/assets/screenshot-5.jpg" alt="Dashboard" class="screenshot">
+                <img src="public/assets/screenshot-3.jpg" alt="Addon System"      class="screenshot">
+                <img src="public/assets/screenshot-4.jpg" alt="User Interface"    class="screenshot">
+                <img src="public/assets/screenshot-5.jpg" alt="Dashboard"         class="screenshot">
                 <img src="public/assets/screenshot-6.jpg" alt="Server Management" class="screenshot">
-                <img src="public/assets/screenshot-1.jpg" alt="Dashboard" class="screenshot">
+                <!-- duplicated for seamless loop -->
+                <img src="public/assets/screenshot-1.jpg" alt="Dashboard"         class="screenshot">
                 <img src="public/assets/screenshot-2.jpg" alt="Server Management" class="screenshot">
-                <img src="public/assets/screenshot-3.jpg" alt="Addon System" class="screenshot">
-                <img src="public/assets/screenshot-4.jpg" alt="User Interface" class="screenshot">
-                <img src="public/assets/screenshot-5.jpg" alt="Dashboard" class="screenshot">
+                <img src="public/assets/screenshot-3.jpg" alt="Addon System"      class="screenshot">
+                <img src="public/assets/screenshot-4.jpg" alt="User Interface"    class="screenshot">
+                <img src="public/assets/screenshot-5.jpg" alt="Dashboard"         class="screenshot">
                 <img src="public/assets/screenshot-6.jpg" alt="Server Management" class="screenshot">
             </div>
         </div>
@@ -124,6 +129,7 @@
             </div>
 
             <div id="install-wizard" class="fade-in-up delay-1">
+
                 <div class="install-selection">
                     <button class="install-choice-btn btn-quick">
                         <span class="choice-icon">⚡</span>
@@ -142,11 +148,11 @@
                         <button class="btn-back">← Back</button>
                         <h3>Quick Install</h3>
                     </div>
-                    <p style="color:var(--text-secondary);margin-bottom:16px;font-size:14px;">Run this as root. The installer sets up the panel, configures systemd, and handles all dependencies.</p>
+                    <p style="color:var(--text-secondary);margin-bottom:16px;font-size:14px;">Run this as root. Sets up the panel, configures systemd, and handles all dependencies.</p>
                     <div class="code-block">
                         <code>bash &lt;(curl -s https://raw.githubusercontent.com/airlinklabs/panel/refs/heads/main/installer.sh)</code>
                     </div>
-                    <p class="install-note">After installation, manage the panel with systemd:</p>
+                    <p class="install-note">Manage with systemd after install:</p>
                     <div class="code-block">
                         <code>systemctl start airlink-panel</code>
                         <code>systemctl stop airlink-panel</code>
@@ -237,6 +243,7 @@
                         </ul>
                     </div>
                 </div>
+
             </div>
         </div>
     </section>
@@ -279,7 +286,7 @@
                     </div>
                     <div class="capability">
                         <h4>Modify UI</h4>
-                        <p>Add items to the sidebar, server menu, or create new sections.</p>
+                        <p>Add items to the sidebar, server menu, or create entirely new sections.</p>
                     </div>
                     <div class="capability">
                         <h4>External Integration</h4>
@@ -297,7 +304,7 @@
                 <p>Latest commits across both repositories.</p>
             </div>
             <div id="commits-container">
-                <div class="commits-repo" data-repo="airlinklabs/panel">
+                <div class="commits-repo">
                     <div class="commits-repo-header">
                         <div class="commits-repo-title">airlinklabs / panel</div>
                         <button class="btn-view-commits" data-repo="airlinklabs/panel">View all →</button>
@@ -306,7 +313,7 @@
                         <p class="commit-loading">Loading...</p>
                     </div>
                 </div>
-                <div class="commits-repo" data-repo="airlinklabs/daemon">
+                <div class="commits-repo">
                     <div class="commits-repo-header">
                         <div class="commits-repo-title">airlinklabs / daemon</div>
                         <button class="btn-view-commits" data-repo="airlinklabs/daemon">View all →</button>
@@ -325,7 +332,7 @@
                 <h2>Documentation</h2>
             </div>
             <div class="docs-grid" id="docs-grid">
-                <!-- populated from manifest.json -->
+                <!-- populated from docs/manifest.json by main.js -->
             </div>
         </div>
     </section>
@@ -349,7 +356,7 @@
         <div class="container">
             <div class="footer-content">
                 <div class="footer-section">
-                    <img src="./public/assets/plane.png" alt="AirLink" class="footer-logo">
+                    <img src="public/assets/plane.png" alt="AirLink" class="footer-logo">
                     <p>Open-source game server management</p>
                 </div>
                 <div class="footer-section">
@@ -380,78 +387,12 @@
         </div>
     </footer>
 
+    <script src="public/js/theme.js"></script>
+    <script src="public/js/nav.js"></script>
+    <script src="public/js/install.js"></script>
+    <script src="public/js/commits.js"></script>
+    <script src="public/js/contributors.js"></script>
     <script src="public/js/main.js"></script>
-    <script>
-    // Load docs grid from manifest and load commit previews
-    (async function() {
-        // Docs cards from manifest
-        try {
-            const manifest = await fetch('docs/manifest.json').then(r => r.json());
-            const grid = document.getElementById('docs-grid');
-            grid.innerHTML = '';
-            manifest.forEach((doc, i) => {
-                const a = document.createElement('a');
-                a.href = `docs/${doc.slug}/`;
-                a.className = `doc-card fade-in-up delay-${Math.min(i + 1, 6)}`;
-                a.innerHTML = `<h3>${doc.title}</h3><p>${doc.description}</p>`;
-                grid.appendChild(a);
-            });
-            // re-observe new cards
-            const obs = new IntersectionObserver(entries => {
-                entries.forEach(e => { if (e.isIntersecting) { e.target.style.animationPlayState = 'running'; obs.unobserve(e.target); } });
-            }, { threshold: 0.1 });
-            grid.querySelectorAll('.doc-card').forEach(el => { el.style.animationPlayState = 'paused'; obs.observe(el); });
-        } catch {}
 
-        // Commit previews (latest 3 per repo)
-        const repos = [
-            { repo: 'airlinklabs/panel', el: document.getElementById('preview-panel') },
-            { repo: 'airlinklabs/daemon', el: document.getElementById('preview-daemon') }
-        ];
-
-        for (const { repo, el } of repos) {
-            if (!el) continue;
-            try {
-                const commits = await fetch(`https://api.github.com/repos/${repo}/commits?per_page=3`).then(r => r.ok ? r.json() : []);
-                el.innerHTML = '';
-                commits.forEach((c, i) => {
-                    const date = new Date(c.commit.author.date);
-                    const msg = c.commit.message.split('\n')[0];
-                    const author = c.author?.login || c.commit.author.name;
-                    const avatar = c.author?.avatar_url || '';
-                    const sha = c.sha.slice(0, 7);
-                    const div = document.createElement('div');
-                    div.className = 'commit-item' + (i === 0 ? ' commit-latest' : '');
-                    div.innerHTML = `
-                        ${i === 0 ? '<span class="commit-badge">Latest</span>' : ''}
-                        <div class="commit-meta">
-                            ${avatar ? `<img src="${avatar}" class="commit-avatar" onerror="this.style.display='none'">` : ''}
-                            <span class="commit-author">${author}</span>
-                            <span class="commit-time">${timeAgoInline(date)}</span>
-                            <span class="commit-date">${date.toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'})}</span>
-                        </div>
-                        <a href="${c.html_url}" class="commit-msg" target="_blank" rel="noopener noreferrer">${escInline(msg)}</a>
-                        <span class="commit-sha">${sha}</span>
-                    `;
-                    el.appendChild(div);
-                });
-            } catch {
-                el.innerHTML = '<p class="commit-error">Could not load commits.</p>';
-            }
-        }
-
-        function timeAgoInline(d) {
-            const s = Math.floor((Date.now() - d) / 1000);
-            if (s < 60) return s + 's ago';
-            if (s < 3600) return Math.floor(s/60) + 'm ago';
-            if (s < 86400) return Math.floor(s/3600) + 'h ago';
-            if (s < 2592000) return Math.floor(s/86400) + 'd ago';
-            return Math.floor(s/2592000) + 'mo ago';
-        }
-        function escInline(str) {
-            return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-        }
-    })();
-    </script>
 </body>
 </html>

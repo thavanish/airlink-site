@@ -1,0 +1,183 @@
+/* ── Reveal animations ───────────────────────────────────────────── */
+.fade-in    { opacity: 0; animation: fadeIn    0.7s  ease forwards; }
+.fade-in-up { opacity: 0; transform: translateY(24px); animation: fadeInUp 0.65s ease forwards; }
+
+.delay-1 { animation-delay: 0.10s; }
+.delay-2 { animation-delay: 0.20s; }
+.delay-3 { animation-delay: 0.30s; }
+.delay-4 { animation-delay: 0.40s; }
+.delay-5 { animation-delay: 0.50s; }
+.delay-6 { animation-delay: 0.60s; }
+
+@keyframes fadeIn   { to { opacity: 1; } }
+@keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
+
+/* ── Hamburger button ────────────────────────────────────────────── */
+.mobile-menu-toggle {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    width: 40px; height: 40px;
+    padding: 0;
+    background: var(--bg-tertiary);
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: background 0.2s, border-color 0.2s, transform 0.15s;
+    -webkit-tap-highlight-color: transparent;
+}
+
+[data-theme="light"] .mobile-menu-toggle { background: #fff; border-color: #d1d1d6; }
+.mobile-menu-toggle:hover { background: var(--accent); border-color: var(--text-tertiary); }
+.mobile-menu-toggle:active { transform: scale(0.92); }
+
+.bar {
+    display: block;
+    width: 18px; height: 2px;
+    border-radius: 2px;
+    background: var(--bar-color);
+    pointer-events: none;
+    transition:
+        transform 0.32s cubic-bezier(0.23, 1, 0.32, 1),
+        opacity   0.22s ease,
+        width     0.28s ease;
+    transform-origin: center;
+}
+
+.mobile-menu-toggle.active .bar:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.mobile-menu-toggle.active .bar:nth-child(2) { opacity: 0; width: 0; }
+.mobile-menu-toggle.active .bar:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+/* ── Mobile nav ──────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+    .mobile-menu-toggle { display: flex; }
+
+    .navbar .container { flex-wrap: nowrap; }
+
+    .nav-links {
+        position: fixed;
+        top: 64px; left: 0; right: 0;
+        background: var(--bg-secondary);
+        flex-direction: column;
+        gap: 0;
+        padding: 0 20px;
+        max-height: 0;
+        overflow: hidden;
+        opacity: 0;
+        transform: translateY(-6px);
+        pointer-events: none;
+        z-index: 999;
+        border-bottom: 1px solid transparent;
+        transition:
+            max-height   0.36s cubic-bezier(0.23, 1, 0.32, 1),
+            opacity      0.28s ease,
+            transform    0.28s cubic-bezier(0.23, 1, 0.32, 1),
+            padding      0.28s ease,
+            border-color 0.28s ease;
+    }
+
+    [data-theme="light"] .nav-links { background: #fff; box-shadow: 0 8px 24px rgba(0,0,0,0.08); }
+
+    .nav-links.active {
+        max-height: 420px;
+        opacity: 1;
+        transform: translateY(0);
+        padding: 8px 20px 16px;
+        border-bottom-color: var(--border);
+        pointer-events: auto;
+    }
+
+    .nav-links li {
+        width: 100%;
+        border-bottom: 1px solid var(--border);
+        opacity: 0;
+        transform: translateX(-8px);
+        transition: opacity 0.2s ease, transform 0.2s ease;
+    }
+
+    .nav-links li:last-child { border-bottom: none; }
+
+    .nav-links.active li:nth-child(1) { opacity:1; transform:none; transition-delay:0.05s; }
+    .nav-links.active li:nth-child(2) { opacity:1; transform:none; transition-delay:0.10s; }
+    .nav-links.active li:nth-child(3) { opacity:1; transform:none; transition-delay:0.15s; }
+    .nav-links.active li:nth-child(4) { opacity:1; transform:none; transition-delay:0.20s; }
+    .nav-links.active li:nth-child(5) { opacity:1; transform:none; transition-delay:0.25s; }
+    .nav-links.active li:nth-child(6) { opacity:1; transform:none; transition-delay:0.30s; }
+    .nav-links.active li:nth-child(7) { opacity:1; transform:none; transition-delay:0.35s; }
+
+    .nav-links a { display: block; font-size: 16px; padding: 13px 0; }
+
+    .nav-actions { flex-wrap: nowrap; gap: 8px; }
+    .nav-actions .btn-secondary { padding: 6px 12px; font-size: 13px; white-space: nowrap; }
+
+    .hero { padding: 100px 0 60px; min-height: 500px; }
+    .screenshot { height: 400px; }
+
+    .hero-content h1 { font-size: 32px; line-height: 1.2; }
+    .hero-content p  { font-size: 16px; padding: 0 10px; }
+
+    .hero-actions { flex-direction: column; align-items: stretch; padding: 0 20px; }
+    .btn-primary.large, .btn-secondary.large { padding: 14px 24px; }
+
+    .section { padding: 60px 0; }
+    .section-header { margin-bottom: 40px; }
+    .section-header h2 { font-size: 28px; }
+    .section-header p  { font-size: 15px; padding: 0 10px; }
+
+    .content-grid,
+    .feature-grid,
+    .addon-info,
+    .capability-grid,
+    .docs-grid { grid-template-columns: 1fr; gap: 20px; }
+
+    .feature-card, .doc-card { padding: 22px; }
+
+    #install-wizard { padding: 24px 18px; }
+    .install-selection { flex-direction: column; }
+    .install-choice-btn { min-width: unset; }
+
+    .step { flex-direction: column; gap: 12px; }
+
+    #commits-container { grid-template-columns: 1fr; }
+    .commits-popup { max-height: 90vh; border-radius: 10px; }
+
+    .contributors-grid { grid-template-columns: 1fr; }
+    .contributor-card { padding: 22px; }
+
+    .code-block { padding: 14px; }
+    .code-block code { font-size: 12px; word-break: break-all; }
+    .copy-button { opacity: 1; }
+}
+
+@media (max-width: 480px) {
+    .container { padding: 0 15px; }
+    .logo { height: 28px; }
+    .brand-name { font-size: 18px; }
+    .theme-toggle { width: 48px; height: 28px; }
+    .theme-toggle-circle { width: 20px; height: 20px; }
+    .nav-actions .btn-secondary { padding: 6px 10px; font-size: 12px; }
+    .mobile-menu-toggle { width: 36px; height: 36px; }
+    .bar { width: 16px; }
+
+    .hero { padding: 90px 0 50px; min-height: 450px; }
+    .screenshot { height: 350px; }
+    .hero-content h1 { font-size: 26px; }
+    .hero-content p  { font-size: 15px; }
+
+    .section { padding: 50px 0; }
+    .section-header h2 { font-size: 22px; }
+
+    .feature-card, .doc-card, .install-choice-btn { padding: 20px; }
+    .feature-card h3, .doc-card h3 { font-size: 18px; }
+
+    .code-block { padding: 12px; }
+    .code-block code { font-size: 11px; }
+
+    .team-hero { padding: 100px 0 50px; }
+    .team-hero h1 { font-size: 32px; }
+
+    .footer-content { grid-template-columns: 1fr; gap: 28px; }
+}

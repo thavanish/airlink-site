@@ -3,62 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Database Migrations - AirLink Panel</title>
+    <title>Database Migrations — AirLink Docs</title>
     <link rel="icon" href="https://raw.githubusercontent.com/airlinklabs/panel/refs/heads/main/public/uploads/favicons/favicon.ico" type="image/x-icon">
-    <link rel="stylesheet" href="../../public/main.css">
-    
-    <style>
-        .doc-content {
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 100px 20px 60px;
-        }
-        .doc-content h1 {
-            color: var(--white);
-            font-size: 42px;
-            margin-bottom: 20px;
-        }
-        .doc-content h2 {
-            color: var(--white);
-            font-size: 32px;
-            margin-top: 50px;
-            margin-bottom: 20px;
-        }
-        .doc-content h3 {
-            color: var(--white);
-            font-size: 24px;
-            margin-top: 30px;
-            margin-bottom: 15px;
-        }
-        .doc-content p {
-            color: var(--grey-300);
-            margin-bottom: 20px;
-            line-height: 1.8;
-        }
-        .doc-content ul, .doc-content ol {
-            color: var(--grey-300);
-            margin-bottom: 20px;
-            padding-left: 30px;
-        }
-        .doc-content li {
-            margin-bottom: 10px;
-        }
-        .doc-nav {
-            background: var(--grey-800);
-            padding: 20px;
-            border-radius: 8px;
-            margin-bottom: 40px;
-        }
-        .doc-nav a {
-            color: var(--accent);
-            text-decoration: none;
-        }
-        .doc-nav a:hover {
-            text-decoration: underline;
-        }
-    </style>
+    <link rel="stylesheet" href="../../public/css/base.css">
+    <link rel="stylesheet" href="../../public/css/components.css">
+    <link rel="stylesheet" href="../../public/css/animations.css">
+    <link rel="stylesheet" href="../../public/css/docs.css">
 </head>
 <body>
+
     <nav class="navbar">
         <div class="container">
             <div class="nav-brand">
@@ -67,208 +20,49 @@
             </div>
             <ul class="nav-links">
                 <li><a href="../../index.html">Home</a></li>
-                <li><a href="../../index.html#about">About</a></li>
+                <li><a href="../../index.html#features">Features</a></li>
                 <li><a href="../../index.html#install">Install</a></li>
                 <li><a href="../../index.html#addons">Addons</a></li>
                 <li><a href="../../index.html#team">Team</a></li>
-                <li><a href="../../index.html#docs">Docs</a></li>
             </ul>
             <div class="nav-actions">
                 <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
                     <div class="theme-toggle-circle"></div>
                 </button>
                 <a href="https://github.com/AirlinkLabs/panel" class="btn-secondary">GitHub</a>
-                <button class="mobile-menu-toggle" aria-label="Toggle menu">☰</button>
+                <button class="mobile-menu-toggle" aria-label="Toggle menu" aria-expanded="false"></button>
             </div>
         </div>
     </nav>
 
-    <div class="doc-content">
-        <div class="doc-nav">
-            <a href="../../index.html">← Back to Home</a>
-        </div>
-
-        <h1>Addon Database Migrations</h1>
-        <p>AirLink Panel lets addons define database migrations in their <code>package.json</code>. These migrations run automatically when the addon is enabled, so your addon can create and modify database tables without manual SQL execution.</p>
-
-        <h2>How It Works</h2>
-        <ol>
-            <li>Migrations are defined in the addon's <code>package.json</code> as an array of objects</li>
-            <li>When an addon is enabled, the system checks for unapplied migrations</li>
-            <li>Each migration runs in the order defined in the array</li>
-            <li>Successfully applied migrations are recorded in the <code>AddonMigration</code> table</li>
-            <li>If a migration fails, the addon gets disabled and an error is logged</li>
-        </ol>
-
-        <h2>Defining Migrations</h2>
-        <p>Add a <code>migrations</code> array to your addon's <code>package.json</code>:</p>
-        <div class="code-block">
-            <code>{</code>
-            <code>  "name": "My Addon",</code>
-            <code>  "version": "1.0.0",</code>
-            <code>  "description": "An example addon with migrations",</code>
-            <code>  "author": "Your Name",</code>
-            <code>  "main": "index.ts",</code>
-            <code>  "router": "/my-addon",</code>
-            <code>  "migrations": [</code>
-            <code>    {</code>
-            <code>      "name": "create_my_table",</code>
-            <code>      "sql": "CREATE TABLE IF NOT EXISTS MyAddonTable (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL, created_at DATETIME DEFAULT CURRENT_TIMESTAMP)"</code>
-            <code>    },</code>
-            <code>    {</code>
-            <code>      "name": "add_description_column",</code>
-            <code>      "sql": "ALTER TABLE MyAddonTable ADD COLUMN description TEXT"</code>
-            <code>    }</code>
-            <code>  ]</code>
-            <code>}</code>
-        </div>
-
-        <h2>Migration Format</h2>
-        <p>Each migration needs:</p>
-        <ul>
-            <li><code>name</code> - A unique name for the migration (used to track which migrations have been applied)</li>
-            <li><code>sql</code> - The SQL statement to execute</li>
-        </ul>
-        <p>The name should be unique within your addon. Changing the name of an existing migration will cause it to be applied again.</p>
-
-        <h2>When Migrations Are Applied</h2>
-        <p>Migrations run in these scenarios:</p>
-        <ul>
-            <li>When an addon is first installed and enabled - all migrations run</li>
-            <li>When a disabled addon is enabled - any unapplied migrations run</li>
-            <li>When an addon is updated with new migrations - only new ones run when next enabled</li>
-        </ul>
-        <p>Migrations do not run when:</p>
-        <ul>
-            <li>An addon is disabled</li>
-            <li>An addon is already enabled and no new migrations are added</li>
-        </ul>
-
-        <h2>Working with Migrated Tables</h2>
-        <p>Since tables created by addon migrations aren't part of the Prisma schema, use raw SQL queries to interact with them:</p>
-        <div class="code-block">
-            <code>async function getEntries() {</code>
-            <code>  try {</code>
-            <code>    const entries = await prisma.$queryRaw`</code>
-            <code>      SELECT * FROM MyAddonTable ORDER BY created_at DESC</code>
-            <code>    `;</code>
-            <code>    return entries;</code>
-            <code>  } catch (error) {</code>
-            <code>    logger.error('Error fetching entries:', error);</code>
-            <code>    return [];</code>
-            <code>  }</code>
-            <code>}</code>
-            <code></code>
-            <code>async function addEntry(name: string, description: string) {</code>
-            <code>  try {</code>
-            <code>    await prisma.$executeRaw`</code>
-            <code>      INSERT INTO MyAddonTable (name, description)</code>
-            <code>      VALUES (${name}, ${description})</code>
-            <code>    `;</code>
-            <code>    return true;</code>
-            <code>  } catch (error) {</code>
-            <code>    logger.error('Error adding entry:', error);</code>
-            <code>    return false;</code>
-            <code>  }</code>
-            <code>}</code>
-        </div>
-
-        <h2>Best Practices</h2>
-        <ul>
-            <li>Use <code>IF NOT EXISTS</code> for tables to prevent errors if the table already exists</li>
-            <li>Namespace your tables - prefix table names with your addon name (e.g., <code>MyAddon_Users</code> instead of <code>Users</code>)</li>
-            <li>Keep migrations small - each should make a single, focused change</li>
-            <li>Use descriptive names like <code>create_users_table</code> or <code>add_email_column_to_users</code></li>
-            <li>Order matters - migrations run in the order they appear in the array</li>
-            <li>Test thoroughly in a development environment before releasing</li>
-            <li>Handle errors gracefully - your addon should work even if a table doesn't exist yet</li>
-            <li>Document your schema in your addon's documentation</li>
-        </ul>
-
-        <h2>Common Migration Types</h2>
-
-        <h3>Creating a Table</h3>
-        <div class="code-block">
-            <code>{</code>
-            <code>  "name": "create_my_table",</code>
-            <code>  "sql": "CREATE TABLE IF NOT EXISTS MyTable (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL, created_at DATETIME DEFAULT CURRENT_TIMESTAMP)"</code>
-            <code>}</code>
-        </div>
-
-        <h3>Adding a Column</h3>
-        <div class="code-block">
-            <code>{</code>
-            <code>  "name": "add_description_column",</code>
-            <code>  "sql": "ALTER TABLE MyTable ADD COLUMN description TEXT"</code>
-            <code>}</code>
-        </div>
-
-        <h3>Creating an Index</h3>
-        <div class="code-block">
-            <code>{</code>
-            <code>  "name": "add_name_index",</code>
-            <code>  "sql": "CREATE INDEX IF NOT EXISTS idx_my_table_name ON MyTable(name)"</code>
-            <code>}</code>
-        </div>
-
-        <h3>Creating a Foreign Key</h3>
-        <div class="code-block">
-            <code>{</code>
-            <code>  "name": "create_user_settings_table",</code>
-            <code>  "sql": "CREATE TABLE IF NOT EXISTS UserSettings (id INTEGER PRIMARY KEY AUTOINCREMENT, userId INTEGER NOT NULL, setting TEXT NOT NULL, value TEXT, FOREIGN KEY (userId) REFERENCES Users(id) ON DELETE CASCADE)"</code>
-            <code>}</code>
-        </div>
-
-        <h2>Troubleshooting</h2>
-        <p>If a migration fails, the addon will be disabled and an error message will be logged. Check the server logs for details.</p>
-
-        <h3>Common Issues</h3>
-        <ul>
-            <li>Syntax errors in SQL statements - double-check your SQL syntax</li>
-            <li>Table already exists - use <code>IF NOT EXISTS</code> when creating tables</li>
-            <li>Column already exists - check if you're trying to add an existing column</li>
-            <li>Missing references - make sure any tables or columns you reference actually exist</li>
-            <li>Permission issues - ensure the database user has permission to create tables and modify the schema</li>
-        </ul>
-
-        <h3>Debugging Migrations</h3>
-        <p>To see which migrations have been applied for your addon, query the <code>AddonMigration</code> table:</p>
-        <div class="code-block">
-            <code>const appliedMigrations = await prisma.$queryRaw`</code>
-            <code>  SELECT * FROM AddonMigration</code>
-            <code>  WHERE addonSlug = 'your-addon-slug'</code>
-            <code>  ORDER BY appliedAt</code>
-            <code>`;</code>
-            <code>console.log(appliedMigrations);</code>
-        </div>
-
-        <h3>Resetting Migrations</h3>
-        <p>In development, if you need to reset migrations for an addon, you can manually delete the records from the <code>AddonMigration</code> table:</p>
-        <div class="code-block">
-            <code>await prisma.$executeRaw`</code>
-            <code>  DELETE FROM AddonMigration</code>
-            <code>  WHERE addonSlug = 'your-addon-slug'</code>
-            <code>`;</code>
-        </div>
-        <p><strong>Warning:</strong> Only do this in development environments. Resetting migrations in production can lead to data loss or corruption.</p>
-
-        <h2>Learn More</h2>
-        <p>Additional resources:</p>
-        <ul>
-            <li><a href="../quickstart/index.html" style="color: var(--accent);">Quick Start Guide</a></li>
-            <li><a href="../addon-docs/index.html" style="color: var(--accent);">Complete Addon Documentation</a></li>
-            <li><a href="https://github.com/g-flame-oss/airlink-addons" style="color: var(--accent);">Addon Template</a></li>
-        </ul>
+    <div class="docs-layout">
+        <aside class="docs-sidebar">
+            <div class="docs-sidebar-title">Documentation</div>
+            <nav id="docs-nav"></nav>
+            <div class="docs-toc" id="docs-toc" style="display:none">
+                <div class="docs-sidebar-title" style="margin-top:0">On this page</div>
+                <nav id="toc-links"></nav>
+            </div>
+        </aside>
+        <main class="docs-main">
+            <div class="docs-breadcrumb">
+                <a href="../../index.html">Home</a>
+                <span>/</span>
+                <a href="../">Docs</a>
+                <span>/</span>
+                <span id="breadcrumb-title">Database Migrations</span>
+            </div>
+            <div class="docs-content" id="docs-content">
+                <p class="docs-loading">Loading...</p>
+            </div>
+            <nav class="docs-footer-nav" id="docs-footer-nav"></nav>
+        </main>
     </div>
 
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-bottom">
-                <p>Made by Thavanish</p>
-            </div>
-        </div>
-    </footer>
+    <script src="../../public/js/theme.js"></script>
+    <script src="../../public/js/nav.js"></script>
+    <script src="../../public/js/docs.js"></script>
+    <script>initDocPage('migrations', '../../');</script>
 
-    <script src="../../public/js/main.js"></script>
 </body>
 </html>
