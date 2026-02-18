@@ -16,42 +16,30 @@ document.addEventListener('DOMContentLoaded', function() {
     
     const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
     const navLinks = document.querySelector('.nav-links');
-    
-    // Replace the ☰ text with animated bar spans
-    if (mobileMenuToggle) {
-        mobileMenuToggle.innerHTML = `
-            <span class="bar bar-top"></span>
-            <span class="bar bar-mid"></span>
-            <span class="bar bar-bot"></span>
-        `;
-    }
 
     if (mobileMenuToggle && navLinks) {
-        mobileMenuToggle.addEventListener('click', function() {
+        mobileMenuToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
             const isOpen = navLinks.classList.toggle('active');
             mobileMenuToggle.classList.toggle('active', isOpen);
-            mobileMenuToggle.setAttribute('aria-expanded', String(isOpen));
         });
 
         document.addEventListener('click', function(e) {
             if (!mobileMenuToggle.contains(e.target) && !navLinks.contains(e.target)) {
                 navLinks.classList.remove('active');
                 mobileMenuToggle.classList.remove('active');
-                mobileMenuToggle.setAttribute('aria-expanded', 'false');
             }
         });
 
-        navLinks.querySelectorAll('a').forEach(link => {
+        navLinks.querySelectorAll('a').forEach(function(link) {
             link.addEventListener('click', function() {
                 navLinks.classList.remove('active');
                 mobileMenuToggle.classList.remove('active');
-                mobileMenuToggle.setAttribute('aria-expanded', 'false');
             });
         });
     }
     
-    const links = document.querySelectorAll('a[href^="#"]');
-    links.forEach(link => {
+    document.querySelectorAll('a[href^="#"]').forEach(function(link) {
         link.addEventListener('click', function(e) {
             const href = this.getAttribute('href');
             if (href === '#') return;
@@ -60,55 +48,48 @@ document.addEventListener('DOMContentLoaded', function() {
                 e.preventDefault();
                 const navbar = document.querySelector('.navbar');
                 const navHeight = navbar ? navbar.offsetHeight : 0;
-                const targetPosition = target.offsetTop - navHeight;
-                window.scrollTo({ top: targetPosition, behavior: 'smooth' });
+                window.scrollTo({ top: target.offsetTop - navHeight, behavior: 'smooth' });
             }
         });
     });
 
     window.addEventListener('scroll', function() {
         const navbar = document.querySelector('.navbar');
-        if (window.scrollY > 50) {
-            navbar.style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.3)';
-        } else {
-            navbar.style.boxShadow = 'none';
-        }
+        if (!navbar) return;
+        navbar.style.boxShadow = window.scrollY > 50 ? '0 2px 10px rgba(0,0,0,0.3)' : 'none';
     });
 
-    const codeBlocks = document.querySelectorAll('.code-block');
-    codeBlocks.forEach(block => {
+    document.querySelectorAll('.code-block').forEach(function(block) {
         const button = document.createElement('button');
         button.className = 'copy-button';
         button.textContent = 'Copy';
         button.setAttribute('aria-label', 'Copy code to clipboard');
-        
         button.addEventListener('click', function() {
             const lines = [...block.querySelectorAll('code')].map(c => c.textContent);
             const text = lines.join('\n');
-            navigator.clipboard.writeText(text).then(() => {
+            navigator.clipboard.writeText(text).then(function() {
                 button.textContent = 'Copied!';
                 button.classList.add('copied');
-                setTimeout(() => {
+                setTimeout(function() {
                     button.textContent = 'Copy';
                     button.classList.remove('copied');
                 }, 2000);
-            }).catch(err => {
+            }).catch(function(err) {
                 console.error('Failed to copy:', err);
             });
         });
-        
         block.appendChild(button);
     });
 
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
+    const observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
             if (entry.isIntersecting) {
                 entry.target.style.animationPlayState = 'running';
             }
         });
     }, { threshold: 0.1 });
 
-    document.querySelectorAll('.fade-in, .fade-in-up').forEach(el => {
+    document.querySelectorAll('.fade-in, .fade-in-up').forEach(function(el) {
         el.style.animationPlayState = 'paused';
         observer.observe(el);
     });
