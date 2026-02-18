@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AirLink Panel</title>
+    <meta name="description" content="Open-source game server management platform with powerful addon support">
+    <link rel="icon" href="https://raw.githubusercontent.com/airlinklabs/panel/refs/heads/main/public/uploads/favicons/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="public/main.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-brand">
+                <img src="./public/assets/plane.png" alt="AirLink" class="logo">
+                <span class="brand-name">AirLink</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#about">About</a></li>
+                <li><a href="#features">Features</a></li>
+                <li><a href="#install">Install</a></li>
+                <li><a href="#addons">Addons</a></li>
+                <li><a href="#commits">Activity</a></li>
+                <li><a href="#team">Team</a></li>
+                <li><a href="#docs">Docs</a></li>
+            </ul>
+            <div class="nav-actions">
+                <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+                    <div class="theme-toggle-circle"></div>
+                </button>
+                <a href="https://github.com/AirlinkLabs/panel" class="btn-secondary">GitHub</a>
+                <button class="mobile-menu-toggle" aria-label="Toggle menu" aria-expanded="false"></button>
+            </div>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <div class="screenshot-scroll">
+            <div class="screenshot-track">
+                <img src="public/assets/screenshot-1.jpg" alt="Dashboard" class="screenshot">
+                <img src="public/assets/screenshot-2.jpg" alt="Server Management" class="screenshot">
+                <img src="public/assets/screenshot-3.jpg" alt="Addon System" class="screenshot">
+                <img src="public/assets/screenshot-4.jpg" alt="User Interface" class="screenshot">
+                <img src="public/assets/screenshot-5.jpg" alt="Dashboard" class="screenshot">
+                <img src="public/assets/screenshot-6.jpg" alt="Server Management" class="screenshot">
+                <img src="public/assets/screenshot-1.jpg" alt="Dashboard" class="screenshot">
+                <img src="public/assets/screenshot-2.jpg" alt="Server Management" class="screenshot">
+                <img src="public/assets/screenshot-3.jpg" alt="Addon System" class="screenshot">
+                <img src="public/assets/screenshot-4.jpg" alt="User Interface" class="screenshot">
+                <img src="public/assets/screenshot-5.jpg" alt="Dashboard" class="screenshot">
+                <img src="public/assets/screenshot-6.jpg" alt="Server Management" class="screenshot">
+            </div>
+        </div>
+        <div class="hero-overlay"></div>
+        <div class="container">
+            <div class="hero-content">
+                <h1 class="fade-in">Manage game servers without the headache</h1>
+                <p class="fade-in-up delay-1">AirLink is an open-source panel that makes deploying and managing game servers straightforward. Built with TypeScript and designed to be extended through addons.</p>
+                <div class="hero-actions fade-in-up delay-2">
+                    <a href="#install" class="btn-primary large">Install Now</a>
+                    <a href="https://discord.gg/D8YbT9rDqz" class="btn-secondary large">Join Discord</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="about" class="section">
+        <div class="container">
+            <div class="section-header fade-in-up">
+                <h2>What is AirLink?</h2>
+            </div>
+            <div class="content-grid">
+                <div class="content-block fade-in-up delay-1">
+                    <p>AirLink started as a solution to a common problem: existing game server panels were either too complex, too limited, or both. We wanted something that worked well out of the box but could grow with your needs.</p>
+                    <p>The panel is built on modern tools like TypeScript and Prisma. It handles the basics like user management, server monitoring, and resource allocation. What makes it different is the addon system, which lets you add features without modifying core code.</p>
+                </div>
+                <div class="content-block fade-in-up delay-2">
+                    <p>Right now it's in active development with a small community using it for various game servers. The architecture is stable enough for production use, though we're still working on polish and additional features.</p>
+                    <p>It's MIT licensed, so you can use it however you need to. Fork it, modify it, deploy it commercially. The community has already started building addons for things like Minecraft mod management and billing integration.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="features" class="section alt">
+        <div class="container">
+            <div class="section-header fade-in-up">
+                <h2>Core Features</h2>
+            </div>
+            <div class="feature-grid">
+                <div class="feature-card fade-in-up delay-1">
+                    <h3>Server Management</h3>
+                    <p>Deploy and manage multiple game servers from a single interface. Start, stop, restart, and monitor resources in real-time.</p>
+                </div>
+                <div class="feature-card fade-in-up delay-2">
+                    <h3>User System</h3>
+                    <p>Handle permissions properly. Admin controls, user roles, and server-level access management work how you'd expect.</p>
+                </div>
+                <div class="feature-card fade-in-up delay-3">
+                    <h3>Addon Architecture</h3>
+                    <p>Extend functionality through addons. They can add routes, database tables, UI components, and integrate external services.</p>
+                </div>
+                <div class="feature-card fade-in-up delay-4">
+                    <h3>Database Migrations</h3>
+                    <p>Addons handle their own database setup. Migrations run automatically when an addon is enabled.</p>
+                </div>
+                <div class="feature-card fade-in-up delay-5">
+                    <h3>Modern Stack</h3>
+                    <p>TypeScript for type safety, Prisma for database queries, Express for routing. Standard tools, straightforward codebase.</p>
+                </div>
+                <div class="feature-card fade-in-up delay-6">
+                    <h3>REST API</h3>
+                    <p>Everything the panel does is accessible through the API. Build your own interfaces or automate deployments.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="install" class="section">
+        <div class="container">
+            <div class="section-header fade-in-up">
+                <h2>Installation</h2>
+                <p>Choose how you want to get started.</p>
+            </div>
+
+            <div id="install-wizard" class="fade-in-up delay-1">
+                <div class="install-selection">
+                    <button class="install-choice-btn btn-quick">
+                        <span class="choice-icon">⚡</span>
+                        <span class="choice-title">Quick Install</span>
+                        <span class="choice-desc">One command. Handles everything automatically including dependencies, systemd, and first-run setup.</span>
+                    </button>
+                    <button class="install-choice-btn btn-manual">
+                        <span class="choice-icon">🔧</span>
+                        <span class="choice-title">Manual Install</span>
+                        <span class="choice-desc">Step-by-step setup. Full control over each part of the installation process.</span>
+                    </button>
+                </div>
+
+                <div class="install-panel" data-panel="quick">
+                    <div class="panel-header">
+                        <button class="btn-back">← Back</button>
+                        <h3>Quick Install</h3>
+                    </div>
+                    <p style="color:var(--text-secondary);margin-bottom:16px;font-size:14px;">Run this as root. The installer sets up the panel, configures systemd, and handles all dependencies.</p>
+                    <div class="code-block">
+                        <code>bash &lt;(curl -s https://raw.githubusercontent.com/airlinklabs/panel/refs/heads/main/installer.sh)</code>
+                    </div>
+                    <p class="install-note">After installation, manage the panel with systemd:</p>
+                    <div class="code-block">
+                        <code>systemctl start airlink-panel</code>
+                        <code>systemctl stop airlink-panel</code>
+                        <code>systemctl status airlink-panel</code>
+                    </div>
+                    <div class="requirements">
+                        <h4>Requirements</h4>
+                        <ul>
+                            <li>Node.js v16 or higher</li>
+                            <li>npm v8 or higher</li>
+                            <li>PostgreSQL or MySQL</li>
+                            <li>Git</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="install-panel" data-panel="manual">
+                    <div class="panel-header">
+                        <button class="btn-back">← Back</button>
+                        <h3>Manual Install</h3>
+                    </div>
+                    <div class="install-steps">
+                        <div class="step">
+                            <span class="step-number">1</span>
+                            <div class="step-content">
+                                <h4>Clone Repository</h4>
+                                <div class="code-block">
+                                    <code>cd /var/www/</code>
+                                    <code>git clone https://github.com/AirlinkLabs/panel.git</code>
+                                    <code>cd panel</code>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <span class="step-number">2</span>
+                            <div class="step-content">
+                                <h4>Set Permissions</h4>
+                                <div class="code-block">
+                                    <code>sudo chown -R www-data:www-data /var/www/panel</code>
+                                    <code>sudo chmod -R 755 /var/www/panel</code>
+                                    <code>mv example.env .env</code>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <span class="step-number">3</span>
+                            <div class="step-content">
+                                <h4>Install Dependencies</h4>
+                                <div class="code-block">
+                                    <code>npm install -g typescript</code>
+                                    <code>npm install --omit=dev</code>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <span class="step-number">4</span>
+                            <div class="step-content">
+                                <h4>Database Setup</h4>
+                                <div class="code-block">
+                                    <code>npm run migrate:dev</code>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <span class="step-number">5</span>
+                            <div class="step-content">
+                                <h4>Build and Run</h4>
+                                <div class="code-block">
+                                    <code>npm run build-ts</code>
+                                    <code>npm run start</code>
+                                </div>
+                                <p class="install-note">For production, use pm2:</p>
+                                <div class="code-block">
+                                    <code>npm install pm2 -g</code>
+                                    <code>pm2 start dist/app.js --name "panel"</code>
+                                    <code>pm2 save &amp;&amp; pm2 startup</code>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="requirements">
+                        <h4>Requirements</h4>
+                        <ul>
+                            <li>Node.js v16 or higher</li>
+                            <li>npm v8 or higher</li>
+                            <li>PostgreSQL or MySQL</li>
+                            <li>Git</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="addons" class="section alt">
+        <div class="container">
+            <div class="section-header fade-in-up">
+                <h2>Addon System</h2>
+                <p>Addons let you extend the panel without touching core code.</p>
+            </div>
+            <div class="addon-info">
+                <div class="addon-structure fade-in-up delay-1">
+                    <h3>How Addons Work</h3>
+                    <p>Each addon lives in its own directory under <code>panel/storage/addons/</code>. When enabled, the addon gets access to the router, database, and various utilities.</p>
+                    <p>Addons can register sidebar items, add server menu entries, create their own database tables, and hook into the panel's lifecycle. The system handles loading, initialization, and cleanup automatically.</p>
+                </div>
+                <div class="addon-example fade-in-up delay-2">
+                    <h3>Basic Structure</h3>
+                    <div class="code-block">
+                        <code>my-addon/</code>
+                        <code>├── package.json</code>
+                        <code>├── index.ts</code>
+                        <code>├── views/</code>
+                        <code>│   └── main.ejs</code>
+                        <code>└── lib/</code>
+                        <code>    └── helpers.ts</code>
+                    </div>
+                </div>
+            </div>
+            <div class="addon-capabilities fade-in-up delay-3">
+                <h3>What Addons Can Do</h3>
+                <div class="capability-grid">
+                    <div class="capability">
+                        <h4>Add Routes</h4>
+                        <p>Define new endpoints and pages. Handle GET/POST requests and serve custom views.</p>
+                    </div>
+                    <div class="capability">
+                        <h4>Database Access</h4>
+                        <p>Run migrations to create tables. Use Prisma for queries or raw SQL when needed.</p>
+                    </div>
+                    <div class="capability">
+                        <h4>Modify UI</h4>
+                        <p>Add items to the sidebar, server menu, or create new sections.</p>
+                    </div>
+                    <div class="capability">
+                        <h4>External Integration</h4>
+                        <p>Connect to external APIs, payment processors, mod repositories, or any other service.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="commits" class="commits-section">
+        <div class="container">
+            <div class="section-header fade-in-up">
+                <h2>Recent Activity</h2>
+                <p>Latest commits across both repositories.</p>
+            </div>
+            <div id="commits-container">
+                <div class="commits-repo" data-repo="airlinklabs/panel">
+                    <div class="commits-repo-header">
+                        <div class="commits-repo-title">airlinklabs / panel</div>
+                        <button class="btn-view-commits" data-repo="airlinklabs/panel">View all →</button>
+                    </div>
+                    <div class="commit-list-preview" id="preview-panel">
+                        <p class="commit-loading">Loading...</p>
+                    </div>
+                </div>
+                <div class="commits-repo" data-repo="airlinklabs/daemon">
+                    <div class="commits-repo-header">
+                        <div class="commits-repo-title">airlinklabs / daemon</div>
+                        <button class="btn-view-commits" data-repo="airlinklabs/daemon">View all →</button>
+                    </div>
+                    <div class="commit-list-preview" id="preview-daemon">
+                        <p class="commit-loading">Loading...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="docs" class="section">
+        <div class="container">
+            <div class="section-header fade-in-up">
+                <h2>Documentation</h2>
+            </div>
+            <div class="docs-grid" id="docs-grid">
+                <!-- populated from manifest.json -->
+            </div>
+        </div>
+    </section>
+
+    <section id="team" class="team-hero">
+        <div class="container">
+            <h1 class="fade-in">The Team</h1>
+            <p class="fade-in-up delay-1">The people building AirLink Panel</p>
+        </div>
+    </section>
+
+    <section class="team-section">
+        <div class="container">
+            <div id="contributors-grid" class="contributors-grid">
+                <div class="loading">Loading contributors...</div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <img src="./public/assets/plane.png" alt="AirLink" class="footer-logo">
+                    <p>Open-source game server management</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Resources</h4>
+                    <ul>
+                        <li><a href="docs/quickstart/">Quick Start</a></li>
+                        <li><a href="docs/addons/">Addon Docs</a></li>
+                        <li><a href="https://github.com/AirlinkLabs/panel">GitHub</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Community</h4>
+                    <ul>
+                        <li><a href="https://discord.gg/D8YbT9rDqz">Discord</a></li>
+                        <li><a href="https://github.com/AirlinkLabs/panel/issues">Issue Tracker</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Legal</h4>
+                    <ul>
+                        <li><a href="https://github.com/AirlinkLabs/panel/blob/main/LICENSE">MIT License</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>Made by Thavanish</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="public/js/main.js"></script>
+    <script>
+    // Load docs grid from manifest and load commit previews
+    (async function() {
+        // Docs cards from manifest
+        try {
+            const manifest = await fetch('docs/manifest.json').then(r => r.json());
+            const grid = document.getElementById('docs-grid');
+            grid.innerHTML = '';
+            manifest.forEach((doc, i) => {
+                const a = document.createElement('a');
+                a.href = `docs/${doc.slug}/`;
+                a.className = `doc-card fade-in-up delay-${Math.min(i + 1, 6)}`;
+                a.innerHTML = `<h3>${doc.title}</h3><p>${doc.description}</p>`;
+                grid.appendChild(a);
+            });
+            // re-observe new cards
+            const obs = new IntersectionObserver(entries => {
+                entries.forEach(e => { if (e.isIntersecting) { e.target.style.animationPlayState = 'running'; obs.unobserve(e.target); } });
+            }, { threshold: 0.1 });
+            grid.querySelectorAll('.doc-card').forEach(el => { el.style.animationPlayState = 'paused'; obs.observe(el); });
+        } catch {}
+
+        // Commit previews (latest 3 per repo)
+        const repos = [
+            { repo: 'airlinklabs/panel', el: document.getElementById('preview-panel') },
+            { repo: 'airlinklabs/daemon', el: document.getElementById('preview-daemon') }
+        ];
+
+        for (const { repo, el } of repos) {
+            if (!el) continue;
+            try {
+                const commits = await fetch(`https://api.github.com/repos/${repo}/commits?per_page=3`).then(r => r.ok ? r.json() : []);
+                el.innerHTML = '';
+                commits.forEach((c, i) => {
+                    const date = new Date(c.commit.author.date);
+                    const msg = c.commit.message.split('\n')[0];
+                    const author = c.author?.login || c.commit.author.name;
+                    const avatar = c.author?.avatar_url || '';
+                    const sha = c.sha.slice(0, 7);
+                    const div = document.createElement('div');
+                    div.className = 'commit-item' + (i === 0 ? ' commit-latest' : '');
+                    div.innerHTML = `
+                        ${i === 0 ? '<span class="commit-badge">Latest</span>' : ''}
+                        <div class="commit-meta">
+                            ${avatar ? `<img src="${avatar}" class="commit-avatar" onerror="this.style.display='none'">` : ''}
+                            <span class="commit-author">${author}</span>
+                            <span class="commit-time">${timeAgoInline(date)}</span>
+                            <span class="commit-date">${date.toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'})}</span>
+                        </div>
+                        <a href="${c.html_url}" class="commit-msg" target="_blank" rel="noopener noreferrer">${escInline(msg)}</a>
+                        <span class="commit-sha">${sha}</span>
+                    `;
+                    el.appendChild(div);
+                });
+            } catch {
+                el.innerHTML = '<p class="commit-error">Could not load commits.</p>';
+            }
+        }
+
+        function timeAgoInline(d) {
+            const s = Math.floor((Date.now() - d) / 1000);
+            if (s < 60) return s + 's ago';
+            if (s < 3600) return Math.floor(s/60) + 'm ago';
+            if (s < 86400) return Math.floor(s/3600) + 'h ago';
+            if (s < 2592000) return Math.floor(s/86400) + 'd ago';
+            return Math.floor(s/2592000) + 'mo ago';
+        }
+        function escInline(str) {
+            return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+        }
+    })();
+    </script>
+</body>
+</html>
