@@ -2,8 +2,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const html = document.documentElement;
     const themeToggle = document.getElementById('themeToggle');
 
-    const savedTheme = localStorage.getItem('theme') || 'dark';
-    html.setAttribute('data-theme', savedTheme);
+    html.setAttribute('data-theme', localStorage.getItem('theme') || 'dark');
 
     if (themeToggle) {
         themeToggle.addEventListener('click', function() {
@@ -33,20 +32,16 @@ document.addEventListener('DOMContentLoaded', function() {
             mobileMenuToggle.classList.toggle('active', open);
             mobileMenuToggle.setAttribute('aria-expanded', String(open));
         });
-
         document.addEventListener('click', function(e) {
             if (!mobileMenuToggle.contains(e.target) && !navLinks.contains(e.target)) {
                 navLinks.classList.remove('active');
                 mobileMenuToggle.classList.remove('active');
-                mobileMenuToggle.setAttribute('aria-expanded', 'false');
             }
         });
-
         navLinks.querySelectorAll('a').forEach(link => {
             link.addEventListener('click', function() {
                 navLinks.classList.remove('active');
                 mobileMenuToggle.classList.remove('active');
-                mobileMenuToggle.setAttribute('aria-expanded', 'false');
             });
         });
     }
@@ -59,8 +54,8 @@ document.addEventListener('DOMContentLoaded', function() {
             const target = document.querySelector(href);
             if (target) {
                 e.preventDefault();
-                const navHeight = document.querySelector('.navbar')?.offsetHeight || 0;
-                window.scrollTo({ top: target.offsetTop - navHeight, behavior: 'smooth' });
+                const navH = document.querySelector('.navbar')?.offsetHeight || 0;
+                window.scrollTo({ top: target.offsetTop - navH, behavior: 'smooth' });
             }
         });
     });
@@ -75,61 +70,50 @@ document.addEventListener('DOMContentLoaded', function() {
         const btn = document.createElement('button');
         btn.className = 'copy-button';
         btn.textContent = 'Copy';
-        btn.setAttribute('aria-label', 'Copy code to clipboard');
         btn.addEventListener('click', function() {
             const text = [...block.querySelectorAll('code')].map(c => c.textContent).join('\n');
             navigator.clipboard.writeText(text).then(() => {
                 btn.textContent = 'Copied!';
                 btn.classList.add('copied');
                 setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
-            }).catch(err => console.error('Copy failed:', err));
+            });
         });
         block.appendChild(btn);
     });
 
-    // Adaptive scroll reveal - speeds up when scrolling fast
-    let lastScrollY = window.scrollY;
-    let scrollVelocity = 0;
-    let velocityTimer;
-
+    // Adaptive scroll reveal
+    let lastY = window.scrollY;
+    let velocity = 0;
+    let velTimer;
     window.addEventListener('scroll', function() {
-        const current = window.scrollY;
-        scrollVelocity = Math.abs(current - lastScrollY);
-        lastScrollY = current;
-        clearTimeout(velocityTimer);
-        velocityTimer = setTimeout(() => { scrollVelocity = 0; }, 100);
+        velocity = Math.abs(window.scrollY - lastY);
+        lastY = window.scrollY;
+        clearTimeout(velTimer);
+        velTimer = setTimeout(() => { velocity = 0; }, 120);
     }, { passive: true });
 
-    const revealObserver = new IntersectionObserver((entries) => {
+    const revealObs = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                // Fast scroll = instant reveal, slow scroll = animated
-                const fast = scrollVelocity > 40;
-                const el = entry.target;
-                if (fast) {
-                    el.style.transition = 'none';
-                    el.style.opacity = '1';
-                    el.style.transform = 'none';
-                } else {
-                    el.style.animationPlayState = 'running';
-                }
-                revealObserver.unobserve(el);
+            if (!entry.isIntersecting) return;
+            const el = entry.target;
+            if (velocity > 40) {
+                el.style.transition = 'none';
+                el.style.opacity = '1';
+                el.style.transform = 'none';
+            } else {
+                el.style.animationPlayState = 'running';
             }
+            revealObs.unobserve(el);
         });
     }, { threshold: 0.08 });
 
     document.querySelectorAll('.fade-in, .fade-in-up').forEach(el => {
         el.style.animationPlayState = 'paused';
-        revealObserver.observe(el);
+        revealObs.observe(el);
     });
 
-    // Install wizard
     initInstallWizard();
-
-    // Commits section
-    loadCommits();
-
-    // Contributors
+    initCommits();
     loadContributors();
 });
 
@@ -141,7 +125,7 @@ function initInstallWizard() {
     const quickPanel = wizard.querySelector('.install-panel[data-panel="quick"]');
     const manualPanel = wizard.querySelector('.install-panel[data-panel="manual"]');
 
-    function showPanel(panel) {
+    function show(panel) {
         selection.style.display = 'none';
         quickPanel.style.display = 'none';
         manualPanel.style.display = 'none';
@@ -150,92 +134,109 @@ function initInstallWizard() {
         setTimeout(() => panel.classList.remove('panel-enter'), 300);
     }
 
-    function showSelection() {
+    function reset() {
         quickPanel.style.display = 'none';
         manualPanel.style.display = 'none';
         selection.style.display = 'flex';
     }
 
-    wizard.querySelector('.btn-quick').addEventListener('click', () => showPanel(quickPanel));
-    wizard.querySelector('.btn-manual').addEventListener('click', () => showPanel(manualPanel));
-    wizard.querySelectorAll('.btn-back').forEach(btn => btn.addEventListener('click', showSelection));
+    wizard.querySelector('.btn-quick').addEventListener('click', () => show(quickPanel));
+    wizard.querySelector('.btn-manual').addEventListener('click', () => show(manualPanel));
+    wizard.querySelectorAll('.btn-back').forEach(b => b.addEventListener('click', reset));
 }
 
-async function loadCommits() {
-    const container = document.getElementById('commits-container');
-    if (!container) return;
+// ── Commits popup ────────────────────────────────────────────────────
+let commitsCache = {};
 
-    const repos = ['airlinklabs/panel', 'airlinklabs/daemon'];
+function initCommits() {
+    // Create popup DOM once
+    const overlay = document.createElement('div');
+    overlay.className = 'commits-overlay';
+    overlay.innerHTML = `
+        <div class="commits-popup">
+            <div class="commits-popup-header">
+                <div>
+                    <div class="commits-popup-repo" id="popup-repo-name"></div>
+                    <div class="commits-popup-subtitle">Commit history</div>
+                </div>
+                <button class="commits-popup-close" aria-label="Close">✕</button>
+            </div>
+            <div class="commits-popup-body" id="popup-body">
+                <p class="commit-loading">Loading commits...</p>
+            </div>
+        </div>
+    `;
+    document.body.appendChild(overlay);
 
-    for (const repo of repos) {
-        const section = container.querySelector(`[data-repo="${repo}"]`);
-        if (!section) continue;
+    const popupBody = overlay.querySelector('#popup-body');
+    const popupRepoName = overlay.querySelector('#popup-repo-name');
 
-        const list = section.querySelector('.commit-list');
-        const toggleBtn = section.querySelector('.btn-show-more');
+    function closePopup() {
+        overlay.classList.remove('active');
+        document.body.style.overflow = '';
+    }
 
-        let allCommits = [];
-        let showing = 1;
+    overlay.addEventListener('click', function(e) {
+        if (e.target === overlay) closePopup();
+    });
+    overlay.querySelector('.commits-popup-close').addEventListener('click', closePopup);
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') closePopup();
+    });
 
-        try {
-            const res = await fetch(`https://api.github.com/repos/${repo}/commits?per_page=10`);
-            if (!res.ok) throw new Error('fetch failed');
-            allCommits = await res.json();
-        } catch {
-            list.innerHTML = '<p class="commit-error">Could not load commits.</p>';
-            continue;
-        }
+    async function openPopup(repo) {
+        overlay.classList.add('active');
+        document.body.style.overflow = 'hidden';
+        popupRepoName.textContent = repo;
+        popupBody.innerHTML = '<p class="commit-loading">Loading commits...</p>';
 
-        function renderCommits() {
-            list.innerHTML = '';
-            allCommits.slice(0, showing).forEach((c, i) => {
-                const date = new Date(c.commit.author.date);
-                const rel = timeAgo(date);
-                const msg = c.commit.message.split('\n')[0];
-                const author = c.author?.login || c.commit.author.name;
-                const avatar = c.author?.avatar_url || '';
-                const sha = c.sha.slice(0, 7);
-                const url = c.html_url;
-
-                const el = document.createElement('div');
-                el.className = 'commit-item' + (i === 0 ? ' commit-latest' : '');
-                el.innerHTML = `
-                    ${i === 0 ? '<span class="commit-badge">Latest</span>' : ''}
-                    <div class="commit-meta">
-                        ${avatar ? `<img src="${avatar}" alt="${author}" class="commit-avatar" onerror="this.style.display='none'">` : ''}
-                        <span class="commit-author">${author}</span>
-                        <span class="commit-time">${rel}</span>
-                        <span class="commit-date">${date.toLocaleDateString('en-GB', { day:'numeric', month:'short', year:'numeric' })}</span>
-                    </div>
-                    <a href="${url}" class="commit-msg" target="_blank" rel="noopener noreferrer">${escHtml(msg)}</a>
-                    <span class="commit-sha">${sha}</span>
-                `;
-                list.appendChild(el);
-            });
-
-            if (toggleBtn) {
-                if (showing < allCommits.length) {
-                    toggleBtn.style.display = 'inline-flex';
-                    toggleBtn.textContent = `Show ${Math.min(5, allCommits.length - showing)} more`;
-                } else {
-                    toggleBtn.textContent = 'Show less';
-                }
+        let commits = commitsCache[repo];
+        if (!commits) {
+            try {
+                const r = await fetch(`https://api.github.com/repos/${repo}/commits?per_page=30`);
+                commits = r.ok ? await r.json() : [];
+                commitsCache[repo] = commits;
+            } catch {
+                commits = [];
             }
         }
 
-        renderCommits();
-
-        if (toggleBtn) {
-            toggleBtn.addEventListener('click', function() {
-                if (showing < allCommits.length) {
-                    showing = Math.min(showing + 5, allCommits.length);
-                } else {
-                    showing = 1;
-                }
-                renderCommits();
-            });
+        if (!commits.length) {
+            popupBody.innerHTML = '<p class="commit-error">Could not load commits.</p>';
+            return;
         }
+
+        popupBody.innerHTML = '';
+        commits.forEach((c, i) => {
+            const date = new Date(c.commit.author.date);
+            const msg = c.commit.message.split('\n')[0];
+            const author = c.author?.login || c.commit.author.name;
+            const avatar = c.author?.avatar_url || '';
+            const sha = c.sha.slice(0, 7);
+
+            const el = document.createElement('div');
+            el.className = 'commit-item' + (i === 0 ? ' commit-latest' : '');
+            el.innerHTML = `
+                ${i === 0 ? '<span class="commit-badge">Latest</span>' : ''}
+                <div class="commit-meta">
+                    ${avatar ? `<img src="${avatar}" alt="${escHtml(author)}" class="commit-avatar" onerror="this.style.display='none'">` : ''}
+                    <span class="commit-author">${escHtml(author)}</span>
+                    <span class="commit-time">${timeAgo(date)}</span>
+                    <span class="commit-date">${date.toLocaleDateString('en-GB', { day:'numeric', month:'short', year:'numeric' })}</span>
+                </div>
+                <a href="${c.html_url}" class="commit-msg" target="_blank" rel="noopener noreferrer">${escHtml(msg)}</a>
+                <span class="commit-sha">${sha}</span>
+            `;
+            popupBody.appendChild(el);
+        });
     }
+
+    // Wire up the "View commits" buttons in the commits section
+    document.querySelectorAll('.btn-view-commits').forEach(btn => {
+        btn.addEventListener('click', function() {
+            openPopup(this.dataset.repo);
+        });
+    });
 }
 
 async function loadContributors() {
@@ -265,7 +266,6 @@ async function loadContributors() {
             return;
         }
 
-        // Fetch user details for join date etc
         const userDetails = await Promise.all(
             unique.map(c =>
                 fetch(`https://api.github.com/users/${c.login}`)
@@ -295,30 +295,26 @@ async function loadContributors() {
             card.className = `contributor-card fade-in-up delay-${Math.min((i % 6) + 1, 6)}`;
             card.innerHTML = `
                 <div class="contributor-avatar">
-                    <img src="${contributor.avatar_url}" alt="${name}" onerror="this.parentElement.innerText='${initials}'" loading="lazy">
+                    <img src="${contributor.avatar_url}" alt="${escHtml(name)}" onerror="this.parentElement.innerText='${initials}'" loading="lazy">
                 </div>
-                <h3 class="contributor-name">${name}</h3>
-                <div class="contributor-role">${role}</div>
-                ${tagline ? `<div class="contributor-tagline">"${tagline}"</div>` : ''}
+                <h3 class="contributor-name">${escHtml(name)}</h3>
+                <div class="contributor-role">${escHtml(role)}</div>
+                ${tagline ? `<div class="contributor-tagline">"${escHtml(tagline)}"</div>` : ''}
                 ${about ? `<p class="contributor-about">${escHtml(about)}</p>` : ''}
                 <div class="contributor-stats">
-                    ${location ? `<span title="Location">📍 ${escHtml(location)}</span>` : ''}
-                    ${joined ? `<span title="Joined GitHub">🗓 Since ${joined}</span>` : ''}
-                    ${publicRepos !== null ? `<span title="Public repos">📦 ${publicRepos} repos</span>` : ''}
-                    ${followers !== null ? `<span title="Followers">👥 ${followers} followers</span>` : ''}
+                    ${location ? `<span>📍 ${escHtml(location)}</span>` : ''}
+                    ${joined ? `<span>🗓 Since ${joined}</span>` : ''}
+                    ${publicRepos !== null ? `<span>📦 ${publicRepos} repos</span>` : ''}
+                    ${followers !== null ? `<span>👥 ${followers} followers</span>` : ''}
                 </div>
                 <a href="${contributor.html_url}" class="contributor-github" target="_blank" rel="noopener noreferrer">@${username}</a>
             `;
             grid.appendChild(card);
         });
 
-        // Re-observe new cards for reveal animation
         const obs = new IntersectionObserver((entries) => {
             entries.forEach(e => {
-                if (e.isIntersecting) {
-                    e.target.style.animationPlayState = 'running';
-                    obs.unobserve(e.target);
-                }
+                if (e.isIntersecting) { e.target.style.animationPlayState = 'running'; obs.unobserve(e.target); }
             });
         }, { threshold: 0.1 });
 
@@ -344,9 +340,5 @@ function timeAgo(date) {
 }
 
 function escHtml(str) {
-    return String(str)
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;');
+    return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
