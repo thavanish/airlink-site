@@ -1,10 +1,10 @@
 function initInstallWizard() {
-    const wizard = document.getElementById('install-wizard');
+    var wizard = document.getElementById('install-wizard');
     if (!wizard) return;
 
-    const selection   = wizard.querySelector('.install-selection');
-    const quickPanel  = wizard.querySelector('.install-panel[data-panel="quick"]');
-    const manualPanel = wizard.querySelector('.install-panel[data-panel="manual"]');
+    var selection   = wizard.querySelector('.install-selection');
+    var quickPanel  = wizard.querySelector('.install-panel[data-panel="quick"]');
+    var manualPanel = wizard.querySelector('.install-panel[data-panel="manual"]');
 
     function showPanel(panel) {
         selection.style.display   = 'none';
@@ -12,7 +12,7 @@ function initInstallWizard() {
         manualPanel.style.display = 'none';
         panel.style.display = 'block';
         panel.classList.add('panel-enter');
-        setTimeout(() => panel.classList.remove('panel-enter'), 300);
+        setTimeout(function() { panel.classList.remove('panel-enter'); }, 300);
     }
 
     function showSelection() {
@@ -21,9 +21,9 @@ function initInstallWizard() {
         selection.style.display   = 'flex';
     }
 
-    wizard.querySelector('.btn-quick').addEventListener('click',  () => showPanel(quickPanel));
-    wizard.querySelector('.btn-manual').addEventListener('click', () => showPanel(manualPanel));
-    wizard.querySelectorAll('.btn-back').forEach(btn => btn.addEventListener('click', showSelection));
+    wizard.querySelector('.btn-quick').addEventListener('click',  function() { showPanel(quickPanel); });
+    wizard.querySelector('.btn-manual').addEventListener('click', function() { showPanel(manualPanel); });
+    wizard.querySelectorAll('.btn-back').forEach(function(btn) { btn.addEventListener('click', showSelection); });
 }
 
 initInstallWizard();
