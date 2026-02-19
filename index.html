@@ -15,19 +15,26 @@
 
     <nav class="navbar">
         <div class="container">
-            <div class="nav-brand">
+            <a class="nav-brand" href="index.html">
                 <img src="public/assets/plane.png" alt="AirLink" class="logo">
-                <span class="brand-name">AirLink</span>
-            </div>
+                <div class="brand-text">
+                    <span class="brand-name">AirLink</span>
+                    <span class="brand-version">v1.0.0 beta</span>
+                </div>
+            </a>
+
             <ul class="nav-links">
                 <li><a href="#about">About</a></li>
                 <li><a href="#features">Features</a></li>
                 <li><a href="#install">Install</a></li>
                 <li><a href="#addons">Addons</a></li>
+                <div class="nav-divider"></div>
                 <li><a href="#commits">Activity</a></li>
                 <li><a href="#team">Team</a></li>
-                <li><a href="#docs">Docs</a></li>
+                <div class="nav-divider"></div>
+                <li><button class="btn-nav-docs" id="btn-docs-explorer">📖 Docs</button></li>
             </ul>
+
             <div class="nav-actions">
                 <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
                     <div class="theme-toggle-circle"></div>
@@ -38,6 +45,7 @@
         </div>
     </nav>
 
+    <!-- Hero -->
     <section class="hero">
         <div class="screenshot-scroll">
             <div class="screenshot-track">
@@ -47,7 +55,6 @@
                 <img src="public/assets/screenshot-4.jpg" alt="User Interface"    class="screenshot">
                 <img src="public/assets/screenshot-5.jpg" alt="Dashboard"         class="screenshot">
                 <img src="public/assets/screenshot-6.jpg" alt="Server Management" class="screenshot">
-                <!-- duplicated for seamless loop -->
                 <img src="public/assets/screenshot-1.jpg" alt="Dashboard"         class="screenshot">
                 <img src="public/assets/screenshot-2.jpg" alt="Server Management" class="screenshot">
                 <img src="public/assets/screenshot-3.jpg" alt="Addon System"      class="screenshot">
@@ -59,7 +66,7 @@
         <div class="hero-overlay"></div>
         <div class="container">
             <div class="hero-content">
-                <h1 class="fade-in">Manage game servers without the headache</h1>
+                <h1 class="fade-in">Manage game servers<br>without the headache</h1>
                 <p class="fade-in-up delay-1">AirLink is an open-source panel that makes deploying and managing game servers straightforward. Built with TypeScript and designed to be extended through addons.</p>
                 <div class="hero-actions fade-in-up delay-2">
                     <a href="#install" class="btn-primary large">Install Now</a>
@@ -69,6 +76,7 @@
         </div>
     </section>
 
+    <!-- About -->
     <section id="about" class="section">
         <div class="container">
             <div class="section-header fade-in-up">
@@ -77,59 +85,109 @@
             <div class="content-grid">
                 <div class="content-block fade-in-up delay-1">
                     <p>AirLink started as a solution to a common problem: existing game server panels were either too complex, too limited, or both. We wanted something that worked well out of the box but could grow with your needs.</p>
-                    <p>The panel is built on modern tools like TypeScript and Prisma. It handles the basics like user management, server monitoring, and resource allocation. What makes it different is the addon system, which lets you add features without modifying core code.</p>
+                    <p>The panel is built on modern tools like TypeScript and Prisma. It handles the basics like user management, server monitoring, and resource allocation. What makes it different is the addon system.</p>
                 </div>
                 <div class="content-block fade-in-up delay-2">
                     <p>Right now it's in active development with a small community using it for various game servers. The architecture is stable enough for production use, though we're still working on polish and additional features.</p>
-                    <p>It's MIT licensed, so you can use it however you need to. Fork it, modify it, deploy it commercially. The community has already started building addons for things like Minecraft mod management and billing integration.</p>
+                    <p>It's MIT licensed — fork it, modify it, deploy it commercially. The community has already started building addons for Minecraft mod management and billing integration.</p>
                 </div>
             </div>
         </div>
     </section>
 
+    <!-- Features — cards are clickable, data-img points to feature screenshot -->
     <section id="features" class="section alt">
         <div class="container">
             <div class="section-header fade-in-up">
                 <h2>Core Features</h2>
+                <p>Click any card to learn more.</p>
             </div>
             <div class="feature-grid">
-                <div class="feature-card fade-in-up delay-1">
+
+                <div class="feature-card fade-in-up delay-1"
+                    data-title="Server Management"
+                    data-img="public/assets/feature-servers.jpg"
+                    data-icon="🖥️"
+                    data-desc="Deploy and manage multiple game servers from a single interface."
+                    data-longdesc="Start, stop, restart, and monitor resources in real-time. The dashboard gives you a clear view of CPU, memory, and disk usage across all your servers. Supports one-click server creation with pre-configured game templates.">
+                    <span class="feature-card-icon">🖥️</span>
                     <h3>Server Management</h3>
-                    <p>Deploy and manage multiple game servers from a single interface. Start, stop, restart, and monitor resources in real-time.</p>
+                    <p>Deploy and manage multiple game servers from a single interface.</p>
+                    <div class="feature-card-hint">Click to learn more →</div>
                 </div>
-                <div class="feature-card fade-in-up delay-2">
+
+                <div class="feature-card fade-in-up delay-2"
+                    data-title="User System"
+                    data-img="public/assets/feature-users.jpg"
+                    data-icon="👥"
+                    data-desc="Handle permissions properly with granular access control."
+                    data-longdesc="Admin controls, user roles, and server-level access management work how you'd expect. Assign sub-users to specific servers with read-only or full access. All authentication is session-based with CSRF protection.">
+                    <span class="feature-card-icon">👥</span>
                     <h3>User System</h3>
-                    <p>Handle permissions properly. Admin controls, user roles, and server-level access management work how you'd expect.</p>
+                    <p>Handle permissions properly with granular access control.</p>
+                    <div class="feature-card-hint">Click to learn more →</div>
                 </div>
-                <div class="feature-card fade-in-up delay-3">
+
+                <div class="feature-card fade-in-up delay-3"
+                    data-title="Addon Architecture"
+                    data-img="public/assets/feature-addons.jpg"
+                    data-icon="🧩"
+                    data-desc="Extend functionality through addons without touching core code."
+                    data-longdesc="Addons can add routes, database tables, UI components, and integrate external services. They get access to the full panel API including the router, Prisma ORM, logger, and UI registration system. The addon lifecycle is fully managed by the panel.">
+                    <span class="feature-card-icon">🧩</span>
                     <h3>Addon Architecture</h3>
-                    <p>Extend functionality through addons. They can add routes, database tables, UI components, and integrate external services.</p>
+                    <p>Extend functionality through addons without touching core code.</p>
+                    <div class="feature-card-hint">Click to learn more →</div>
                 </div>
-                <div class="feature-card fade-in-up delay-4">
+
+                <div class="feature-card fade-in-up delay-4"
+                    data-title="Database Migrations"
+                    data-img="public/assets/feature-migrations.jpg"
+                    data-icon="🗄️"
+                    data-desc="Addons handle their own database schema automatically."
+                    data-longdesc="Define migrations in your addon's package.json and they run automatically when the addon is enabled. Applied migrations are tracked so they never run twice. Supports SQLite, MySQL, and PostgreSQL through Prisma.">
+                    <span class="feature-card-icon">🗄️</span>
                     <h3>Database Migrations</h3>
-                    <p>Addons handle their own database setup. Migrations run automatically when an addon is enabled.</p>
+                    <p>Addons handle their own database schema automatically.</p>
+                    <div class="feature-card-hint">Click to learn more →</div>
                 </div>
-                <div class="feature-card fade-in-up delay-5">
+
+                <div class="feature-card fade-in-up delay-5"
+                    data-title="Modern Stack"
+                    data-img="public/assets/feature-stack.jpg"
+                    data-icon="⚡"
+                    data-desc="TypeScript, Prisma, Express — standard tools, clean codebase."
+                    data-longdesc="TypeScript gives you type safety across the whole codebase. Prisma handles database queries with full type inference. Express keeps routing straightforward. The whole stack is easy to understand if you already know Node.js, so contributions come naturally.">
+                    <span class="feature-card-icon">⚡</span>
                     <h3>Modern Stack</h3>
-                    <p>TypeScript for type safety, Prisma for database queries, Express for routing. Standard tools, straightforward codebase.</p>
+                    <p>TypeScript, Prisma, Express — standard tools, clean codebase.</p>
+                    <div class="feature-card-hint">Click to learn more →</div>
                 </div>
-                <div class="feature-card fade-in-up delay-6">
+
+                <div class="feature-card fade-in-up delay-6"
+                    data-title="REST API"
+                    data-img="public/assets/feature-api.jpg"
+                    data-icon="🔌"
+                    data-desc="Everything the panel does is accessible through the API."
+                    data-longdesc="Build your own client interfaces, automate server deployments, or integrate AirLink with external tools. All API endpoints return consistent JSON with proper HTTP status codes. Authentication uses the same session tokens as the UI.">
+                    <span class="feature-card-icon">🔌</span>
                     <h3>REST API</h3>
-                    <p>Everything the panel does is accessible through the API. Build your own interfaces or automate deployments.</p>
+                    <p>Everything the panel does is accessible through the API.</p>
+                    <div class="feature-card-hint">Click to learn more →</div>
                 </div>
+
             </div>
         </div>
     </section>
 
+    <!-- Install -->
     <section id="install" class="section">
         <div class="container">
             <div class="section-header fade-in-up">
                 <h2>Installation</h2>
                 <p>Choose how you want to get started.</p>
             </div>
-
             <div id="install-wizard" class="fade-in-up delay-1">
-
                 <div class="install-selection">
                     <button class="install-choice-btn btn-quick">
                         <span class="choice-icon">⚡</span>
@@ -148,7 +206,7 @@
                         <button class="btn-back">← Back</button>
                         <h3>Quick Install</h3>
                     </div>
-                    <p style="color:var(--text-secondary);margin-bottom:16px;font-size:14px;">Run this as root. Sets up the panel, configures systemd, and handles all dependencies.</p>
+                    <p style="color:var(--text-secondary);margin-bottom:14px;font-size:14px;">Run as root. Sets up the panel, configures systemd, and handles all dependencies.</p>
                     <div class="code-block">
                         <code>bash &lt;(curl -s https://raw.githubusercontent.com/airlinklabs/panel/refs/heads/main/installer.sh)</code>
                     </div>
@@ -243,22 +301,22 @@
                         </ul>
                     </div>
                 </div>
-
             </div>
         </div>
     </section>
 
+    <!-- Addons -->
     <section id="addons" class="section alt">
         <div class="container">
             <div class="section-header fade-in-up">
                 <h2>Addon System</h2>
-                <p>Addons let you extend the panel without touching core code.</p>
+                <p>Extend the panel without touching core code.</p>
             </div>
             <div class="addon-info">
                 <div class="addon-structure fade-in-up delay-1">
                     <h3>How Addons Work</h3>
                     <p>Each addon lives in its own directory under <code>panel/storage/addons/</code>. When enabled, the addon gets access to the router, database, and various utilities.</p>
-                    <p>Addons can register sidebar items, add server menu entries, create their own database tables, and hook into the panel's lifecycle. The system handles loading, initialization, and cleanup automatically.</p>
+                    <p>Addons can register sidebar items, add server menu entries, create their own database tables, and hook into the panel's lifecycle automatically.</p>
                 </div>
                 <div class="addon-example fade-in-up delay-2">
                     <h3>Basic Structure</h3>
@@ -290,13 +348,14 @@
                     </div>
                     <div class="capability">
                         <h4>External Integration</h4>
-                        <p>Connect to external APIs, payment processors, mod repositories, or any other service.</p>
+                        <p>Connect to external APIs, payment processors, mod repositories, or any service.</p>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
+    <!-- Activity / Commits -->
     <section id="commits" class="commits-section">
         <div class="container">
             <div class="section-header fade-in-up">
@@ -307,7 +366,7 @@
                 <div class="commits-repo">
                     <div class="commits-repo-header">
                         <div class="commits-repo-title">airlinklabs / panel</div>
-                        <button class="btn-view-commits" data-repo="airlinklabs/panel">View all →</button>
+                        <button class="btn-view-commits" data-repo="airlinklabs/panel">View history →</button>
                     </div>
                     <div class="commit-list-preview" id="preview-panel">
                         <p class="commit-loading">Loading...</p>
@@ -316,7 +375,7 @@
                 <div class="commits-repo">
                     <div class="commits-repo-header">
                         <div class="commits-repo-title">airlinklabs / daemon</div>
-                        <button class="btn-view-commits" data-repo="airlinklabs/daemon">View all →</button>
+                        <button class="btn-view-commits" data-repo="airlinklabs/daemon">View history →</button>
                     </div>
                     <div class="commit-list-preview" id="preview-daemon">
                         <p class="commit-loading">Loading...</p>
@@ -326,21 +385,31 @@
         </div>
     </section>
 
-    <section id="docs" class="section">
+    <!-- Team -->
+    <section id="team" class="team-intro">
         <div class="container">
-            <div class="section-header fade-in-up">
-                <h2>Documentation</h2>
-            </div>
-            <div class="docs-grid" id="docs-grid">
-                <!-- populated from docs/manifest.json by main.js -->
+            <div class="team-intro-inner fade-in-up">
+                <h1>The Team</h1>
+                <p>The people building and maintaining AirLink Panel</p>
             </div>
         </div>
-    </section>
-
-    <section id="team" class="team-hero">
-        <div class="container">
-            <h1 class="fade-in">The Team</h1>
-            <p class="fade-in-up delay-1">The people building AirLink Panel</p>
+        <div class="team-stats" id="team-stats">
+            <div class="team-stat">
+                <span class="team-stat-num" id="stat-contributors">—</span>
+                <span class="team-stat-label">Contributors</span>
+            </div>
+            <div class="team-stat">
+                <span class="team-stat-num" id="stat-commits">—</span>
+                <span class="team-stat-label">Total Commits</span>
+            </div>
+            <div class="team-stat">
+                <span class="team-stat-num" id="stat-stars">—</span>
+                <span class="team-stat-label">GitHub Stars</span>
+            </div>
+            <div class="team-stat">
+                <span class="team-stat-num" id="stat-repos">2</span>
+                <span class="team-stat-label">Repositories</span>
+            </div>
         </div>
     </section>
 
@@ -360,6 +429,14 @@
                     <p>Open-source game server management</p>
                 </div>
                 <div class="footer-section">
+                    <h4>Product</h4>
+                    <ul>
+                        <li><a href="#features">Features</a></li>
+                        <li><a href="#install">Installation</a></li>
+                        <li><a href="#addons">Addons</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
                     <h4>Resources</h4>
                     <ul>
                         <li><a href="docs/quickstart/">Quick Start</a></li>
@@ -371,7 +448,7 @@
                     <h4>Community</h4>
                     <ul>
                         <li><a href="https://discord.gg/D8YbT9rDqz">Discord</a></li>
-                        <li><a href="https://github.com/AirlinkLabs/panel/issues">Issue Tracker</a></li>
+                        <li><a href="https://github.com/AirlinkLabs/panel/issues">Issues</a></li>
                     </ul>
                 </div>
                 <div class="footer-section">
@@ -382,7 +459,7 @@
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>Made by Thavanish</p>
+                <p>Made by Thavanish &nbsp;·&nbsp; AirLink Panel v1.0.0 beta</p>
             </div>
         </div>
     </footer>
@@ -393,6 +470,24 @@
     <script src="public/js/commits.js"></script>
     <script src="public/js/contributors.js"></script>
     <script src="public/js/main.js"></script>
+
+    <script>
+    // Team stats — fetch alongside contributors
+    (async function() {
+        try {
+            var repos = ['airlinklabs/panel', 'airlinklabs/daemon'];
+            var data  = await Promise.all(repos.map(function(r) {
+                return fetch('https://api.github.com/repos/' + r).then(function(res) { return res.ok ? res.json() : null; }).catch(function() { return null; });
+            }));
+
+            var totalStars   = data.reduce(function(s, d) { return s + (d ? d.stargazers_count : 0); }, 0);
+            var totalCommits = '—'; // GitHub API doesn't give total commits easily; skip
+
+            var el = document.getElementById('stat-stars');
+            if (el) el.textContent = totalStars || '—';
+        } catch (e) {}
+    })();
+    </script>
 
 </body>
 </html>

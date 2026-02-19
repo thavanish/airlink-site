@@ -14,15 +14,19 @@
 
     <nav class="navbar">
         <div class="container">
-            <div class="nav-brand">
+            <a class="nav-brand" href="../../index.html">
                 <img src="../../public/assets/plane.png" alt="AirLink" class="logo">
-                <span class="brand-name">AirLink</span>
-            </div>
+                <div class="brand-text">
+                    <span class="brand-name">AirLink</span>
+                    <span class="brand-version">v1.0.0 beta</span>
+                </div>
+            </a>
             <ul class="nav-links">
                 <li><a href="../../index.html">Home</a></li>
                 <li><a href="../../index.html#features">Features</a></li>
                 <li><a href="../../index.html#install">Install</a></li>
                 <li><a href="../../index.html#addons">Addons</a></li>
+                <div class="nav-divider"></div>
                 <li><a href="../../index.html#team">Team</a></li>
             </ul>
             <div class="nav-actions">
@@ -48,7 +52,7 @@
             <div class="docs-breadcrumb">
                 <a href="../../index.html">Home</a>
                 <span>/</span>
-                <a href="../">Docs</a>
+                <a href="../" onclick="history.back();return false;">Docs</a>
                 <span>/</span>
                 <span id="breadcrumb-title">Database Migrations</span>
             </div>
