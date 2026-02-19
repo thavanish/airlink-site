@@ -1,16 +1,18 @@
 function initTheme() {
-    const html = document.documentElement;
-    const btn = document.getElementById('themeToggle');
+    var html = document.documentElement;
+    var btn  = document.getElementById('themeToggle');
 
-    html.setAttribute('data-theme', localStorage.getItem('theme') || 'dark');
+    // Apply saved theme immediately
+    var saved = localStorage.getItem('theme') || 'dark';
+    html.setAttribute('data-theme', saved);
 
-    if (btn) {
-        btn.addEventListener('click', function() {
-            const next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-            html.setAttribute('data-theme', next);
-            localStorage.setItem('theme', next);
-        });
-    }
+    if (!btn) return;
+
+    btn.addEventListener('click', function() {
+        var next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+        html.setAttribute('data-theme', next);
+        localStorage.setItem('theme', next);
+    });
 }
 
 initTheme();

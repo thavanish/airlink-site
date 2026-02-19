@@ -22,7 +22,6 @@
                     <span class="brand-version">v1.0.0 beta</span>
                 </div>
             </a>
-
             <ul class="nav-links">
                 <li><a href="#about">About</a></li>
                 <li><a href="#features">Features</a></li>
@@ -34,10 +33,10 @@
                 <div class="nav-divider"></div>
                 <li><button class="btn-nav-docs" id="btn-docs-explorer">📖 Docs</button></li>
             </ul>
-
             <div class="nav-actions">
                 <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
-                    <div class="theme-toggle-circle"></div>
+                    <span class="toggle-icon toggle-sun">☀️</span>
+                    <span class="toggle-icon toggle-moon">🌙</span>
                 </button>
                 <a href="https://github.com/AirlinkLabs/panel" class="btn-secondary">GitHub</a>
                 <button class="mobile-menu-toggle" aria-label="Toggle menu" aria-expanded="false"></button>
@@ -49,18 +48,18 @@
     <section class="hero">
         <div class="screenshot-scroll">
             <div class="screenshot-track">
-                <img src="public/assets/screenshot-1.jpg" alt="Dashboard"         class="screenshot">
-                <img src="public/assets/screenshot-2.jpg" alt="Server Management" class="screenshot">
-                <img src="public/assets/screenshot-3.jpg" alt="Addon System"      class="screenshot">
-                <img src="public/assets/screenshot-4.jpg" alt="User Interface"    class="screenshot">
-                <img src="public/assets/screenshot-5.jpg" alt="Dashboard"         class="screenshot">
-                <img src="public/assets/screenshot-6.jpg" alt="Server Management" class="screenshot">
-                <img src="public/assets/screenshot-1.jpg" alt="Dashboard"         class="screenshot">
-                <img src="public/assets/screenshot-2.jpg" alt="Server Management" class="screenshot">
-                <img src="public/assets/screenshot-3.jpg" alt="Addon System"      class="screenshot">
-                <img src="public/assets/screenshot-4.jpg" alt="User Interface"    class="screenshot">
-                <img src="public/assets/screenshot-5.jpg" alt="Dashboard"         class="screenshot">
-                <img src="public/assets/screenshot-6.jpg" alt="Server Management" class="screenshot">
+                <img src="public/assets/screenshot-1.jpg" alt="" class="screenshot">
+                <img src="public/assets/screenshot-2.jpg" alt="" class="screenshot">
+                <img src="public/assets/screenshot-3.jpg" alt="" class="screenshot">
+                <img src="public/assets/screenshot-4.jpg" alt="" class="screenshot">
+                <img src="public/assets/screenshot-5.jpg" alt="" class="screenshot">
+                <img src="public/assets/screenshot-6.jpg" alt="" class="screenshot">
+                <img src="public/assets/screenshot-1.jpg" alt="" class="screenshot">
+                <img src="public/assets/screenshot-2.jpg" alt="" class="screenshot">
+                <img src="public/assets/screenshot-3.jpg" alt="" class="screenshot">
+                <img src="public/assets/screenshot-4.jpg" alt="" class="screenshot">
+                <img src="public/assets/screenshot-5.jpg" alt="" class="screenshot">
+                <img src="public/assets/screenshot-6.jpg" alt="" class="screenshot">
             </div>
         </div>
         <div class="hero-overlay"></div>
@@ -89,13 +88,26 @@
                 </div>
                 <div class="content-block fade-in-up delay-2">
                     <p>Right now it's in active development with a small community using it for various game servers. The architecture is stable enough for production use, though we're still working on polish and additional features.</p>
-                    <p>It's MIT licensed — fork it, modify it, deploy it commercially. The community has already started building addons for Minecraft mod management and billing integration.</p>
+                    <p>It's MIT licensed — fork it, modify it, deploy it commercially. The community has already started building addons for Minecraft mod management and backup systems.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Features — cards are clickable, data-img points to feature screenshot -->
+    <!--
+    ═══════════════════════════════════════════════════════════
+    FEATURE IMAGE FILENAMES — place these in public/assets/
+    ───────────────────────────────────────────────────────────
+    feature-servers.jpg    → Server Management screenshot
+    feature-users.jpg      → User roles / permissions view
+    feature-addons.jpg     → Addon manager / list page
+    feature-migrations.jpg → Database or migrations UI
+    feature-stack.jpg      → Code editor / TypeScript screenshot
+    feature-api.jpg        → API response / Postman screenshot
+    ═══════════════════════════════════════════════════════════
+    -->
+
+    <!-- Features — each card opens a popup (click to expand) -->
     <section id="features" class="section alt">
         <div class="container">
             <div class="section-header fade-in-up">
@@ -109,7 +121,7 @@
                     data-img="public/assets/feature-servers.jpg"
                     data-icon="🖥️"
                     data-desc="Deploy and manage multiple game servers from a single interface."
-                    data-longdesc="Start, stop, restart, and monitor resources in real-time. The dashboard gives you a clear view of CPU, memory, and disk usage across all your servers. Supports one-click server creation with pre-configured game templates.">
+                    data-longdesc="Start, stop, restart, and monitor resources in real-time. The dashboard gives you CPU, memory, and disk usage across all servers. Supports one-click server creation with pre-configured game templates.">
                     <span class="feature-card-icon">🖥️</span>
                     <h3>Server Management</h3>
                     <p>Deploy and manage multiple game servers from a single interface.</p>
@@ -121,7 +133,7 @@
                     data-img="public/assets/feature-users.jpg"
                     data-icon="👥"
                     data-desc="Handle permissions properly with granular access control."
-                    data-longdesc="Admin controls, user roles, and server-level access management work how you'd expect. Assign sub-users to specific servers with read-only or full access. All authentication is session-based with CSRF protection.">
+                    data-longdesc="Admin controls, user roles, and server-level access management work as expected. Assign sub-users to specific servers with read-only or full access. All authentication is session-based with CSRF protection.">
                     <span class="feature-card-icon">👥</span>
                     <h3>User System</h3>
                     <p>Handle permissions properly with granular access control.</p>
@@ -133,10 +145,10 @@
                     data-img="public/assets/feature-addons.jpg"
                     data-icon="🧩"
                     data-desc="Extend functionality through addons without touching core code."
-                    data-longdesc="Addons can add routes, database tables, UI components, and integrate external services. They get access to the full panel API including the router, Prisma ORM, logger, and UI registration system. The addon lifecycle is fully managed by the panel.">
+                    data-longdesc="Addons can add routes, database tables, UI components, and integrate external services. They get access to the full panel API including the router, Prisma ORM, logger, and UI registration system.">
                     <span class="feature-card-icon">🧩</span>
                     <h3>Addon Architecture</h3>
-                    <p>Extend functionality through addons without touching core code.</p>
+                    <p>Extend functionality without touching core code.</p>
                     <div class="feature-card-hint">Click to learn more →</div>
                 </div>
 
@@ -145,7 +157,7 @@
                     data-img="public/assets/feature-migrations.jpg"
                     data-icon="🗄️"
                     data-desc="Addons handle their own database schema automatically."
-                    data-longdesc="Define migrations in your addon's package.json and they run automatically when the addon is enabled. Applied migrations are tracked so they never run twice. Supports SQLite, MySQL, and PostgreSQL through Prisma.">
+                    data-longdesc="Define migrations in your addon's package.json and they run automatically when the addon is enabled. Applied migrations are tracked so they never run twice. Supports SQLite, MySQL, and PostgreSQL.">
                     <span class="feature-card-icon">🗄️</span>
                     <h3>Database Migrations</h3>
                     <p>Addons handle their own database schema automatically.</p>
@@ -157,7 +169,7 @@
                     data-img="public/assets/feature-stack.jpg"
                     data-icon="⚡"
                     data-desc="TypeScript, Prisma, Express — standard tools, clean codebase."
-                    data-longdesc="TypeScript gives you type safety across the whole codebase. Prisma handles database queries with full type inference. Express keeps routing straightforward. The whole stack is easy to understand if you already know Node.js, so contributions come naturally.">
+                    data-longdesc="TypeScript gives type safety across the whole codebase. Prisma handles database queries with full type inference. Express keeps routing straightforward. Easy to understand for any Node.js developer.">
                     <span class="feature-card-icon">⚡</span>
                     <h3>Modern Stack</h3>
                     <p>TypeScript, Prisma, Express — standard tools, clean codebase.</p>
@@ -169,7 +181,7 @@
                     data-img="public/assets/feature-api.jpg"
                     data-icon="🔌"
                     data-desc="Everything the panel does is accessible through the API."
-                    data-longdesc="Build your own client interfaces, automate server deployments, or integrate AirLink with external tools. All API endpoints return consistent JSON with proper HTTP status codes. Authentication uses the same session tokens as the UI.">
+                    data-longdesc="Build your own client interfaces, automate deployments, or integrate AirLink with external tools. All endpoints return consistent JSON with proper HTTP status codes. Authentication uses the same session tokens as the UI.">
                     <span class="feature-card-icon">🔌</span>
                     <h3>REST API</h3>
                     <p>Everything the panel does is accessible through the API.</p>
@@ -192,7 +204,7 @@
                     <button class="install-choice-btn btn-quick">
                         <span class="choice-icon">⚡</span>
                         <span class="choice-title">Quick Install</span>
-                        <span class="choice-desc">One command. Handles everything automatically including dependencies, systemd, and first-run setup.</span>
+                        <span class="choice-desc">One command. Handles everything automatically including dependencies, addons, systemd, and first-run setup.</span>
                     </button>
                     <button class="install-choice-btn btn-manual">
                         <span class="choice-icon">🔧</span>
@@ -206,7 +218,7 @@
                         <button class="btn-back">← Back</button>
                         <h3>Quick Install</h3>
                     </div>
-                    <p style="color:var(--text-secondary);margin-bottom:14px;font-size:14px;">Run as root. Sets up the panel, configures systemd, and handles all dependencies.</p>
+                    <p style="color:var(--text-secondary);margin-bottom:14px;font-size:14px;">Run as root. Sets up the panel, configures systemd, installs addons, and handles all dependencies automatically.</p>
                     <div class="code-block">
                         <code>bash &lt;(curl -s https://raw.githubusercontent.com/airlinklabs/panel/refs/heads/main/installer.sh)</code>
                     </div>
@@ -258,10 +270,11 @@
                         <div class="step">
                             <span class="step-number">3</span>
                             <div class="step-content">
-                                <h4>Install Dependencies</h4>
+                                <h4>Install Dependencies &amp; Build</h4>
                                 <div class="code-block">
                                     <code>npm install -g typescript</code>
                                     <code>npm install --omit=dev</code>
+                                    <code>npm run build-ts</code>
                                 </div>
                             </div>
                         </div>
@@ -277,12 +290,7 @@
                         <div class="step">
                             <span class="step-number">5</span>
                             <div class="step-content">
-                                <h4>Build and Run</h4>
-                                <div class="code-block">
-                                    <code>npm run build-ts</code>
-                                    <code>npm run start</code>
-                                </div>
-                                <p class="install-note">For production, use pm2:</p>
+                                <h4>Start with pm2</h4>
                                 <div class="code-block">
                                     <code>npm install pm2 -g</code>
                                     <code>pm2 start dist/app.js --name "panel"</code>
@@ -305,13 +313,14 @@
         </div>
     </section>
 
-    <!-- Addons -->
+    <!-- Addons — system overview + marketplace cards -->
     <section id="addons" class="section alt">
         <div class="container">
             <div class="section-header fade-in-up">
                 <h2>Addon System</h2>
-                <p>Extend the panel without touching core code.</p>
+                <p>Extend the panel without touching core code — then grab community addons below.</p>
             </div>
+
             <div class="addon-info">
                 <div class="addon-structure fade-in-up delay-1">
                     <h3>How Addons Work</h3>
@@ -331,31 +340,74 @@
                     </div>
                 </div>
             </div>
+
             <div class="addon-capabilities fade-in-up delay-3">
                 <h3>What Addons Can Do</h3>
                 <div class="capability-grid">
-                    <div class="capability">
-                        <h4>Add Routes</h4>
-                        <p>Define new endpoints and pages. Handle GET/POST requests and serve custom views.</p>
+                    <div class="capability"><h4>Add Routes</h4><p>Define new endpoints and pages. Handle GET/POST requests and serve custom views.</p></div>
+                    <div class="capability"><h4>Database Access</h4><p>Run migrations to create tables. Use Prisma for queries or raw SQL when needed.</p></div>
+                    <div class="capability"><h4>Modify UI</h4><p>Add items to the sidebar, server menu, or create entirely new sections.</p></div>
+                    <div class="capability"><h4>External Integration</h4><p>Connect to APIs, payment processors, mod repositories, or any service.</p></div>
+                </div>
+            </div>
+
+            <!-- Marketplace header -->
+            <div style="margin-top:60px" class="fade-in-up delay-2">
+                <h3 style="font-size:24px;color:var(--text-primary);margin-bottom:6px">Community Addons</h3>
+                <p style="color:var(--text-secondary);font-size:15px">Ready-to-install addons built for AirLink. Click any card to view details and install instructions.</p>
+            </div>
+
+            <div class="addons-marketplace-grid">
+
+                <!-- Modrinth Store -->
+                <div class="addon-marketplace-card fade-in-up delay-3" data-name="modrinth-store">
+                    <div class="addon-mc-header">
+                        <div class="addon-mc-icon">🟢</div>
+                        <div class="addon-mc-meta">
+                            <div class="addon-mc-name">Modrinth Store</div>
+                            <div class="addon-mc-author">by g-flame</div>
+                        </div>
+                        <span class="addon-mc-badge working">Working</span>
                     </div>
-                    <div class="capability">
-                        <h4>Database Access</h4>
-                        <p>Run migrations to create tables. Use Prisma for queries or raw SQL when needed.</p>
+                    <div class="addon-mc-desc">Browse, search, and install Minecraft mods and modpacks from Modrinth directly inside your AirLink admin panel.</div>
+                    <div class="addon-mc-tags">
+                        <span class="addon-mc-tag">Minecraft</span>
+                        <span class="addon-mc-tag">Mods</span>
+                        <span class="addon-mc-tag">Modrinth API</span>
                     </div>
-                    <div class="capability">
-                        <h4>Modify UI</h4>
-                        <p>Add items to the sidebar, server menu, or create entirely new sections.</p>
-                    </div>
-                    <div class="capability">
-                        <h4>External Integration</h4>
-                        <p>Connect to external APIs, payment processors, mod repositories, or any service.</p>
+                    <div class="addon-mc-footer">
+                        <span>v1.6.23</span>
+                        <span class="addon-mc-hint">Click for details →</span>
                     </div>
                 </div>
+
+                <!-- Parachute -->
+                <div class="addon-marketplace-card fade-in-up delay-4" data-name="parachute">
+                    <div class="addon-mc-header">
+                        <div class="addon-mc-icon">🪂</div>
+                        <div class="addon-mc-meta">
+                            <div class="addon-mc-name">Parachute</div>
+                            <div class="addon-mc-author">by g-flame</div>
+                        </div>
+                        <span class="addon-mc-badge working">Working</span>
+                    </div>
+                    <div class="addon-mc-desc">Google Drive integration for server backups. Upload, download, and restore server files with OAuth authentication.</div>
+                    <div class="addon-mc-tags">
+                        <span class="addon-mc-tag">Backups</span>
+                        <span class="addon-mc-tag">Google Drive</span>
+                        <span class="addon-mc-tag">OAuth</span>
+                    </div>
+                    <div class="addon-mc-footer">
+                        <span>v1.0.0</span>
+                        <span class="addon-mc-hint">Click for details →</span>
+                    </div>
+                </div>
+
             </div>
         </div>
     </section>
 
-    <!-- Activity / Commits -->
+    <!-- Activity -->
     <section id="commits" class="commits-section">
         <div class="container">
             <div class="section-header fade-in-up">
@@ -368,18 +420,14 @@
                         <div class="commits-repo-title">airlinklabs / panel</div>
                         <button class="btn-view-commits" data-repo="airlinklabs/panel">View history →</button>
                     </div>
-                    <div class="commit-list-preview" id="preview-panel">
-                        <p class="commit-loading">Loading...</p>
-                    </div>
+                    <div class="commit-list-preview" id="preview-panel"><p class="commit-loading">Loading...</p></div>
                 </div>
                 <div class="commits-repo">
                     <div class="commits-repo-header">
                         <div class="commits-repo-title">airlinklabs / daemon</div>
                         <button class="btn-view-commits" data-repo="airlinklabs/daemon">View history →</button>
                     </div>
-                    <div class="commit-list-preview" id="preview-daemon">
-                        <p class="commit-loading">Loading...</p>
-                    </div>
+                    <div class="commit-list-preview" id="preview-daemon"><p class="commit-loading">Loading...</p></div>
                 </div>
             </div>
         </div>
@@ -393,31 +441,18 @@
                 <p>The people building and maintaining AirLink Panel</p>
             </div>
         </div>
-        <div class="team-stats" id="team-stats">
-            <div class="team-stat">
-                <span class="team-stat-num" id="stat-contributors">—</span>
-                <span class="team-stat-label">Contributors</span>
-            </div>
-            <div class="team-stat">
-                <span class="team-stat-num" id="stat-commits">—</span>
-                <span class="team-stat-label">Total Commits</span>
-            </div>
-            <div class="team-stat">
-                <span class="team-stat-num" id="stat-stars">—</span>
-                <span class="team-stat-label">GitHub Stars</span>
-            </div>
-            <div class="team-stat">
-                <span class="team-stat-num" id="stat-repos">2</span>
-                <span class="team-stat-label">Repositories</span>
-            </div>
+        <div class="team-stats">
+            <div class="team-stat"><span class="team-stat-num" id="stat-contributors">—</span><span class="team-stat-label">Contributors</span></div>
+            <div class="team-stat"><span class="team-stat-num" id="stat-commits">—</span><span class="team-stat-label">Total Commits</span></div>
+            <div class="team-stat"><span class="team-stat-num" id="stat-stars">—</span><span class="team-stat-label">GitHub Stars</span></div>
+            <div class="team-stat"><span class="team-stat-num">2</span><span class="team-stat-label">Repositories</span></div>
         </div>
     </section>
 
     <section class="team-section">
         <div class="container">
-            <div id="contributors-grid" class="contributors-grid">
-                <div class="loading">Loading contributors...</div>
-            </div>
+            <p style="text-align:center;color:var(--text-tertiary);font-size:13px;margin-bottom:28px">Click on any card to see full profile</p>
+            <div id="contributors-grid" class="contributors-grid"><div class="loading">Loading contributors...</div></div>
         </div>
     </section>
 
@@ -464,6 +499,103 @@
         </div>
     </footer>
 
+    <!-- Addon definitions (data layer) -->
+    <script>
+    window.ADDON_DEFS = {
+        'modrinth-store': {
+            name: 'Modrinth Store',
+            icon: '🟢',
+            author: 'g-flame',
+            version: 'v1.6.23',
+            github: 'https://github.com/g-flame-oss/airlink-addons/tree/modrinth-addon',
+            desc: 'Browse, search, and install Minecraft mods and modpacks from Modrinth directly inside your AirLink admin panel.',
+            longDesc: 'The Modrinth Store Addon integrates Modrinth directly into your AirLink panel. Browse, search, and install mods or modpacks from the admin panel with full feature control. Features progress bars, improved UI, and automatic installation handling.',
+            features: [
+                'Browse and search Modrinth mod database from the panel',
+                'One-click mod and modpack installation',
+                'Progress bars for download feedback',
+                'Admin panel integration with sidebar entry',
+                'Full Modrinth API support',
+            ],
+            installSteps: [
+                {
+                    title: 'Navigate to addons folder',
+                    commands: ['cd /var/www/panel/storage/addons/']
+                },
+                {
+                    title: 'Clone the addon',
+                    commands: [
+                        'git clone --branch modrinth-addon https://github.com/g-flame-oss/airlink-addons.git modrinth-store'
+                    ]
+                },
+                {
+                    title: 'Install dependencies and build',
+                    commands: [
+                        'cd /var/www/panel/storage/addons/modrinth-store',
+                        'sudo npm install',
+                        'sudo npm run build'
+                    ]
+                },
+                {
+                    title: 'Restart AirLink panel',
+                    commands: ['systemctl restart airlink-panel']
+                }
+            ],
+            installNote: 'The Modrinth Store will appear in your AirLink admin panel after restarting. You can also download a pre-built release from SourceXchange or BuiltByBit instead of cloning.'
+        },
+        'parachute': {
+            name: 'Parachute',
+            icon: '🪂',
+            author: 'g-flame',
+            version: 'v1.0.0',
+            github: 'https://github.com/g-flame-oss/airlink-addons/tree/parachute',
+            desc: 'Google Drive integration for server backups. Upload, download, and restore server files with OAuth authentication.',
+            longDesc: 'Parachute integrates with Google Drive for server backups and file management. It handles OAuth authentication, token storage, and server-specific operations using server UUIDs. Supports optional file encryption for secure backups.',
+            features: [
+                'Connect servers to Google Drive via OAuth',
+                'Upload and download server backup files',
+                'Restore backups with a single click',
+                'Optional file encryption for secure storage',
+                'Per-server backup management using UUIDs',
+                'Progress screen during backup operations',
+            ],
+            installSteps: [
+                {
+                    title: 'Navigate to addons folder',
+                    commands: ['cd /var/www/panel/storage/addons/']
+                },
+                {
+                    title: 'Clone the addon',
+                    commands: [
+                        'git clone --branch parachute https://github.com/g-flame-oss/airlink-addons.git parachute'
+                    ]
+                },
+                {
+                    title: 'Install dependencies and build',
+                    commands: [
+                        'cd /var/www/panel/storage/addons/parachute',
+                        'npm install',
+                        'npm run build'
+                    ]
+                },
+                {
+                    title: 'Configure environment variables',
+                    commands: [
+                        'APP_URL=https://yourpanel.com',
+                        'GOOGLE_CLIENT_ID=your_google_app_key',
+                        'GOOGLE_CLIENT_SECRET=your_google_app_secret'
+                    ]
+                },
+                {
+                    title: 'Restart AirLink panel',
+                    commands: ['systemctl restart airlink-panel']
+                }
+            ],
+            installNote: 'You need a Google OAuth app — create one at console.cloud.google.com. Set APP_URL, GOOGLE_CLIENT_ID, and GOOGLE_CLIENT_SECRET in your panel .env file before restarting.'
+        }
+    };
+    </script>
+
     <script src="public/js/theme.js"></script>
     <script src="public/js/nav.js"></script>
     <script src="public/js/install.js"></script>
@@ -472,20 +604,16 @@
     <script src="public/js/main.js"></script>
 
     <script>
-    // Team stats — fetch alongside contributors
     (async function() {
         try {
-            var repos = ['airlinklabs/panel', 'airlinklabs/daemon'];
+            var repos = ['airlinklabs/panel','airlinklabs/daemon'];
             var data  = await Promise.all(repos.map(function(r) {
-                return fetch('https://api.github.com/repos/' + r).then(function(res) { return res.ok ? res.json() : null; }).catch(function() { return null; });
+                return fetch('https://api.github.com/repos/'+r).then(function(res){ return res.ok?res.json():null; }).catch(function(){return null;});
             }));
-
-            var totalStars   = data.reduce(function(s, d) { return s + (d ? d.stargazers_count : 0); }, 0);
-            var totalCommits = '—'; // GitHub API doesn't give total commits easily; skip
-
             var el = document.getElementById('stat-stars');
+            var totalStars = data.reduce(function(s,d){ return s+(d?d.stargazers_count:0); },0);
             if (el) el.textContent = totalStars || '—';
-        } catch (e) {}
+        } catch(e){}
     })();
     </script>
 
