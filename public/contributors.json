@@ -1,9 +1,8 @@
 {
-  "_comment": "Override contributor display info here. Key = GitHub username.",
-  "exampleuser": {
-    "name": "Display Name",
-    "role": "Core Developer",
-    "tagline": "Something witty",
-    "about": "Short bio shown on the team page"
+  "somefucker": {
+    "name": "",
+    "role": "",
+    "tagline": "",
+    "about": ""
   }
 }
