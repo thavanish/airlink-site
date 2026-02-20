@@ -1,5 +1,5 @@
 {
-  "_comment": "Main configuration file for AirLink Docs site. Edit this file to update site-wide settings.",
+  "_comment": "Main configuration file for AirLink Docs site.",
 
   "site": {
     "title": "AirLink Panel",
@@ -14,13 +14,12 @@
   },
 
   "underConstruction": {
-    "_comment": "Set 'enabled' to true to show under-construction banners in navbar, footer, loading screen, and a popup on load.",
-    "enabled": false,
-    "message": "This site is currently under construction. Some features may be incomplete or unavailable.",
+    "enabled": true,
+    "message": "This site is currently under construction.",
     "popupTitle": "Under Construction",
-    "popupMessage": "Welcome! This documentation site is still being built. Content may change frequently.",
+    "popupMessage": "Welcome! This docs site is still being built.",
     "navbarBadge": "Under Construction",
-    "footerNote": "This site is under construction — content may be incomplete."
+    "footerNote": "Under construction — content may be incomplete."
   },
 
   "install": {
@@ -84,15 +83,15 @@
       "icon": "server",
       "title": "Server Management",
       "description": "Deploy and manage multiple game servers from a single interface.",
-      "longDescription": "Start, stop, restart, and monitor resources in real-time. The dashboard gives you CPU, memory, and disk usage across all servers. Supports one-click server creation with pre-configured game templates.",
+      "longDescription": "Start, stop, restart, and monitor resources in real-time. CPU, memory, and disk usage across all servers. One-click server creation with pre-configured game templates.",
       "imageFolder": "public/assets/features/server-management"
     },
     {
       "id": "user-system",
       "icon": "users",
       "title": "User System",
-      "description": "Handle permissions properly with granular access control.",
-      "longDescription": "Admin controls, user roles, and server-level access management work as expected. Assign sub-users to specific servers with read-only or full access. All authentication is session-based with CSRF protection.",
+      "description": "Granular access control with admin controls and user roles.",
+      "longDescription": "Admin controls, user roles, and server-level access management. Assign sub-users to specific servers with read-only or full access. Session-based authentication with CSRF protection.",
       "imageFolder": "public/assets/features/user-system"
     },
     {
@@ -100,7 +99,7 @@
       "icon": "puzzle",
       "title": "Addon Architecture",
       "description": "Extend functionality without touching core code.",
-      "longDescription": "Addons can add routes, database tables, UI components, and integrate external services. They get access to the full panel API including the router, Prisma ORM, logger, and UI registration system.",
+      "longDescription": "Addons can add routes, database tables, UI components, and integrate external services. Full access to the panel API including the router, Prisma ORM, logger, and UI registration system.",
       "imageFolder": "public/assets/features/addon-architecture"
     },
     {
@@ -108,7 +107,7 @@
       "icon": "database",
       "title": "Database Migrations",
       "description": "Addons handle their own database schema automatically.",
-      "longDescription": "Define migrations in your addon's package.json and they run automatically when the addon is enabled. Applied migrations are tracked so they never run twice. Supports SQLite, MySQL, and PostgreSQL.",
+      "longDescription": "Define migrations in package.json and they run automatically when the addon is enabled. Applied migrations are tracked so they never run twice. Supports SQLite, MySQL, and PostgreSQL.",
       "imageFolder": "public/assets/features/database-migrations"
     },
     {
@@ -124,7 +123,7 @@
       "icon": "plug",
       "title": "REST API",
       "description": "Everything the panel does is accessible through the API.",
-      "longDescription": "Build your own client interfaces, automate deployments, or integrate AirLink with external tools. All endpoints return consistent JSON with proper HTTP status codes. Authentication uses the same session tokens as the UI.",
+      "longDescription": "Build your own client interfaces, automate deployments, or integrate AirLink with external tools. All endpoints return consistent JSON with proper HTTP status codes.",
       "imageFolder": "public/assets/features/rest-api"
     }
   ],
@@ -137,13 +136,13 @@
       "version": "v1.6.23",
       "status": "working",
       "description": "Browse, search, and install Minecraft mods and modpacks from Modrinth directly inside your AirLink admin panel.",
-      "longDescription": "The Modrinth Store Addon integrates Modrinth directly into your AirLink panel. Browse, search, and install mods or modpacks from the admin panel with full feature control. Features progress bars, improved UI, and automatic installation handling.",
+      "longDescription": "The Modrinth Store Addon integrates Modrinth directly into your AirLink panel. Browse, search, and install mods or modpacks from the admin panel with full feature control.",
       "tags": ["Minecraft", "Mods", "Modrinth API"],
-      "iconFile": "public/assets/addons/modrinth-store/icon.png",
+      "iconFile": "https://raw.githubusercontent.com/modrinth/knossos/refs/heads/master/assets/images/logo.svg",
       "imageFolder": "public/assets/addons/modrinth-store",
       "github": "https://github.com/g-flame-oss/airlink-addons/tree/modrinth-addon",
       "features": [
-        "Browse and search Modrinth mod database from the panel",
+        "Browse and search Modrinth mod database",
         "One-click mod and modpack installation",
         "Progress bars for download feedback",
         "Admin panel integration with sidebar entry",
@@ -171,7 +170,7 @@
           "commands": ["systemctl restart airlink-panel"]
         }
       ],
-      "installNote": "The Modrinth Store will appear in your AirLink admin panel after restarting. You can also download a pre-built release from SourceXchange or BuiltByBit instead of cloning."
+      "installNote": "The Modrinth Store will appear in your AirLink admin panel after restarting."
     },
     {
       "id": "parachute",
@@ -180,18 +179,17 @@
       "version": "v1.0.0",
       "status": "working",
       "description": "Google Drive integration for server backups. Upload, download, and restore server files with OAuth authentication.",
-      "longDescription": "Parachute integrates with Google Drive for server backups and file management. It handles OAuth authentication, token storage, and server-specific operations using server UUIDs. Supports optional file encryption for secure backups.",
+      "longDescription": "Parachute integrates with Google Drive for server backups and file management. Handles OAuth authentication, token storage, and server-specific operations using server UUIDs.",
       "tags": ["Backups", "Google Drive", "OAuth"],
-      "iconFile": "public/assets/addons/parachute/icon.png",
+      "iconFile": "https://www.svgrepo.com/show/510106/parachute.svg",
       "imageFolder": "public/assets/addons/parachute",
       "github": "https://github.com/g-flame-oss/airlink-addons/tree/parachute",
       "features": [
         "Connect servers to Google Drive via OAuth",
         "Upload and download server backup files",
         "Restore backups with a single click",
-        "Optional file encryption for secure storage",
-        "Per-server backup management using UUIDs",
-        "Progress screen during backup operations"
+        "Optional file encryption",
+        "Per-server backup management using UUIDs"
       ],
       "installSteps": [
         {
@@ -223,21 +221,13 @@
           "commands": ["systemctl restart airlink-panel"]
         }
       ],
-      "installNote": "You need a Google OAuth app — create one at console.cloud.google.com. Set APP_URL, GOOGLE_CLIENT_ID, and GOOGLE_CLIENT_SECRET in your panel .env file before restarting."
+      "installNote": "You need a Google OAuth app — create one at console.cloud.google.com. Set APP_URL, GOOGLE_CLIENT_ID, and GOOGLE_CLIENT_SECRET in your panel .env before restarting."
     }
   ],
 
   "team": {
     "repos": ["AirlinkLabs/panel", "AirlinkLabs/daemon"],
-    "customContributors": {
-      "_comment": "Override contributor display info here. Key = GitHub username.",
-      "exampleuser": {
-        "name": "Display Name",
-        "role": "Core Developer",
-        "tagline": "Something witty",
-        "about": "Short bio shown on the team page"
-      }
-    }
+    "customContributors": {}
   },
 
   "docs": {

@@ -1,39 +1,40 @@
-/*
-  install.js — install wizard: quick vs manual panel switcher.
-  The wizard content is rendered by the page builder from config.json.
-*/
+// install.js - quick/manual installer switcher
 
 function initInstallWizard() {
-  var wizard = document.getElementById('install-wizard');
-  if (!wizard) return;
+  var wrap = document.getElementById('install-wrap');
+  if (!wrap) return;
 
-  var selection   = wizard.querySelector('.install-selection');
-  var quickPanel  = wizard.querySelector('.install-panel[data-panel="quick"]');
-  var manualPanel = wizard.querySelector('.install-panel[data-panel="manual"]');
+  var sel = wrap.querySelector('.install-choice-grid');
+  var quickPanel = wrap.querySelector('.install-panel[data-panel="quick"]');
+  var manualPanel = wrap.querySelector('.install-panel[data-panel="manual"]');
 
   function showPanel(panel) {
-    selection.style.display   = 'none';
-    quickPanel.style.display  = 'none';
+    sel.style.display = 'none';
+    quickPanel.style.display = 'none';
     manualPanel.style.display = 'none';
     panel.style.display = 'block';
-    panel.classList.add('panel-enter');
-    setTimeout(function () { panel.classList.remove('panel-enter'); }, 300);
+    panel.style.animation = 'fadeInPanel 0.28s ease';
   }
 
-  function showSelection() {
-    quickPanel.style.display  = 'none';
+  function showSel() {
+    sel.style.display = 'flex';
+    quickPanel.style.display = 'none';
     manualPanel.style.display = 'none';
-    selection.style.display   = 'flex';
   }
 
-  var btnQuick  = wizard.querySelector('.btn-quick');
-  var btnManual = wizard.querySelector('.btn-manual');
-  if (btnQuick)  btnQuick.addEventListener('click',  function () { showPanel(quickPanel); });
-  if (btnManual) btnManual.addEventListener('click', function () { showPanel(manualPanel); });
+  var btnQ = wrap.querySelector('.btn-quick');
+  var btnM = wrap.querySelector('.btn-manual');
+  if (btnQ) btnQ.addEventListener('click', function () { showPanel(quickPanel); });
+  if (btnM) btnM.addEventListener('click', function () { showPanel(manualPanel); });
 
-  wizard.querySelectorAll('.btn-back').forEach(function (btn) {
-    btn.addEventListener('click', showSelection);
+  wrap.querySelectorAll('.btn-back').forEach(function (b) {
+    b.addEventListener('click', showSel);
   });
 }
+
+// add fadeInPanel keyframes dynamically
+var _panelStyle = document.createElement('style');
+_panelStyle.textContent = '@keyframes fadeInPanel { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:none; } }';
+document.head.appendChild(_panelStyle);
 
 initInstallWizard();

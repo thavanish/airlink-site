@@ -1,49 +1,45 @@
-/*
-  commits.js — loads and displays recent GitHub commits.
-  Depends on: icons.js, main.js (cachedFetch, escHtml)
-*/
+// commits.js - recent commit previews and popup
 
-var commitsState = {};
+var _commitsState = {};
 
 function timeAgo(date) {
   var s = Math.floor((Date.now() - date) / 1000);
-  if (s < 60)       return s + 's ago';
-  if (s < 3600)     return Math.floor(s / 60) + 'm ago';
-  if (s < 86400)    return Math.floor(s / 3600) + 'h ago';
-  if (s < 2592000)  return Math.floor(s / 86400) + 'd ago';
-  if (s < 31536000) return Math.floor(s / 2592000) + 'mo ago';
-  return Math.floor(s / 31536000) + 'y ago';
+  if (s < 60) return s + 's ago';
+  if (s < 3600) return Math.floor(s / 60) + 'm ago';
+  if (s < 86400) return Math.floor(s / 3600) + 'h ago';
+  if (s < 2592000) return Math.floor(s / 86400) + 'd ago';
+  return Math.floor(s / 2592000) + 'mo ago';
 }
 
-function buildCommitEl(c, isFirst) {
-  var date   = new Date(c.commit.author.date);
-  var msg    = c.commit.message.split('\n')[0];
+function buildCommitItem(c, isFirst) {
+  var date = new Date(c.commit.author.date);
+  var msg = c.commit.message.split('\n')[0];
   var author = (c.author && c.author.login) || c.commit.author.name;
-  var avatar = (c.author && c.author.avatar_url) || '';
-  var sha    = c.sha.slice(0, 7);
+  var avatar = c.author && c.author.avatar_url;
+  var sha = c.sha.slice(0, 7);
 
   var div = document.createElement('div');
-  div.className = 'commit-item' + (isFirst ? ' commit-latest' : '');
+  div.className = 'commit-item' + (isFirst ? ' latest' : '');
   div.innerHTML =
-    (isFirst ? '<span class="commit-badge">' + getIcon('star', 10) + ' Latest</span>' : '') +
-    '<div class="commit-meta">' +
-      (avatar
-        ? '<img src="' + avatar + '" class="commit-avatar" onerror="this.style.display=\'none\'">'
-        : '<span class="commit-avatar-placeholder">' + getIcon('github', 18) + '</span>'
-      ) +
+    (isFirst ? '<div class="commit-badge">' + getIcon('star', 10) + ' Latest</div>' : '') +
+    '<div class="commit-item-top">' +
+      (avatar ? '<img src="' + avatar + '" class="commit-avatar-img" onerror="this.style.display=\'none\'">' : '') +
       '<span class="commit-author">' + escHtml(author) + '</span>' +
-      '<span class="commit-time">'   + timeAgo(date) + '</span>' +
-      '<span class="commit-date">'   + date.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }) + '</span>' +
+      '<span class="commit-time">' + timeAgo(date) + '</span>' +
     '</div>' +
-    '<a href="' + c.html_url + '" class="commit-msg" target="_blank" rel="noopener noreferrer">' + escHtml(msg) + '</a>' +
+    '<a href="' + c.html_url + '" class="commit-msg-link" target="_blank" rel="noopener">' + escHtml(msg) + '</a>' +
     '<span class="commit-sha">' + getIcon('commit', 10) + ' ' + sha + '</span>';
   return div;
 }
 
-function fetchCommits(repo, page) {
-  var key = 'commits-' + repo + '-p' + page;
-  var url = 'https://api.github.com/repos/' + repo + '/commits?per_page=15&page=' + page;
-  return cachedFetch(key, url).catch(function () { return []; });
+function fetchCommitPreview(repo) {
+  return cachedFetch('commits-preview-' + repo,
+    'https://api.github.com/repos/' + repo + '/commits?per_page=3').catch(function () { return []; });
+}
+
+function fetchCommitsPage(repo, page) {
+  return cachedFetch('commits-' + repo + '-p' + page,
+    'https://api.github.com/repos/' + repo + '/commits?per_page=15&page=' + page).catch(function () { return []; });
 }
 
 function initCommitsPopup() {
@@ -53,112 +49,132 @@ function initCommitsPopup() {
     '<div class="commits-popup">' +
       '<div class="commits-popup-header">' +
         '<div>' +
-          '<div class="commits-popup-repo"    id="popup-repo-name"></div>' +
-          '<div class="commits-popup-subtitle">Commit history</div>' +
+          '<div class="commits-popup-repo" id="cp-repo"></div>' +
+          '<div class="commits-popup-sub">Commit history</div>' +
         '</div>' +
-        '<button class="commits-popup-close" aria-label="Close">' + getIcon('close') + '</button>' +
+        '<button class="commits-popup-close" id="cp-close">' + getIcon('close') + '</button>' +
       '</div>' +
-      '<div class="commits-popup-body"   id="popup-body"></div>' +
-      '<div class="commits-popup-footer" id="popup-footer" style="display:none">' +
-        '<button class="btn-load-more" id="btn-load-more">Load more commits</button>' +
+      '<div class="commits-popup-body" id="cp-body"></div>' +
+      '<div class="commits-popup-footer" id="cp-footer" style="display:none">' +
+        '<button class="btn-load-more" id="cp-load-more">Load more</button>' +
       '</div>' +
     '</div>';
   document.body.appendChild(overlay);
 
-  var popupBody     = document.getElementById('popup-body');
-  var popupFooter   = document.getElementById('popup-footer');
-  var loadMoreBtn   = document.getElementById('btn-load-more');
-  var popupRepoName = document.getElementById('popup-repo-name');
+  var body = document.getElementById('cp-body');
+  var footer = document.getElementById('cp-footer');
+  var loadMore = document.getElementById('cp-load-more');
+  var repoLabel = document.getElementById('cp-repo');
+  var currentRepo = null;
 
-  function closePopup() {
+  function close() {
     overlay.classList.remove('active');
     document.body.style.overflow = '';
   }
 
-  overlay.addEventListener('click', function (e) { if (e.target === overlay) closePopup(); });
-  overlay.querySelector('.commits-popup-close').addEventListener('click', closePopup);
-  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closePopup(); });
+  overlay.addEventListener('click', function (e) { if (e.target === overlay) close(); });
+  document.getElementById('cp-close').addEventListener('click', close);
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && overlay.classList.contains('active')) close(); });
 
-  function renderCommits(commits) {
-    popupBody.innerHTML = '';
-    if (!commits.length) {
-      popupBody.innerHTML = '<p class="commit-error">Could not load commits.</p>';
-      return;
-    }
-    commits.forEach(function (c, i) { popupBody.appendChild(buildCommitEl(c, i === 0)); });
-  }
+  // load more is bound once, uses currentRepo
+  loadMore.addEventListener('click', function () {
+    if (!currentRepo) return;
+    var s = _commitsState[currentRepo];
+    if (!s || s.done) return;
+    loadMore.disabled = true;
+    loadMore.textContent = 'Loading...';
+    fetchCommitsPage(currentRepo, s.page).then(function (more) {
+      s.page++;
+      more.forEach(function (c) {
+        s.commits.push(c);
+        body.appendChild(buildCommitItem(c, false));
+      });
+      if (more.length < 15) {
+        s.done = true;
+        footer.style.display = 'none';
+      } else {
+        loadMore.disabled = false;
+        loadMore.textContent = 'Load more';
+      }
+    }).catch(function () {
+      loadMore.disabled = false;
+      loadMore.textContent = 'Load more';
+    });
+  });
 
-  function openPopup(repo) {
+  function open(repo) {
+    currentRepo = repo;
     overlay.classList.add('active');
     document.body.style.overflow = 'hidden';
-    popupRepoName.textContent = repo;
+    repoLabel.textContent = repo;
 
-    var state = commitsState[repo];
-    if (state && state.commits && state.commits.length) {
-      renderCommits(state.commits);
-      popupFooter.style.display  = state.done ? 'none' : 'block';
-      loadMoreBtn.disabled       = false;
-      loadMoreBtn.textContent    = 'Load more commits';
+    // if we already have data, render it right away
+    var st = _commitsState[repo];
+    if (st && st.commits.length) {
+      body.innerHTML = '';
+      st.commits.forEach(function (c, i) { body.appendChild(buildCommitItem(c, i === 0)); });
+      footer.style.display = st.done ? 'none' : 'block';
+      loadMore.disabled = false;
+      loadMore.textContent = 'Load more';
       return;
     }
 
-    popupBody.innerHTML       = '<p class="commit-loading">Loading...</p>';
-    popupFooter.style.display = 'none';
+    body.innerHTML = '<div class="commit-loading">Loading...</div>';
+    footer.style.display = 'none';
 
-    fetchCommits(repo, 1).then(function (commits) {
-      commitsState[repo] = { page: 2, commits: commits, done: commits.length < 15 };
-      renderCommits(commits);
-      popupFooter.style.display = commitsState[repo].done ? 'none' : 'block';
-      loadMoreBtn.disabled      = false;
-      loadMoreBtn.textContent   = 'Load more commits';
+    fetchCommitsPage(repo, 1).then(function (commits) {
+      _commitsState[repo] = { page: 2, commits: commits, done: commits.length < 15 };
+      body.innerHTML = '';
+      if (!commits.length) {
+        body.innerHTML = '<div class="commit-loading">No commits found.</div>';
+        return;
+      }
+      commits.forEach(function (c, i) { body.appendChild(buildCommitItem(c, i === 0)); });
+      footer.style.display = _commitsState[repo].done ? 'none' : 'block';
+      loadMore.disabled = false;
+      loadMore.textContent = 'Load more';
+    }).catch(function () {
+      body.innerHTML = '<div class="commit-loading" style="color:var(--red)">Could not load commits.</div>';
     });
-
-    loadMoreBtn.onclick = function () {
-      var st = commitsState[repo];
-      if (!st || st.done) return;
-      loadMoreBtn.disabled    = true;
-      loadMoreBtn.textContent = 'Loading...';
-      fetchCommits(repo, st.page).then(function (more) {
-        st.page++;
-        more.forEach(function (c) {
-          st.commits.push(c);
-          popupBody.appendChild(buildCommitEl(c, false));
-        });
-        if (more.length < 15) {
-          st.done                   = true;
-          popupFooter.style.display = 'none';
-        } else {
-          loadMoreBtn.disabled    = false;
-          loadMoreBtn.textContent = 'Load more commits';
-        }
-      });
-    };
   }
 
-  document.querySelectorAll('.btn-view-commits').forEach(function (btn) {
-    btn.addEventListener('click', function () { openPopup(btn.dataset.repo); });
+  // use event delegation so it works even if buttons are added after this runs
+  document.addEventListener('click', function (e) {
+    var btn = e.target.closest('.btn-view-commits');
+    if (btn) {
+      var repo = btn.dataset.repo;
+      if (repo) open(repo);
+    }
   });
 }
 
 function loadCommitPreviews() {
-  var cfg     = window.SITE_CONFIG && window.SITE_CONFIG.site;
-  var panel   = (cfg && cfg.githubPanel)  || 'AirlinkLabs/panel';
-  var daemon  = (cfg && cfg.githubDaemon) || 'AirlinkLabs/daemon';
+  var cfg = window.SITE_CONFIG && window.SITE_CONFIG.site || {};
+  var panel = cfg.githubPanel || 'AirlinkLabs/panel';
+  var daemon = cfg.githubDaemon || 'AirlinkLabs/daemon';
 
-  var previews = [
-    { repo: panel,  el: document.getElementById('preview-panel')  },
-    { repo: daemon, el: document.getElementById('preview-daemon') }
-  ];
+  // update labels and data-repo from config in case they differ
+  var panelLabel = document.getElementById('panel-repo-label');
+  var daemonLabel = document.getElementById('daemon-repo-label');
+  var btnPanel = document.getElementById('btn-view-panel');
+  var btnDaemon = document.getElementById('btn-view-daemon');
+  if (panelLabel) panelLabel.textContent = panel.split('/').pop();
+  if (daemonLabel) daemonLabel.textContent = daemon.split('/').pop();
+  if (btnPanel) btnPanel.dataset.repo = panel;
+  if (btnDaemon) btnDaemon.dataset.repo = daemon;
 
-  previews.forEach(function (p) {
-    if (!p.el) return;
-    cachedFetch('commits-' + p.repo + '-p1',
-      'https://api.github.com/repos/' + p.repo + '/commits?per_page=3'
-    ).then(function (commits) {
-      p.el.innerHTML = '';
-      commits.forEach(function (c, i) { p.el.appendChild(buildCommitEl(c, i === 0)); });
+  [{ repo: panel, id: 'preview-panel' }, { repo: daemon, id: 'preview-daemon' }].forEach(function (p) {
+    var el = document.getElementById(p.id);
+    if (!el) return;
+    fetchCommitPreview(p.repo).then(function (commits) {
+      el.innerHTML = '';
+      if (!commits.length) {
+        el.innerHTML = '<div class="commit-loading">No commits found.</div>';
+        return;
+      }
+      commits.slice(0, 3).forEach(function (c, i) { el.appendChild(buildCommitItem(c, i === 0)); });
     }).catch(function () {
-      p.el.innerHTML = '<p class="commit-error">Could not load commits.</p>';
+      el.innerHTML = '<div class="commit-loading" style="color:var(--red)">Could not load.</div>';
     });
   });
 }

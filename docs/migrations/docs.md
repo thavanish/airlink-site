@@ -31,7 +31,7 @@ AirLink Panel lets addons define database migrations in their `package.json`. Th
 
 ### Migration Fields
 
-- `name` — Unique identifier used to track which migrations have been applied. Changing the name causes it to run again.
+- `name` — Unique identifier used to track which migrations have been applied
 - `sql` — The SQL statement to execute
 
 ## When Migrations Run
@@ -39,8 +39,6 @@ AirLink Panel lets addons define database migrations in their `package.json`. Th
 - **First install** — all migrations run in order
 - **Re-enabling a disabled addon** — any unapplied migrations run
 - **Addon update with new migrations** — only new ones run on next enable
-
-Migrations do **not** re-run while an addon is already enabled.
 
 ## Querying Migrated Tables
 
@@ -60,44 +58,6 @@ async function addEntry(name: string, description: string) {
 }
 ```
 
-## Common Migration Types
-
-### Creating a Table
-
-```json
-{
-  "name": "create_my_table",
-  "sql": "CREATE TABLE IF NOT EXISTS MyTable (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL, created_at DATETIME DEFAULT CURRENT_TIMESTAMP)"
-}
-```
-
-### Adding a Column
-
-```json
-{
-  "name": "add_description_column",
-  "sql": "ALTER TABLE MyTable ADD COLUMN description TEXT"
-}
-```
-
-### Creating an Index
-
-```json
-{
-  "name": "add_name_index",
-  "sql": "CREATE INDEX IF NOT EXISTS idx_my_table_name ON MyTable(name)"
-}
-```
-
-### Foreign Key Relationship
-
-```json
-{
-  "name": "create_user_settings_table",
-  "sql": "CREATE TABLE IF NOT EXISTS MyAddon_UserSettings (id INTEGER PRIMARY KEY AUTOINCREMENT, userId INTEGER NOT NULL, setting TEXT NOT NULL, value TEXT, FOREIGN KEY (userId) REFERENCES Users(id) ON DELETE CASCADE)"
-}
-```
-
 ## Best Practices
 
 - Always use `IF NOT EXISTS` for table creation
@@ -106,28 +66,8 @@ async function addEntry(name: string, description: string) {
 - Use descriptive names like `create_users_table` or `add_email_to_users`
 - Order matters — migrations run in array order, so put dependencies first
 
-## Debugging
-
-Check which migrations have been applied:
-
-```typescript
-const applied = await prisma.$queryRaw`
-  SELECT * FROM AddonMigration WHERE addonSlug = 'your-addon-slug'
-`;
-```
-
-Reset in development only:
-
-```typescript
-await prisma.$executeRaw`
-  DELETE FROM AddonMigration WHERE addonSlug = 'your-addon-slug'
-`;
-```
-
-> **Warning:** Only reset migrations in development. Doing this in production will cause the migrations to re-run which may destroy existing data.
-
 ## Troubleshooting
 
 - **Syntax errors** — validate your SQL before adding it
 - **Table already exists** — use `IF NOT EXISTS`
-- **Missing references** — ensure referenced tables exist and are created earlier in the array
+- **Missing references** — ensure referenced tables exist earlier in the array

@@ -1,59 +1,37 @@
-/*
-  config.js — loads config.json and exposes window.SITE_CONFIG.
-  Must be the very first script loaded on every page (after icons.js).
-  All other JS files read from window.SITE_CONFIG instead of hard-coding values.
-*/
+// config.js - loads config.json synchronously before everything else
 
 (function () {
-
-  /* Synchronous XHR so the config is available before any other script runs */
-  function loadConfigSync(path) {
+  function loadSync(path) {
     try {
       var xhr = new XMLHttpRequest();
-      xhr.open('GET', path, false); /* false = synchronous */
+      xhr.open('GET', path, false);
       xhr.send(null);
-      if (xhr.status === 200) {
-        return JSON.parse(xhr.responseText);
-      }
-    } catch (e) {
-      console.error('[AirLink] Failed to load config.json:', e);
-    }
+      if (xhr.status === 200) return JSON.parse(xhr.responseText);
+    } catch (e) { console.error('[AirLink] config load failed:', e); }
     return null;
   }
 
-  /* Resolve the correct path to config.json from any depth of page */
-  function findConfigPath() {
-    /* Try to determine depth by checking the document URL */
-    var path = window.location.pathname;
-    var depth = (path.match(/\//g) || []).length;
+  var isDocsPage = window.location.pathname.indexOf('/docs/') !== -1;
+  var configPath = isDocsPage ? '../../config.json' : 'config.json';
+  var cfg = loadSync(configPath);
 
-    /* pages at depth 0-1 are root or one level deep */
-    if (path.indexOf('/docs/') !== -1) {
-      return '../../config.json'; /* docs/slug/index.html */
-    }
-    return 'config.json'; /* index.html */
-  }
-
-  var config = loadConfigSync(findConfigPath());
-
-  if (!config) {
-    /* Fallback minimal config so the page doesn't break */
-    config = {
-      site: { title: 'AirLink', version: '1.0.0', versionLabel: 'v1.0.0 beta',
-              githubOrg: 'AirlinkLabs', githubPanel: 'AirlinkLabs/panel',
-              githubDaemon: 'AirlinkLabs/daemon', discordUrl: 'https://discord.gg/D8YbT9rDqz' },
+  if (!cfg) {
+    cfg = {
+      site: {
+        title: 'AirLink', versionLabel: 'v1.0.0 beta',
+        githubOrg: 'AirlinkLabs', githubPanel: 'AirlinkLabs/panel',
+        githubDaemon: 'AirlinkLabs/daemon', discordUrl: 'https://discord.gg/D8YbT9rDqz'
+      },
       underConstruction: { enabled: false },
-      addons: [],
-      features: [],
+      features: [], addons: [],
       docs: { manifest: [] }
     };
   }
 
-  window.SITE_CONFIG = config;
+  window.SITE_CONFIG = cfg;
 
-  /* ── Apply under-construction immediately so there's no flash ── */
-  if (config.underConstruction && config.underConstruction.enabled) {
-    document.documentElement.setAttribute('data-under-construction', 'true');
-  }
-
+  // apply theme early to prevent flash
+  var theme = 'dark';
+  try { theme = localStorage.getItem('theme') || 'dark'; } catch(e) {}
+  document.documentElement.setAttribute('data-theme', theme);
 })();

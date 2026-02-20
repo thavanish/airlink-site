@@ -1,145 +1,145 @@
-/*
-  contributors.js — fetches GitHub contributors and renders the team section.
-  Depends on: icons.js, main.js (cachedFetch, escHtml)
-*/
+// contributors.js - fetches and renders contributors + member popup
 
-var memberOverlay, allUserDetails = {}, allCustomInfo = {};
+var _memberOverlay = null;
+var _allDetails = {};
+var _allCustom = {};
 
 function initMemberPopup() {
-  memberOverlay = document.createElement('div');
-  memberOverlay.className = 'member-overlay';
-  memberOverlay.innerHTML =
+  _memberOverlay = document.createElement('div');
+  _memberOverlay.className = 'member-overlay';
+  _memberOverlay.innerHTML =
     '<div class="member-popup">' +
-      '<div class="member-popup-banner" id="mp-banner">' +
-        '<button class="member-popup-banner-close" id="mp-close">' + getIcon('close') + '</button>' +
+      '<div class="member-popup-header">' +
+        '<div class="member-popup-avatar"><img id="mp-avatar" src="" alt=""></div>' +
+        '<div class="member-popup-name-block">' +
+          '<div class="member-popup-name" id="mp-name"></div>' +
+          '<div class="member-popup-handle" id="mp-handle"></div>' +
+          '<span class="member-popup-role" id="mp-role"></span>' +
+        '</div>' +
+        '<button class="member-popup-close-btn" id="mp-close">' + getIcon('close') + '</button>' +
       '</div>' +
-      '<div class="member-popup-content">' +
-        '<div class="member-popup-left"  id="mp-left"></div>' +
+      '<div class="member-popup-body">' +
+        '<div class="member-popup-left" id="mp-left"></div>' +
         '<div class="member-popup-right" id="mp-right"></div>' +
       '</div>' +
     '</div>';
-  document.body.appendChild(memberOverlay);
 
-  memberOverlay.addEventListener('click', function (e) {
-    if (e.target === memberOverlay) closeMemberPopup();
+  document.body.appendChild(_memberOverlay);
+
+  _memberOverlay.addEventListener('click', function (e) {
+    if (e.target === _memberOverlay) closeMember();
   });
-  document.getElementById('mp-close').addEventListener('click', closeMemberPopup);
-  document.addEventListener('keydown', function (e) {
-    if (e.key === 'Escape') closeMemberPopup();
-  });
+  document.getElementById('mp-close').addEventListener('click', closeMember);
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeMember(); });
 }
 
-function closeMemberPopup() {
-  memberOverlay.classList.remove('active');
-  document.body.style.overflow = '';
+function closeMember() {
+  if (_memberOverlay) {
+    _memberOverlay.classList.remove('active');
+    document.body.style.overflow = '';
+  }
 }
 
-function openMemberPopup(contributor, details, extra, maxContribs) {
-  var username    = contributor.login;
-  var name        = (extra && extra.name)    || (details && details.name)    || username;
-  var role        = (extra && extra.role)    || (contributor.contributions > 1
-    ? contributor.contributions + ' contributions' : 'Contributor');
-  var about       = (extra && extra.about)   || (details && details.bio)     || '';
-  var tagline     = (extra && extra.tagline) || '';
-  var location    = (details && details.location)         || '';
-  var joined      = details && details.created_at
-    ? new Date(details.created_at).getFullYear() : null;
-  var publicRepos = details ? details.public_repos : null;
-  var followers   = details ? details.followers    : null;
-  var blog        = (details && details.blog)              || '';
-  var twitterUser = (details && details.twitter_username)  || '';
-  var contribPct  = maxContribs > 0
-    ? Math.round((contributor.contributions / maxContribs) * 100) : 0;
-  var initials    = name.substring(0, 2).toUpperCase();
+function openMember(contributor, maxContribs) {
+  if (!_memberOverlay) initMemberPopup();
 
-  /* Unique colour per contributor */
+  var login = contributor.login;
+  var custom = _allCustom[login] || {};
+  var details = _allDetails[login] || {};
+
+  var name = custom.name || details.name || login;
+  var role = custom.role || (contributor.contributions > 1 ? contributor.contributions + ' commits' : 'Contributor');
+  var about = custom.about || details.bio || '';
+  var tagline = custom.tagline || '';
+  var location = details.location || '';
+  var joined = details.created_at ? new Date(details.created_at).getFullYear() : null;
+  var repos = details.public_repos;
+  var followers = details.followers;
+  var blog = details.blog || '';
+  var twitter = details.twitter_username || '';
+  var pct = maxContribs > 0 ? Math.round(contributor.contributions / maxContribs * 100) : 0;
+
+  // accent colour derived from username
   var hue = 0;
-  for (var i = 0; i < username.length; i++) hue = (hue + username.charCodeAt(i) * 37) % 360;
-  var banner = document.getElementById('mp-banner');
-  banner.style.background =
-    'linear-gradient(135deg, hsl(' + hue + ',45%,20%) 0%, hsl(' + ((hue + 40) % 360) + ',50%,30%) 100%)';
+  for (var i = 0; i < login.length; i++) hue = (hue + login.charCodeAt(i) * 37) % 360;
+  var accentColor = 'hsl(' + hue + ',60%,62%)';
 
+  var avatarEl = document.getElementById('mp-avatar');
+  if (avatarEl) { avatarEl.src = contributor.avatar_url; avatarEl.alt = name; }
+  var nameEl = document.getElementById('mp-name');
+  var handleEl = document.getElementById('mp-handle');
+  var roleEl = document.getElementById('mp-role');
+  if (nameEl) nameEl.textContent = name;
+  if (handleEl) handleEl.textContent = '@' + login;
+  if (roleEl) roleEl.textContent = role;
+
+  // left panel
   var left = document.getElementById('mp-left');
-  left.innerHTML =
-    '<div class="member-avatar-wrap">' +
-      '<img class="member-popup-avatar" src="' + contributor.avatar_url + '" alt="' + escHtml(name) + '" ' +
-        'onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\'">' +
-      '<div class="member-popup-avatar-initials" style="display:none">' + initials + '</div>' +
-    '</div>' +
-    '<div class="member-popup-name-block">' +
-      '<div class="member-popup-name">' + escHtml(name) + '</div>' +
-      '<div class="member-popup-handle">@' + escHtml(username) + '</div>' +
-      '<span class="member-popup-role-badge">' + escHtml(role) + '</span>' +
-    '</div>';
+  left.innerHTML = '';
 
   if (about || tagline) {
-    left.innerHTML +=
-      '<div class="member-popup-section">' +
-        '<div class="member-popup-section-title">About</div>' +
-        (tagline
-          ? '<div class="member-tagline">&ldquo;' + escHtml(tagline) + '&rdquo;</div>'
-          : '') +
-        (about
-          ? '<div class="member-about">' + escHtml(about) + '</div>'
-          : '') +
-      '</div>';
+    var aboutSec = document.createElement('div');
+    aboutSec.innerHTML =
+      '<div class="member-section-title">About</div>' +
+      (tagline ? '<div class="member-tagline">&ldquo;' + escHtml(tagline) + '&rdquo;</div>' : '') +
+      (about ? '<div class="member-about-text">' + escHtml(about) + '</div>' : '');
+    left.appendChild(aboutSec);
   }
 
-  var statsHtml = '<div class="member-popup-section"><div class="member-popup-section-title">Details</div><div class="member-stat-row">';
-  if (location)             statsHtml += '<div class="member-stat">' + getIcon('mapPin') + escHtml(location) + '</div>';
-  if (joined)               statsHtml += '<div class="member-stat">' + getIcon('calendar') + 'Since ' + joined + '</div>';
-  if (publicRepos !== null) statsHtml += '<div class="member-stat">' + getIcon('package') + publicRepos + ' public repos</div>';
-  if (followers   !== null) statsHtml += '<div class="member-stat">' + getIcon('userGroup') + followers + ' followers</div>';
-  statsHtml += '</div></div>';
-  left.innerHTML += statsHtml;
+  var statsSec = document.createElement('div');
+  var statsHtml = '<div class="member-section-title">Details</div><div class="member-stat-row">';
+  if (location) statsHtml += '<div class="member-stat-item">' + getIcon('mapPin') + escHtml(location) + '</div>';
+  if (joined) statsHtml += '<div class="member-stat-item">' + getIcon('calendar') + 'GitHub since ' + joined + '</div>';
+  if (repos != null) statsHtml += '<div class="member-stat-item">' + getIcon('package') + repos + ' public repos</div>';
+  if (followers != null) statsHtml += '<div class="member-stat-item">' + getIcon('userGroup') + followers + ' followers</div>';
+  statsHtml += '</div>';
+  statsSec.innerHTML = statsHtml;
+  left.appendChild(statsSec);
 
-  var linksHtml =
-    '<div class="member-popup-section"><div class="member-popup-section-title">Links</div><div class="member-links">' +
-    '<a href="' + contributor.html_url + '" class="member-link" target="_blank" rel="noopener">' + getIcon('github') + 'GitHub Profile</a>';
+  var linksSec = document.createElement('div');
+  var linksHtml = '<div class="member-section-title">Links</div><div class="member-links">';
+  linksHtml += '<a href="' + contributor.html_url + '" class="member-link" target="_blank" rel="noopener">' + getIcon('github') + 'GitHub</a>';
   if (blog) {
-    linksHtml += '<a href="' + (blog.startsWith('http') ? blog : 'https://' + blog) + '" class="member-link" target="_blank" rel="noopener">' +
-      getIcon('globe') + 'Website</a>';
+    var blogUrl = blog.startsWith('http') ? blog : 'https://' + blog;
+    linksHtml += '<a href="' + escHtml(blogUrl) + '" class="member-link" target="_blank" rel="noopener">' + getIcon('globe') + 'Website</a>';
   }
-  if (twitterUser) {
-    linksHtml += '<a href="https://twitter.com/' + twitterUser + '" class="member-link" target="_blank" rel="noopener">' +
-      getIcon('twitter') + '@' + escHtml(twitterUser) + '</a>';
+  if (twitter) {
+    linksHtml += '<a href="https://twitter.com/' + escHtml(twitter) + '" class="member-link" target="_blank" rel="noopener">' + getIcon('twitter') + '@' + escHtml(twitter) + '</a>';
   }
-  linksHtml += '</div></div>';
-  left.innerHTML += linksHtml;
+  linksHtml += '</div>';
+  linksSec.innerHTML = linksHtml;
+  left.appendChild(linksSec);
 
-  /* Right panel */
+  // right panel
   var right = document.getElementById('mp-right');
   right.innerHTML = '';
 
   var box1 = document.createElement('div');
   box1.className = 'member-activity-box';
   box1.innerHTML =
-    '<div class="member-right-title">Contribution Activity</div>' +
+    '<div class="member-right-title member-section-title">Contribution Activity</div>' +
     '<h4>' + contributor.contributions + ' commits to AirLink</h4>' +
     '<div class="member-contrib-bar">' +
-      '<div class="member-contrib-label"><span>Contributions</span><span>' + contribPct + '%</span></div>' +
-      '<div class="member-contrib-track">' +
-        '<div class="member-contrib-fill" style="width:' + contribPct + '%"></div>' +
-      '</div>' +
+      '<div class="member-contrib-pct"><span>Commits</span><span>' + pct + '%</span></div>' +
+      '<div class="member-contrib-track"><div class="member-contrib-fill" style="width:' + pct + '%;background:' + accentColor + '"></div></div>' +
     '</div>' +
-    '<p class="activity-meta">Across panel &amp; daemon repositories</p>';
+    '<p style="font-size:12px;color:var(--text3);margin-top:8px;">Across panel &amp; daemon repos</p>';
   right.appendChild(box1);
 
-  if (publicRepos !== null || followers !== null) {
+  if (repos != null || followers != null) {
     var box2 = document.createElement('div');
     box2.className = 'member-activity-box';
     box2.innerHTML =
-      '<div class="member-right-title">GitHub Stats</div>' +
-      (publicRepos !== null ? '<h4>' + publicRepos + ' public repositories</h4>' : '') +
-      (followers   !== null ? '<p>' + followers + ' followers</p>' : '');
+      '<div class="member-section-title">GitHub Stats</div>' +
+      (repos != null ? '<h4>' + repos + ' public repos</h4>' : '') +
+      (followers != null ? '<p>' + followers + ' followers on GitHub</p>' : '');
     right.appendChild(box2);
   }
 
   var box3 = document.createElement('div');
   box3.className = 'member-activity-box';
   box3.innerHTML =
-    '<div class="member-right-title">AirLink Roles</div>' +
-    '<p>Contributing to: TypeScript codebase, EJS templates, addon ecosystem.</p>' +
+    '<div class="member-section-title">Tech Stack</div>' +
     '<div class="member-tags">' +
       '<span class="member-tag">TypeScript</span>' +
       '<span class="member-tag">Node.js</span>' +
@@ -147,18 +147,7 @@ function openMemberPopup(contributor, details, extra, maxContribs) {
     '</div>';
   right.appendChild(box3);
 
-  if (joined) {
-    var age  = new Date().getFullYear() - joined;
-    var box4 = document.createElement('div');
-    box4.className = 'member-activity-box';
-    box4.innerHTML =
-      '<div class="member-right-title">Member Since</div>' +
-      '<h4>' + joined + ' \u2014 ' + age + ' year' + (age !== 1 ? 's' : '') + ' on GitHub</h4>' +
-      '<p>Active in open-source development.</p>';
-    right.appendChild(box4);
-  }
-
-  memberOverlay.classList.add('active');
+  _memberOverlay.classList.add('active');
   document.body.style.overflow = 'hidden';
 }
 
@@ -168,141 +157,114 @@ function loadContributors() {
 
   initMemberPopup();
 
-  var cfg    = window.SITE_CONFIG && window.SITE_CONFIG.team;
-  var repos  = (cfg && cfg.repos) || ['AirlinkLabs/panel', 'AirlinkLabs/daemon'];
-  var customInfo = (cfg && cfg.customContributors) || {};
+  var cfg = window.SITE_CONFIG && window.SITE_CONFIG.team || {};
+  var repos = cfg.repos || ['AirlinkLabs/panel', 'AirlinkLabs/daemon'];
+  _allCustom = cfg.customContributors || {};
 
   Promise.all(
-    repos.map(function (repo) {
-      return cachedFetch(
-        'contributors-' + repo,
-        'https://api.github.com/repos/' + repo + '/contributors'
-      ).catch(function () { return []; });
+    repos.map(function (r) {
+      return cachedFetch('contributors-' + r, 'https://api.github.com/repos/' + r + '/contributors?per_page=100')
+        .catch(function () { return []; });
     })
-  ).then(function (repoResults) {
-    allCustomInfo = customInfo;
-
+  ).then(function (results) {
     var map = new Map();
-    repoResults.flat().forEach(function (c) {
-      var existing = map.get(c.id);
-      if (existing) {
-        existing.contributions += c.contributions;
-      } else {
-        map.set(c.id, Object.assign({}, c));
-      }
+    results.flat().forEach(function (c) {
+      if (!c || !c.id) return;
+      var ex = map.get(c.id);
+      if (ex) ex.contributions += c.contributions;
+      else map.set(c.id, Object.assign({}, c));
     });
 
-    var unique = Array.from(map.values()).sort(function (a, b) {
-      return b.contributions - a.contributions;
-    });
+    var sorted = Array.from(map.values()).sort(function (a, b) { return b.contributions - a.contributions; });
 
-    /* Update stats */
-    var statContrib = document.getElementById('stat-contributors');
-    var statCommits = document.getElementById('stat-commits');
-    if (statContrib) statContrib.textContent = unique.length || '\u2014';
-    var totalContribs = unique.reduce(function (s, c) { return s + c.contributions; }, 0);
-    if (statCommits)  statCommits.textContent = totalContribs || '\u2014';
+    // update stats
+    var statC = document.getElementById('stat-contributors');
+    var statCm = document.getElementById('stat-commits');
+    if (statC) statC.textContent = sorted.length || '—';
+    var total = sorted.reduce(function (s, c) { return s + c.contributions; }, 0);
+    if (statCm) statCm.textContent = total || '—';
 
-    if (!unique.length) {
-      grid.innerHTML = '<div class="loading">No contributors found.</div>';
+    if (!sorted.length) {
+      grid.innerHTML = '<div style="color:var(--text3);text-align:center;padding:40px;font-family:var(--mono);">No contributors found.</div>';
       return;
     }
 
     return Promise.all(
-      unique.map(function (c) {
-        return cachedFetch(
-          'user-' + c.login,
-          'https://api.github.com/users/' + c.login
-        ).catch(function () { return null; });
+      sorted.map(function (c) {
+        return cachedFetch('user-' + c.login, 'https://api.github.com/users/' + c.login)
+          .catch(function () { return null; });
       })
-    ).then(function (userDetails) {
-      var maxContribs = unique[0] ? unique[0].contributions : 1;
-      unique.forEach(function (c, i) { allUserDetails[c.login] = userDetails[i]; });
+    ).then(function (details) {
+      sorted.forEach(function (c, i) { _allDetails[c.login] = details[i] || {}; });
 
+      var maxContribs = sorted[0].contributions;
       grid.innerHTML = '';
 
-      unique.forEach(function (contributor, i) {
-        var username = contributor.login;
-        var extra    = allCustomInfo[username] || {};
-        var details  = allUserDetails[username];
-        var name     = extra.name || (details && details.name) || username;
-        var about    = extra.about || (details && details.bio) || '';
-        var location = (details && details.location) || '';
+      sorted.forEach(function (contributor, i) {
+        var login = contributor.login;
+        var custom = _allCustom[login] || {};
+        var det = _allDetails[login] || {};
+
+        var name = custom.name || det.name || login;
+        var bio = custom.about || det.bio || '';
+        var loc = det.location || '';
         var initials = name.substring(0, 2).toUpperCase();
+        var pct = Math.round(contributor.contributions / maxContribs * 100);
 
-        /* unique per-contributor accent colour */
+        // per-user accent
         var hue = 0;
-        for (var j = 0; j < username.length; j++) hue = (hue + username.charCodeAt(j) * 37) % 360;
-        var accentLight = 'hsl(' + hue + ',65%,62%)';
-        var accentDim   = 'hsl(' + hue + ',40%,22%)';
-
-        var contribPct = maxContribs > 0 ? Math.round((contributor.contributions / maxContribs) * 100) : 0;
+        for (var j = 0; j < login.length; j++) hue = (hue + login.charCodeAt(j) * 37) % 360;
+        var accent = 'hsl(' + hue + ',60%,62%)';
+        var accentDim = 'hsl(' + hue + ',40%,22%)';
 
         var rankBadge = '';
-        if      (i === 0) rankBadge = '<span class="contrib-rank rank-1">Lead</span>';
-        else if (i === 1) rankBadge = '<span class="contrib-rank rank-2">Core</span>';
-        else if (i === 2) rankBadge = '<span class="contrib-rank rank-3">Core</span>';
+        if (i === 0) rankBadge = '<span class="contrib-rank-badge rank-lead">Lead</span>';
+        else if (i <= 2) rankBadge = '<span class="contrib-rank-badge rank-core">Core</span>';
 
-        var bioText = about.length > 82 ? about.slice(0, 80) + '\u2026' : about;
+        var bioShort = bio.length > 78 ? bio.slice(0, 76) + '…' : bio;
 
         var card = document.createElement('div');
-        card.className = 'contributor-card fade-in-up delay-' + Math.min((i % 6) + 1, 6);
+        card.className = 'contrib-card fade-up fade-up-d' + Math.min((i % 6) + 1, 6);
         card.innerHTML =
-          '<div class="contrib-accent-strip" style="background:linear-gradient(90deg,' + accentDim + ',' + accentLight + ')"></div>' +
-          '<div class="contrib-card-inner">' +
-            '<div class="contrib-top">' +
-              '<div class="contrib-avatar-wrap">' +
-                '<img src="' + contributor.avatar_url + '" alt="' + escHtml(name) + '" loading="lazy" ' +
-                  'onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">' +
-                '<div class="contrib-avatar-initials" style="background:' + accentDim + ';color:' + accentLight + '">' + initials + '</div>' +
-              '</div>' +
-              rankBadge +
+          // top accent strip
+          '<div style="height:3px;background:linear-gradient(90deg,' + accentDim + ',' + accent + ')"></div>' +
+          '<div class="contrib-card-top">' +
+            '<div class="contrib-avatar">' +
+              '<img src="' + contributor.avatar_url + '" alt="' + escHtml(name) + '" loading="lazy" ' +
+                'onerror="this.style.display=\'none\';this.nextSibling.style.display=\'flex\'">' +
+              '<div class="contrib-avatar-init" style="display:none;background:' + accentDim + ';color:' + accent + '">' + initials + '</div>' +
             '</div>' +
-            '<div class="contrib-identity">' +
+            '<div class="contrib-info">' +
               '<div class="contrib-name">' + escHtml(name) + '</div>' +
-              '<div class="contrib-handle">@' + escHtml(username) + '</div>' +
+              '<div class="contrib-handle">@' + escHtml(login) + '</div>' +
             '</div>' +
-            '<p class="contrib-bio">' + (bioText ? escHtml(bioText) : '') + '</p>' +
-            '<div class="contrib-bar-wrap">' +
-              '<div class="contrib-bar-track">' +
-                '<div class="contrib-bar-fill" style="width:' + contribPct + '%;background:' + accentLight + '"></div>' +
-              '</div>' +
-              '<span class="contrib-commits">' + contributor.contributions + ' commits</span>' +
+            rankBadge +
+          '</div>' +
+          '<div class="contrib-card-body">' +
+            '<p class="contrib-bio">' + escHtml(bioShort) + '</p>' +
+            '<div class="contrib-bar-row">' +
+              '<div class="contrib-bar-track"><div class="contrib-bar-fill" style="width:' + pct + '%;background:' + accent + '"></div></div>' +
+              '<span class="contrib-commits-count">' + contributor.contributions + ' commits</span>' +
             '</div>' +
-            '<div class="contrib-footer">' +
-              '<div class="contrib-meta">' +
-                (location ? '<span>' + getIcon('mapPin', 11) + escHtml(location.length > 18 ? location.slice(0,16) + '\u2026' : location) + '</span>' : '') +
-                (details && details.followers ? '<span>' + getIcon('userGroup', 11) + details.followers + '</span>' : '') +
-              '</div>' +
-              '<span class="contrib-cta">Profile ' + getIcon('arrowRight', 11) + '</span>' +
-            '</div>' +
+          '</div>' +
+          '<div class="contrib-card-footer">' +
+            '<span class="contrib-location">' + (loc ? getIcon('mapPin') + escHtml(loc.length > 18 ? loc.slice(0, 16) + '…' : loc) : '') + '</span>' +
+            '<span class="contrib-view">Profile ' + getIcon('arrowRight') + '</span>' +
           '</div>';
 
         card.addEventListener('click', function () {
-          openMemberPopup(contributor, allUserDetails[username], allCustomInfo[username] || {}, maxContribs);
+          openMember(contributor, maxContribs);
         });
 
         grid.appendChild(card);
       });
 
-      /* Intersection observer for card animations */
-      var obs = new IntersectionObserver(function (entries) {
-        entries.forEach(function (e) {
-          if (e.isIntersecting) {
-            e.target.style.animationPlayState = 'running';
-            obs.unobserve(e.target);
-          }
-        });
-      }, { threshold: 0.1 });
-
-      grid.querySelectorAll('.contributor-card').forEach(function (el) {
-        el.style.animationPlayState = 'paused';
-        obs.observe(el);
-      });
+      // re-observe for animations
+      initScrollAnimations && initScrollAnimations();
     });
   }).catch(function (err) {
-    console.error('Contributors error:', err);
-    grid.innerHTML = '<div class="loading">Something went wrong loading contributors.</div>';
+    console.error('contributors error:', err);
+    grid.innerHTML = '<div style="color:var(--text3);text-align:center;padding:40px;font-family:var(--mono);">Failed to load contributors.</div>';
   });
 }
 

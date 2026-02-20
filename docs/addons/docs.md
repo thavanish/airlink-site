@@ -114,34 +114,6 @@ api.ui.addSidebarItem({
 });
 ```
 
-## Server Menu Items
-
-```typescript
-api.ui.addServerMenuItem({
-  id:      'my-addon-server',
-  name:    'My Feature',
-  icon:    '<svg ...></svg>',
-  link:    '/servers/{uuid}/my-feature',
-  feature: 'custom',
-  order:   50
-});
-```
-
-## Views
-
-Views use EJS and include the panel's shared header/footer/template components:
-
-```html
-<%- include(components.header, { title: 'My Addon', user: user }) %>
-
-<div class="container mx-auto px-4 py-8">
-  <h1 class="text-2xl font-bold mb-4">My Addon</h1>
-  <p class="text-gray-400">Content here</p>
-</div>
-
-<%- include(components.footer) %>
-```
-
 ## Best Practices
 
 - Prefix all database tables with your addon slug
