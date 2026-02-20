@@ -14,7 +14,7 @@
   },
 
   "underConstruction": {
-    "enabled": true,
+    "enabled": false,
     "message": "This site is currently under construction.",
     "popupTitle": "Under Construction",
     "popupMessage": "Welcome! This docs site is still being built.",
