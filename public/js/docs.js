@@ -95,7 +95,6 @@ function attachCopyBtns(el) {
 }
 
 function initDocSearch(contentEl) {
-  // inject search bar above content
   var searchWrap = document.createElement('div');
   searchWrap.className = 'docs-search-wrap';
   searchWrap.innerHTML =
@@ -119,7 +118,6 @@ function initDocSearch(contentEl) {
       if (parent) parent.replaceChild(document.createTextNode(el.textContent), el);
     });
     highlights = [];
-    // normalize text nodes
     contentEl.normalize();
   }
 
@@ -175,7 +173,6 @@ function initDocSearch(contentEl) {
     input.focus();
   });
 
-  // keyboard shortcut: Ctrl+F or Cmd+F inside docs
   document.addEventListener('keydown', function (e) {
     if ((e.ctrlKey || e.metaKey) && e.key === 'f') {
       if (document.getElementById('docs-search-input')) {
@@ -193,7 +190,8 @@ function initDocSearch(contentEl) {
   });
 }
 
-
+// ---- FIXED: was missing the function declaration entirely ----
+function buildFooterNav(manifest, slug, rootPath) {
   var nav = document.getElementById('docs-footer-nav');
   if (!nav) return;
   var idx = manifest.findIndex(function (d) { return d.slug === slug; });
@@ -229,7 +227,7 @@ function initDocPage(slug, rootPath) {
       a.textContent = doc.title;
       navEl.appendChild(a);
     });
-    // add readme link
+    // add readme/announcements link
     var readmeA = document.createElement('a');
     readmeA.href = rootPath + 'docs/readme/';
     readmeA.className = 'docs-nav-link' + (slug === 'readme' ? ' active' : '');
