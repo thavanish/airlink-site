@@ -344,6 +344,14 @@ function escHtml(str) {
     .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 
+// Safe onerror fallback for addon icons — avoids injecting raw SVG into an
+// HTML attribute string (which breaks because SVG contains "/> sequences).
+// Usage in HTML: onerror="iconFallback(this,'puzzle',22)"
+function iconFallback(imgEl, iconKey, size) {
+  var parent = imgEl.parentElement;
+  if (parent) parent.innerHTML = getIcon(iconKey || 'puzzle', size || 22);
+}
+
 
 // ---- init on DOM ready ----
 if (document.readyState === 'loading') {
