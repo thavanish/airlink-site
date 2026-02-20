@@ -59,7 +59,6 @@ function openMember(contributor, maxContribs) {
   var twitter = details.twitter_username || '';
   var pct = maxContribs > 0 ? Math.round(contributor.contributions / maxContribs * 100) : 0;
 
-  // accent colour derived from username
   var hue = 0;
   for (var i = 0; i < login.length; i++) hue = (hue + login.charCodeAt(i) * 37) % 360;
   var accentColor = 'hsl(' + hue + ',60%,62%)';
@@ -73,7 +72,6 @@ function openMember(contributor, maxContribs) {
   if (handleEl) handleEl.textContent = '@' + login;
   if (roleEl) roleEl.textContent = role;
 
-  // left panel
   var left = document.getElementById('mp-left');
   left.innerHTML = '';
 
@@ -110,7 +108,6 @@ function openMember(contributor, maxContribs) {
   linksSec.innerHTML = linksHtml;
   left.appendChild(linksSec);
 
-  // right panel
   var right = document.getElementById('mp-right');
   right.innerHTML = '';
 
@@ -177,12 +174,10 @@ function loadContributors() {
 
     var sorted = Array.from(map.values()).sort(function (a, b) { return b.contributions - a.contributions; });
 
-    // update stats
-    var statC = document.getElementById('stat-contributors');
-    var statCm = document.getElementById('stat-commits');
-    if (statC) statC.textContent = sorted.length || '—';
+    // FIX: use querySelectorAll since these IDs appear multiple times in index.html
     var total = sorted.reduce(function (s, c) { return s + c.contributions; }, 0);
-    if (statCm) statCm.textContent = total || '—';
+    document.querySelectorAll('#stat-contributors').forEach(function (el) { el.textContent = sorted.length || '—'; });
+    document.querySelectorAll('#stat-commits').forEach(function (el) { el.textContent = total || '—'; });
 
     if (!sorted.length) {
       grid.innerHTML = '<div style="color:var(--text3);text-align:center;padding:40px;font-family:var(--mono);">No contributors found.</div>';
@@ -211,7 +206,6 @@ function loadContributors() {
         var initials = name.substring(0, 2).toUpperCase();
         var pct = Math.round(contributor.contributions / maxContribs * 100);
 
-        // per-user accent
         var hue = 0;
         for (var j = 0; j < login.length; j++) hue = (hue + login.charCodeAt(j) * 37) % 360;
         var accent = 'hsl(' + hue + ',60%,62%)';
@@ -226,7 +220,6 @@ function loadContributors() {
         var card = document.createElement('div');
         card.className = 'contrib-card fade-up fade-up-d' + Math.min((i % 6) + 1, 6);
         card.innerHTML =
-          // top accent strip
           '<div style="height:3px;background:linear-gradient(90deg,' + accentDim + ',' + accent + ')"></div>' +
           '<div class="contrib-card-top">' +
             '<div class="contrib-avatar">' +
@@ -259,7 +252,6 @@ function loadContributors() {
         grid.appendChild(card);
       });
 
-      // re-observe for animations
       initScrollAnimations && initScrollAnimations();
     });
   }).catch(function (err) {
