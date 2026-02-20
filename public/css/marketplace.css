@@ -249,6 +249,28 @@
 .mkt-empty p { font-size: 14px; }
 .mkt-reset-btn { margin-top: 4px; }
 
+/* ---- addon icon (shared between card and popup) ---- */
+/* FIX: constrain both img and svg children so nothing overflows the box */
+.addon-icon {
+  width: 40px; height: 40px;
+  border-radius: 10px;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.addon-icon img {
+  width: 26px;
+  height: 26px;
+  object-fit: contain;
+}
+.addon-icon svg {
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+}
+
 /* ---- addon popup (reused from sections) ---- */
 .addon-overlay {
   position: fixed; inset: 0;
@@ -370,7 +392,7 @@
 .feat-slide-arrow:hover { background: rgba(0,0,0,0.8); }
 .feat-slide-arrow.prev { left: 10px; }
 .feat-slide-arrow.next { right: 10px; }
-.feat-dots {
+.feat-slide-dots {
   position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%);
   display: flex; gap: 5px; z-index: 3;
 }
@@ -492,21 +514,6 @@
   border-top: 1px solid var(--border);
 }
 .submit-popup-btns .btn { flex: 1; justify-content: center; }
-
-/* addon icon inside card */
-.addon-icon {
-  width: 40px; height: 40px;
-  border-radius: 10px;
-  background: var(--bg3);
-  border: 1px solid var(--border);
-  display: flex; align-items: center; justify-content: center;
-  overflow: hidden;
-  flex-shrink: 0;
-}
-.addon-icon img {
-  width: 26px; height: 26px;
-  object-fit: contain;
-}
 
 /* ---- responsive ---- */
 @media (max-width: 820px) {
