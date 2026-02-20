@@ -18,9 +18,8 @@
     screen = document.createElement('div');
     screen.id = 'loading-screen';
 
-    // find logo - check multiple possible paths
-    var isDocsPage = window.location.pathname.indexOf('/docs/') !== -1;
-    var logoPath = isDocsPage ? '../../public/assets/plane.png' : 'public/assets/plane.png';
+    var isSubPage = window.location.pathname.match(/\/(docs|marketplace)\//);
+    var logoPath = isSubPage ? '../../public/assets/plane.png' : 'public/assets/plane.png';
     var faviconUrl = site.faviconUrl || '';
 
     screen.innerHTML =
@@ -40,7 +39,6 @@
     document.body.appendChild(screen);
     bar = document.getElementById('loading-bar');
 
-    // fake progress animation
     var tick = setInterval(function () {
       if (progress < 85) {
         progress += Math.random() * 15;
@@ -72,7 +70,6 @@
     }, 280);
   }
 
-  // only show if takes longer than threshold
   timer = setTimeout(function () {
     if (document.readyState !== 'complete') show();
   }, THRESHOLD);
@@ -82,10 +79,8 @@
     if (shown) {
       hide();
     }
-    // if it was never shown, no-op
   });
 
-  // failsafe
   setTimeout(hide, 7000);
 })();
 
@@ -113,6 +108,16 @@ function updateThemeIcons() {
 }
 
 
+// ---- path prefix helper ----
+// Returns the relative prefix to reach the site root from the current page
+function getRootPrefix() {
+  var path = window.location.pathname;
+  if (path.match(/\/(docs)\//)) return '../../';
+  if (path.match(/\/(marketplace)\//)) return '../';
+  return '';
+}
+
+
 // ---- github cache (sessionStorage + pre-fetched static files) ----
 var CACHE_TTL = 5 * 60 * 1000;
 
@@ -125,9 +130,7 @@ function keyToFile(key) {
 }
 
 function cacheFilePath(filename) {
-  var isDocsPage = window.location.pathname.indexOf('/docs/') !== -1;
-  var pre = isDocsPage ? '../../' : '';
-  return pre + 'public/api-cache/' + filename + '.json';
+  return getRootPrefix() + 'public/api-cache/' + filename + '.json';
 }
 
 function cachedFetch(key, url) {
@@ -205,12 +208,17 @@ function initScrollAnimations() {
 
 // ---- image folder manifest loader ----
 function loadImagesFromFolder(folder, cb) {
-  var isDocsPage = window.location.pathname.indexOf('/docs/') !== -1;
-  var prefix = isDocsPage ? '../../' : '';
-  fetch(prefix + folder + '/manifest.json')
+  var prefix = getRootPrefix();
+  // If folder already starts with the prefix (e.g. called from marketplace with '../public/...')
+  // avoid double-prefixing
+  var resolvedFolder = folder;
+  if (prefix && !folder.startsWith(prefix) && !folder.startsWith('http')) {
+    resolvedFolder = prefix + folder;
+  }
+  fetch(resolvedFolder + '/manifest.json')
     .then(function (r) { return r.ok ? r.json() : Promise.reject(); })
     .then(function (data) {
-      var imgs = (data.images || []).map(function (f) { return prefix + folder + '/' + f; });
+      var imgs = (data.images || []).map(function (f) { return resolvedFolder + '/' + f; });
       cb(imgs);
     })
     .catch(function () { cb([]); });
@@ -277,8 +285,9 @@ function makeSlideshow(container, images, iconKey, opts) {
       next.addEventListener('click', function () { cur = (cur + 1) % images.length; render(); });
       container.appendChild(next);
 
+      // FIX: was dotClass + 's' which made class e.g. "feat-dots" but CSS targets ".feat-slide-dots"
       var dots = document.createElement('div');
-      dots.className = dotClass + 's';
+      dots.className = 'feat-slide-dots';
       images.forEach(function (_, i) {
         var dot = document.createElement('div');
         dot.className = dotClass + (i === cur ? ' active' : '');
@@ -298,7 +307,6 @@ function initUC() {
   var uc = window.SITE_CONFIG && window.SITE_CONFIG.underConstruction;
   if (!uc || !uc.enabled) return;
 
-  // popup
   var dismissed = false;
   try { dismissed = sessionStorage.getItem('uc-dismissed') === '1'; } catch(e) {}
   if (!dismissed) {
@@ -320,7 +328,6 @@ function initUC() {
     });
   }
 
-  // navbar badge
   var nav = document.querySelector('.nav-actions');
   if (nav) {
     var badge = document.createElement('span');
