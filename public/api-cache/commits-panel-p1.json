@@ -1,5 +1,129 @@
 [
   {
+    "sha": "8984b2aa89e1acd38103315b89ddef4335e12e71",
+    "node_id": "C_kwDONJJQeNoAKDg5ODRiMmFhODllMWFjZDM4MTAzMzE1Yjg5ZGRlZjQzMzVlMTJlNzE",
+    "commit": {
+      "author": {
+        "name": "thavanish",
+        "email": "thavanishbrijesh@gmail.com",
+        "date": "2026-05-11T11:56:16Z"
+      },
+      "committer": {
+        "name": "thavanish",
+        "email": "thavanishbrijesh@gmail.com",
+        "date": "2026-05-11T11:56:16Z"
+      },
+      "message": "chore:this sounded too shit so changed it",
+      "tree": {
+        "sha": "d6a880b77402d36c7a93ef269527f11792c26830",
+        "url": "https://api.github.com/repos/airlinklabs/panel/git/trees/d6a880b77402d36c7a93ef269527f11792c26830"
+      },
+      "url": "https://api.github.com/repos/airlinklabs/panel/git/commits/8984b2aa89e1acd38103315b89ddef4335e12e71",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null,
+        "verified_at": null
+      }
+    },
+    "url": "https://api.github.com/repos/airlinklabs/panel/commits/8984b2aa89e1acd38103315b89ddef4335e12e71",
+    "html_url": "https://github.com/airlinklabs/panel/commit/8984b2aa89e1acd38103315b89ddef4335e12e71",
+    "comments_url": "https://api.github.com/repos/airlinklabs/panel/commits/8984b2aa89e1acd38103315b89ddef4335e12e71/comments",
+    "author": {
+      "login": "thavanish",
+      "id": 256001212,
+      "node_id": "U_kgDOD0JEvA",
+      "avatar_url": "https://avatars.githubusercontent.com/u/256001212?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/thavanish",
+      "html_url": "https://github.com/thavanish",
+      "followers_url": "https://api.github.com/users/thavanish/followers",
+      "following_url": "https://api.github.com/users/thavanish/following{/other_user}",
+      "gists_url": "https://api.github.com/users/thavanish/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/thavanish/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/thavanish/subscriptions",
+      "organizations_url": "https://api.github.com/users/thavanish/orgs",
+      "repos_url": "https://api.github.com/users/thavanish/repos",
+      "events_url": "https://api.github.com/users/thavanish/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/thavanish/received_events",
+      "type": "User",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "thavanish",
+      "id": 256001212,
+      "node_id": "U_kgDOD0JEvA",
+      "avatar_url": "https://avatars.githubusercontent.com/u/256001212?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/thavanish",
+      "html_url": "https://github.com/thavanish",
+      "followers_url": "https://api.github.com/users/thavanish/followers",
+      "following_url": "https://api.github.com/users/thavanish/following{/other_user}",
+      "gists_url": "https://api.github.com/users/thavanish/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/thavanish/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/thavanish/subscriptions",
+      "organizations_url": "https://api.github.com/users/thavanish/orgs",
+      "repos_url": "https://api.github.com/users/thavanish/repos",
+      "events_url": "https://api.github.com/users/thavanish/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/thavanish/received_events",
+      "type": "User",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "33fc3dadaf22bff9dcea89db9a142ed5b73ece62",
+        "url": "https://api.github.com/repos/airlinklabs/panel/commits/33fc3dadaf22bff9dcea89db9a142ed5b73ece62",
+        "html_url": "https://github.com/airlinklabs/panel/commit/33fc3dadaf22bff9dcea89db9a142ed5b73ece62"
+      }
+    ]
+  },
+  {
+    "sha": "33fc3dadaf22bff9dcea89db9a142ed5b73ece62",
+    "node_id": "C_kwDONJJQeNoAKDMzZmMzZGFkYWYyMmJmZjlkY2VhODlkYjlhMTQyZWQ1YjczZWNlNjI",
+    "commit": {
+      "author": {
+        "name": "Airlink Developer",
+        "email": "dev@airlink.local",
+        "date": "2026-05-11T11:15:01Z"
+      },
+      "committer": {
+        "name": "Airlink Developer",
+        "email": "dev@airlink.local",
+        "date": "2026-05-11T11:15:01Z"
+      },
+      "message": "fix: enhance error page handling and security validation\n\n- Add renderErrorPage handler for consistent error page rendering\n- Improve SESSION_SECRET validation in production environment\n- Redirect unauthenticated users from error pages to login\n- Integrate errorPageHandler and notFoundHandler middleware\n- Add error pages for desktop and mobile viewports\n- Fix IP ban error response to use renderErrorPage\n- Clean up error handling middleware implementation",
+      "tree": {
+        "sha": "c4a2bf0bbbf4973729579eaa98c4924866b6c607",
+        "url": "https://api.github.com/repos/airlinklabs/panel/git/trees/c4a2bf0bbbf4973729579eaa98c4924866b6c607"
+      },
+      "url": "https://api.github.com/repos/airlinklabs/panel/git/commits/33fc3dadaf22bff9dcea89db9a142ed5b73ece62",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null,
+        "verified_at": null
+      }
+    },
+    "url": "https://api.github.com/repos/airlinklabs/panel/commits/33fc3dadaf22bff9dcea89db9a142ed5b73ece62",
+    "html_url": "https://github.com/airlinklabs/panel/commit/33fc3dadaf22bff9dcea89db9a142ed5b73ece62",
+    "comments_url": "https://api.github.com/repos/airlinklabs/panel/commits/33fc3dadaf22bff9dcea89db9a142ed5b73ece62/comments",
+    "author": null,
+    "committer": null,
+    "parents": [
+      {
+        "sha": "4397643e3036170289fe6bae3188b971308838ca",
+        "url": "https://api.github.com/repos/airlinklabs/panel/commits/4397643e3036170289fe6bae3188b971308838ca",
+        "html_url": "https://github.com/airlinklabs/panel/commit/4397643e3036170289fe6bae3188b971308838ca"
+      }
+    ]
+  },
+  {
     "sha": "4397643e3036170289fe6bae3188b971308838ca",
     "node_id": "C_kwDONJJQeNoAKDQzOTc2NDNlMzAzNjE3MDI4OWZlNmJhZTMxODhiOTcxMzA4ODM4Y2E",
     "commit": {
@@ -1062,170 +1186,6 @@
         "sha": "b3aad312d41fd7a159fcd1210ea9e6f4309f1c7e",
         "url": "https://api.github.com/repos/airlinklabs/panel/commits/b3aad312d41fd7a159fcd1210ea9e6f4309f1c7e",
         "html_url": "https://github.com/airlinklabs/panel/commit/b3aad312d41fd7a159fcd1210ea9e6f4309f1c7e"
-      }
-    ]
-  },
-  {
-    "sha": "b3aad312d41fd7a159fcd1210ea9e6f4309f1c7e",
-    "node_id": "C_kwDONJJQeNoAKGIzYWFkMzEyZDQxZmQ3YTE1OWZjZDEyMTBlYTllNmY0MzA5ZjFjN2U",
-    "commit": {
-      "author": {
-        "name": "Thavanish brijesh",
-        "email": "thavanishbrijesh@gmail.com",
-        "date": "2026-05-01T08:56:56Z"
-      },
-      "committer": {
-        "name": "GitHub",
-        "email": "noreply@github.com",
-        "date": "2026-05-01T08:56:56Z"
-      },
-      "message": "Fix: installer not working correctly fixed",
-      "tree": {
-        "sha": "1cbbad960e322a97babec9eeacb4d39a7ecb072d",
-        "url": "https://api.github.com/repos/airlinklabs/panel/git/trees/1cbbad960e322a97babec9eeacb4d39a7ecb072d"
-      },
-      "url": "https://api.github.com/repos/airlinklabs/panel/git/commits/b3aad312d41fd7a159fcd1210ea9e6f4309f1c7e",
-      "comment_count": 0,
-      "verification": {
-        "verified": true,
-        "reason": "valid",
-        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJp9GrYCRC1aQ7uu5UhlAAANvAQAKQgye+s7zY1/Qx7npH9R0L/\nlppOL4uIGvWq/RA3XXmpZOjkstZau8C92y/1E4q+aMu78cN2LCDKHAazN9yBC2bo\nPzIliW31mRyU/wgswSq+wgcW1Jt5TAMGvWyyMAZhBYSI0AydcUTeyTzxdiVlsDSQ\nBw1DHTIhBJHEA+V1XzoIQ4kU/l1iGzaU+1C0rx+A6u0UMVjczNRPp7D0FB63iryc\neMXj1yh+NQ72mhgZ9fgR01EU1Tw8vPPKf/rmB3fTVEe2nB1lahInVsU8Ewiqtuse\nukpY2zs3NFirdCzE0bO5rt/e3Rp6DXIuaA7PG2X59XUSUQsvB3XTZ4MqZ62tbSX+\nij2M632PMhHpo1L67yYQ7hQM6ZRzlh8VTEamgE8NBHE/QScU+PWYEsJS/UkRrxOm\nHgfHCR2UH42m/eRGXJ6F7udbOIw00TKSYLbkDwUxc1SuD0doaZ+j7APmKUfJxc5h\nrrIm9e+Sl0SrRSr0Q21tpzc+XscYs1k+KWMKJIkdRh3THLbSxjf+ZkU5s02EIRP8\ngCG9NCuY/uyXBDQgyqdJO+xLQxjRLQbvXrn0dEKEZXfhQmpuo2nBHLF0fM4Rsek1\nDiY1uOIFkf3AZ1JHT2XBtXIjz9XzdEtIXfcSGcj7T9PaWlrhhc1Z995f0X58q2qj\nkWarsA2gmfhIgJuxLgiF\n=88BG\n-----END PGP SIGNATURE-----\n",
-        "payload": "tree 1cbbad960e322a97babec9eeacb4d39a7ecb072d\nparent 6d24530c98cdc09ab409c6e88074a58bfea7af63\nauthor Thavanish brijesh <thavanishbrijesh@gmail.com> 1777625816 +0530\ncommitter GitHub <noreply@github.com> 1777625816 +0530\n\nFix: installer not working correctly fixed",
-        "verified_at": "2026-05-01T08:56:57Z"
-      }
-    },
-    "url": "https://api.github.com/repos/airlinklabs/panel/commits/b3aad312d41fd7a159fcd1210ea9e6f4309f1c7e",
-    "html_url": "https://github.com/airlinklabs/panel/commit/b3aad312d41fd7a159fcd1210ea9e6f4309f1c7e",
-    "comments_url": "https://api.github.com/repos/airlinklabs/panel/commits/b3aad312d41fd7a159fcd1210ea9e6f4309f1c7e/comments",
-    "author": {
-      "login": "thavanish",
-      "id": 256001212,
-      "node_id": "U_kgDOD0JEvA",
-      "avatar_url": "https://avatars.githubusercontent.com/u/256001212?v=4",
-      "gravatar_id": "",
-      "url": "https://api.github.com/users/thavanish",
-      "html_url": "https://github.com/thavanish",
-      "followers_url": "https://api.github.com/users/thavanish/followers",
-      "following_url": "https://api.github.com/users/thavanish/following{/other_user}",
-      "gists_url": "https://api.github.com/users/thavanish/gists{/gist_id}",
-      "starred_url": "https://api.github.com/users/thavanish/starred{/owner}{/repo}",
-      "subscriptions_url": "https://api.github.com/users/thavanish/subscriptions",
-      "organizations_url": "https://api.github.com/users/thavanish/orgs",
-      "repos_url": "https://api.github.com/users/thavanish/repos",
-      "events_url": "https://api.github.com/users/thavanish/events{/privacy}",
-      "received_events_url": "https://api.github.com/users/thavanish/received_events",
-      "type": "User",
-      "user_view_type": "public",
-      "site_admin": false
-    },
-    "committer": {
-      "login": "web-flow",
-      "id": 19864447,
-      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
-      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
-      "gravatar_id": "",
-      "url": "https://api.github.com/users/web-flow",
-      "html_url": "https://github.com/web-flow",
-      "followers_url": "https://api.github.com/users/web-flow/followers",
-      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
-      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
-      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
-      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
-      "organizations_url": "https://api.github.com/users/web-flow/orgs",
-      "repos_url": "https://api.github.com/users/web-flow/repos",
-      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
-      "received_events_url": "https://api.github.com/users/web-flow/received_events",
-      "type": "User",
-      "user_view_type": "public",
-      "site_admin": false
-    },
-    "parents": [
-      {
-        "sha": "6d24530c98cdc09ab409c6e88074a58bfea7af63",
-        "url": "https://api.github.com/repos/airlinklabs/panel/commits/6d24530c98cdc09ab409c6e88074a58bfea7af63",
-        "html_url": "https://github.com/airlinklabs/panel/commit/6d24530c98cdc09ab409c6e88074a58bfea7af63"
-      }
-    ]
-  },
-  {
-    "sha": "6d24530c98cdc09ab409c6e88074a58bfea7af63",
-    "node_id": "C_kwDONJJQeNoAKDZkMjQ1MzBjOThjZGMwOWFiNDA5YzZlODgwNzRhNThiZmVhN2FmNjM",
-    "commit": {
-      "author": {
-        "name": "Thavanish brijesh",
-        "email": "thavanishbrijesh@gmail.com",
-        "date": "2026-04-29T01:13:09Z"
-      },
-      "committer": {
-        "name": "GitHub",
-        "email": "noreply@github.com",
-        "date": "2026-04-29T01:13:09Z"
-      },
-      "message": "fix: add --no-frozen-lockfile to make pnpm include unincluded packages as a fallback",
-      "tree": {
-        "sha": "857dc4a08b199fdb3341e9b6953c961773c4797b",
-        "url": "https://api.github.com/repos/airlinklabs/panel/git/trees/857dc4a08b199fdb3341e9b6953c961773c4797b"
-      },
-      "url": "https://api.github.com/repos/airlinklabs/panel/git/commits/6d24530c98cdc09ab409c6e88074a58bfea7af63",
-      "comment_count": 0,
-      "verification": {
-        "verified": true,
-        "reason": "valid",
-        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJp8VslCRC1aQ7uu5UhlAAAKpEQAKHCeGGXP43DV1JzDJcttynG\noyXtj1kqpl/pTpIs3oBA3AdVMtfGjhJw4EjxuUTSrgD6XPWapbgsv2Q0Y9QPPUwo\njaYMRcJlqbL3N6tnPfA4rQMEkxfAO69mC3Nt5k/fvNrHq33Ok+GAJ8Sbn6ae/8eh\nY5cleLZiJYBgpU9ZyqLl93lUBTB6bNHOOkD5sj/eTw+Kuig79wd1kSNcRm5YQ2Dr\nZqx/q7quCasW9jMcPhBfDOSSecXHKdLi979vv4DrNyMqDe13xpkQmg/iQB9sNnLX\nuymfhiqKsGf8plJyuH6jkdy+SDXsZA/9kSTjncVvViIpDjIrL6zJaJ9mk2UP0uXA\nMb2t4rjqkqOev2IOrUmRkmYRZV8+hKsOiLKq0wKCLzG6iDJQybhBKANNIuVX/1SQ\nalolbd/jxCvZ3H7qJ+WjzIbtugQDsdUT4YlCrwKLE6LObAXf/fhjGFRVTgMXcD47\njqfcM7z2kK42i6ZS+bGBtZxuG09zx5qn3QOxgvgiKoPF4KJ4+mnBVOmKrEPrpBYr\nYw/DZoqb6+4c3jZMwh9pu+x82eFPeBW2yuraByE2ZJUTc9NJQicAHFK4y15PWSGh\nx4KrRxP67+8e8pgmBQdkkO4jHj8wwGxXQ7hwS1VsCiHYMoB0ReB89dmsFvNsEPY+\ngOXl37hULVxN5NaBzyD+\n=P8l8\n-----END PGP SIGNATURE-----\n",
-        "payload": "tree 857dc4a08b199fdb3341e9b6953c961773c4797b\nparent 93ea5a410731797586c6106aed5a8c5575c36911\nauthor Thavanish brijesh <thavanishbrijesh@gmail.com> 1777425189 +0530\ncommitter GitHub <noreply@github.com> 1777425189 +0530\n\nfix: add --no-frozen-lockfile to make pnpm include unincluded packages as a fallback",
-        "verified_at": "2026-04-29T01:13:10Z"
-      }
-    },
-    "url": "https://api.github.com/repos/airlinklabs/panel/commits/6d24530c98cdc09ab409c6e88074a58bfea7af63",
-    "html_url": "https://github.com/airlinklabs/panel/commit/6d24530c98cdc09ab409c6e88074a58bfea7af63",
-    "comments_url": "https://api.github.com/repos/airlinklabs/panel/commits/6d24530c98cdc09ab409c6e88074a58bfea7af63/comments",
-    "author": {
-      "login": "thavanish",
-      "id": 256001212,
-      "node_id": "U_kgDOD0JEvA",
-      "avatar_url": "https://avatars.githubusercontent.com/u/256001212?v=4",
-      "gravatar_id": "",
-      "url": "https://api.github.com/users/thavanish",
-      "html_url": "https://github.com/thavanish",
-      "followers_url": "https://api.github.com/users/thavanish/followers",
-      "following_url": "https://api.github.com/users/thavanish/following{/other_user}",
-      "gists_url": "https://api.github.com/users/thavanish/gists{/gist_id}",
-      "starred_url": "https://api.github.com/users/thavanish/starred{/owner}{/repo}",
-      "subscriptions_url": "https://api.github.com/users/thavanish/subscriptions",
-      "organizations_url": "https://api.github.com/users/thavanish/orgs",
-      "repos_url": "https://api.github.com/users/thavanish/repos",
-      "events_url": "https://api.github.com/users/thavanish/events{/privacy}",
-      "received_events_url": "https://api.github.com/users/thavanish/received_events",
-      "type": "User",
-      "user_view_type": "public",
-      "site_admin": false
-    },
-    "committer": {
-      "login": "web-flow",
-      "id": 19864447,
-      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
-      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
-      "gravatar_id": "",
-      "url": "https://api.github.com/users/web-flow",
-      "html_url": "https://github.com/web-flow",
-      "followers_url": "https://api.github.com/users/web-flow/followers",
-      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
-      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
-      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
-      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
-      "organizations_url": "https://api.github.com/users/web-flow/orgs",
-      "repos_url": "https://api.github.com/users/web-flow/repos",
-      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
-      "received_events_url": "https://api.github.com/users/web-flow/received_events",
-      "type": "User",
-      "user_view_type": "public",
-      "site_admin": false
-    },
-    "parents": [
-      {
-        "sha": "93ea5a410731797586c6106aed5a8c5575c36911",
-        "url": "https://api.github.com/repos/airlinklabs/panel/commits/93ea5a410731797586c6106aed5a8c5575c36911",
-        "html_url": "https://github.com/airlinklabs/panel/commit/93ea5a410731797586c6106aed5a8c5575c36911"
       }
     ]
   }
